@@ -1,0 +1,8 @@
+{
+    "name": "@torn.space/client",
+    "private": true,
+    "type": "module",
+    "scripts": {},
+    "dependencies": {},
+    "devDependencies": {}
+}

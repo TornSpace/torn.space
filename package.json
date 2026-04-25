@@ -1,0 +1,22 @@
+{
+    "name": "torn.space",
+    "version": "4.0.0-beta",
+    "description": "Community-led torn.space fork.",
+    "private": true,
+    "type": "module",
+    "scripts": {},
+    "engines": {
+        "bun": ">=1.3.13"
+    },
+    "author": "DamienVesper",
+    "license": "AGPL-3.0-only",
+    "workspaces": [
+        "bot",
+        "client",
+        "server",
+        "shared",
+        "tests"
+    ],
+    "dependencies": {},
+    "devDependencies": {}
+}

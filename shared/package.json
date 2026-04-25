@@ -1,0 +1,8 @@
+{
+    "name": "@torn.space/shared",
+    "private": true,
+    "type": "module",
+    "scripts": {},
+    "dependencies": {},
+    "devDependencies": {}
+}
