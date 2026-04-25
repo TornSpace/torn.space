@@ -1,8 +1,19 @@
 {
-    "name": "@torn.space/client",
-    "private": true,
-    "type": "module",
-    "scripts": {},
-    "dependencies": {},
-    "devDependencies": {}
+  "name": "@torn.space/client",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "vite": "^8.0.10"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.10",
+    "svelte": "^5.55.5",
+    "tailwindcss": "^4.2.4"
+  }
 }

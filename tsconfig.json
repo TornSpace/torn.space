@@ -1,6 +1,7 @@
 {
     "$schema": "https://www.schemastore.org/tsconfig.json",
     "extends": [
+        "./api/tsconfig.json",
         "./bot/tsconfig.json",
         "./client/tsconfig.json",
         "./server/tsconfig.json",

@@ -1,22 +1,30 @@
 {
-    "name": "torn.space",
-    "version": "4.0.0-beta",
-    "description": "Community-led torn.space fork.",
-    "private": true,
-    "type": "module",
-    "scripts": {},
-    "engines": {
-        "bun": ">=1.3.13"
-    },
-    "author": "DamienVesper",
-    "license": "AGPL-3.0-only",
-    "workspaces": [
-        "bot",
-        "client",
-        "server",
-        "shared",
-        "tests"
-    ],
-    "dependencies": {},
-    "devDependencies": {}
+  "name": "torn.space",
+  "version": "4.0.0-beta",
+  "description": "Community-led torn.space fork.",
+  "private": true,
+  "type": "module",
+  "scripts": {},
+  "engines": {
+    "bun": ">=1.3.13"
+  },
+  "author": "DamienVesper",
+  "license": "AGPL-3.0-only",
+  "workspaces": [
+    "bot",
+    "client",
+    "server",
+    "shared",
+    "tests"
+  ],
+  "dependencies": {
+    "hjson": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.13",
+    "@types/hjson": "^2.4.6",
+    "oxfmt": "^0.46.0",
+    "oxlint": "^1.61.0",
+    "typescript": "^6.0.3"
+  }
 }

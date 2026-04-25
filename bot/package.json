@@ -1,8 +1,11 @@
 {
-    "name": "@torn.space/bot",
-    "private": true,
-    "type": "module",
-    "scripts": {},
-    "dependencies": {},
-    "devDependencies": {}
+  "name": "@torn.space/bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "discord.js": "^14.26.3"
+  }
 }

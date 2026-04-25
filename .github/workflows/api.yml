@@ -4,18 +4,18 @@ on:
     branches:
       - master
     paths: &paths
-      - "server/**"
+      - "api/**"
       - "shared/**"
       - "*.json"
       - "bun.lock"
-      - ".github/workflows/bot.yml"
+      - ".github/workflows/api.yml"
   pull_request:
     paths: *paths
 jobs:
-  bot:
-    name: Bot
+  api:
+    name: API
     runs-on: ubuntu-latest
-    concurrency: ci-bot-${{ github.ref }}
+    concurrency: ci-api-${{ github.ref }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
@@ -24,12 +24,12 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter server --filter shared
+        run: bun ci --filter api --filter shared
 
-      - name: Typecheck Bot
+      - name: Typecheck API
         run: bun typecheck
-        working-directory: ./bot
+        working-directory: ./api
 
-      - name: Build Bot
+      - name: Build API
         run: bun run build
-        working-directory: ./bot
+        working-directory: ./api

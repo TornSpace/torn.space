@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+    paths: &paths
+      - "server/**"
+      - "shared/**"
+      - "*.json"
+      - "bun.lock"
+      - ".github/workflows/server.yml"
+  pull_request:
+    paths: *paths
+jobs:
+  server:
+    name: Server
+    runs-on: ubuntu-latest
+    concurrency: ci-server-${{ github.ref }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Packages
+        run: bun ci --filter server --filter shared
+
+      - name: Typecheck Server
+        run: bun typecheck
+        working-directory: ./server
+
+      - name: Build Server
+        run: bun run build
+        working-directory: ./server
