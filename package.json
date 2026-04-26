@@ -2,7 +2,7 @@
   "name": "torn.space",
   "version": "4.0.0-beta",
   "private": true,
-  "description": "Community-led torn.space fork.",
+  "description": "Community-led torn.space clone.",
   "license": "AGPL-3.0-only",
   "author": "DamienVesper",
   "workspaces": [

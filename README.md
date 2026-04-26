@@ -1,2 +1,2 @@
 # torn.space
-Community-led torn.space fork.
+Community-led torn.space clone.
