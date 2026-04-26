@@ -1,4 +1,14 @@
 {
-    "$schema": "https://www.schemastore.org/tsconfig.json",
-    "compilerOptions": {}
+  "$schema": "https://www.schemastore.org/tsconfig.json",
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": [
+    "./src",
+    "../shared",
+    "../config.ts"
+  ]
 }

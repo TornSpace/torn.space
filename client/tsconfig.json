@@ -1,4 +1,16 @@
 {
-    "$schema": "https://www.schemastore.org/tsconfig.json",
-    "compilerOptions": {}
+  "$schema": "https://www.schemastore.org/tsconfig.json",
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "paths": {
+      "shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.svelte",
+    "../shared/",
+    "./global.d.ts"
+  ]
 }
