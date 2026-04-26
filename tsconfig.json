@@ -5,8 +5,7 @@
     "./bot/tsconfig.json",
     "./client/tsconfig.json",
     "./common/tsconfig.json",
-    "./server/tsconfig.json",
-    "./tests/tsconfig.json"
+    "./server/tsconfig.json"
   ],
   "include": ["./**/*.ts", "./**/*.js"]
 }

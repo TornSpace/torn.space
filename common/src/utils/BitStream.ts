@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2020 bit-buffer developers (https://github.com/inolen/bit-buffer)
- * Copyright (c) 2025 leia-uwu (https://github.com/leia-uwu/boom2d) [AGPL-3.0]
+ * Copyright (c) 2025 leia-uwu (https://github.com/leia-uwu/boom2d) [GPL-3.0]
  * Copyright (c) 2026 DamienVesper (https://github.com/TornSpace/torn.space) [AGPL-3.0]
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

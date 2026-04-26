@@ -10,8 +10,7 @@
     "bot",
     "client",
     "common",
-    "server",
-    "tests"
+    "server"
   ],
   "type": "module",
   "scripts": {
