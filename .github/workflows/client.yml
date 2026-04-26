@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter client --filter common
+        run: bun ci --filter ./client --filter ./common
 
       - name: Build Client
         run: bun run build
