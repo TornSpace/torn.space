@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter ./server --filter ./common --filter ./tests
+        run: bun ci --filter . --filter ./common --filter ./tests
 
       - name: Run Tests
         run: bun run test

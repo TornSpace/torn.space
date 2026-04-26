@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter ./server --filter ./common
+        run: bun ci --filter . --filter ./common --filter ./bot
 
       - name: Typecheck Bot
         run: bun typecheck
