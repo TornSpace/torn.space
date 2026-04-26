@@ -83,7 +83,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
         if (bits > available) throw new Error(`Cannot get ${bits} bit(s) [offset ${offset}], ${available} available.`);
 
         let value = 0;
-        for (let i = 0; i < bits;) {
+        for (let i = 0; i < bits; ) {
             const remaining = bits - i;
             const bitOffset = offset & 7;
             const currentByte = this._view[offset >> 3];
@@ -119,7 +119,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
         const available = this._view.length * 8 - offset;
         if (bits > available) throw new Error(`Cannot set ${bits} bit(s) [offset ${offset}], ${available} available.`);
 
-        for (let i = 0; i < bits;) {
+        for (let i = 0; i < bits; ) {
             let wrote: number;
 
             // Write an entire byte, if possible.
