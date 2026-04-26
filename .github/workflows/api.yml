@@ -1,11 +1,11 @@
-name: CI
+name: API
 on:
   push:
     branches:
       - master
     paths: &paths
       - "api/**"
-      - "shared/**"
+      - "common/**"
       - "*.json"
       - "bun.lock"
       - ".github/workflows/api.yml"
@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter api --filter shared
+        run: bun ci --filter api --filter common
 
       - name: Typecheck API
         run: bun typecheck

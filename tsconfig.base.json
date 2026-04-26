@@ -9,6 +9,7 @@
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
+    "allowImportingTsExtensions": true,
     "newLine": "lf"
   },
   "exclude": ["**/node_modules/**", "**/references/**", "**/build/**"]

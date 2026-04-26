@@ -16,5 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// oxlint-disable-next-line typescript/no-empty-interface, typescript/no-empty-object-type
-export interface Config {}
+import adapter from "@sveltejs/adapter-static";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+
+/**
+ * @type {import("@sveltejs/kit").Config}
+ */
+const config = {
+    preprocess: vitePreprocess(),
+    kit: {
+        adapter: adapter({ precompress: true }),
+        alias: {
+            "@/common": "../common/src"
+        }
+    }
+};
+
+export default config;

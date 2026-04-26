@@ -1,11 +1,11 @@
-name: CI
+name: Bot
 on:
   push:
     branches:
       - master
     paths: &paths
       - "server/**"
-      - "shared/**"
+      - "common/**"
       - "*.json"
       - "bun.lock"
       - ".github/workflows/bot.yml"
@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter server --filter shared
+        run: bun ci --filter server --filter common
 
       - name: Typecheck Bot
         run: bun typecheck

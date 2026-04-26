@@ -6,3 +6,5 @@ config.hjson
 
 # Builds
 build/
+.svelte-kit/
+dist/

@@ -1,2 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
+@font-face {
+    font-family: "ShareTech";
+    src: url("../fonts/Share_Tech/ShareTech-Regular.ttf");
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@theme inline {
+    --font-game: ShareTech, sans-serif;
+}
+
+/* @layer base {} */

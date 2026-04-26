@@ -1,11 +1,11 @@
-name: CI
+name: Client
 on:
   push:
     branches:
       - master
     paths: &paths
       - "client/**"
-      - "shared/**"
+      - "common/**"
       - "*.json"
       - "bun.lock"
       - ".github/workflows/client.yml"
@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Packages
-        run: bun ci --filter client --filter shared
+        run: bun ci --filter client --filter common
 
       - name: Typecheck Client
         run: bun typecheck

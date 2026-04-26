@@ -3,8 +3,8 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "shared/*": ["../shared/src/*"]
+      "common/*": ["../common/src/*"]
     }
   },
-  "include": ["./src", "../shared", "../config.ts"]
+  "include": ["./src", "../common", "../config.ts"]
 }

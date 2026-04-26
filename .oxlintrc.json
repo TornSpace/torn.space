@@ -10,7 +10,7 @@
   "rules": {
     // ESLint
     "arrow-body-style": ["warn", "as-needed"],
-    "curly": ["warn", "multi-line"],
+    "curly": ["warn", "multi"],
     "no-duplicate-imports": "warn",
     "no-useless-computed-key": "warn",
     "prefer-template": "warn",

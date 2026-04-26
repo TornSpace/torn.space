@@ -1,11 +1,8 @@
 {
   "$schema": "https://www.schemastore.org/tsconfig.json",
-  "extends": "../tsconfig.base.json",
+  "extends": ["../tsconfig.base.json", "./.svelte-kit/tsconfig.json"],
   "compilerOptions": {
-    "lib": ["DOM", "ESNext"],
-    "paths": {
-      "shared/*": ["../shared/src/*"]
-    }
+    "lib": ["DOM", "ESNext"]
   },
-  "include": ["./src/**/*.ts", "./src/**/*.svelte", "../shared/", "./global.d.ts"]
+  "include": ["./src/**/*.ts", "./src/**/*.svelte", "../common/", "./global.d.ts"]
 }

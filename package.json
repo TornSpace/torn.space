@@ -8,8 +8,8 @@
   "workspaces": [
     "bot",
     "client",
+    "common",
     "server",
-    "shared",
     "tests"
   ],
   "type": "module",
@@ -17,7 +17,8 @@
     "fmt": "oxfmt",
     "fmt:ci": "oxfmt --check",
     "lint": "oxlint",
-    "lint:ci": "oxlint --format=github"
+    "lint:ci": "oxlint --format=github",
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "hjson": "^3.2.2"

@@ -16,5 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// oxlint-disable-next-line typescript/no-empty-interface, typescript/no-empty-object-type
-export interface Config {}
+export type Vector = Record<"x" | "y", number>;
+
+export const Vec2 = {
+    /**
+     * Set vector `a` to be equivalent to vector `b`.
+     *
+     * @param a The target vector.
+     * @param b The source vector.
+     */
+    set(a: Vector, b: Vector): void {
+        a.x = b.x;
+        a.y = b.y;
+    }
+};
