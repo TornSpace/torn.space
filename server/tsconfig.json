@@ -6,9 +6,5 @@
       "shared/*": ["../shared/src/*"]
     }
   },
-  "include": [
-    "./src",
-    "../shared",
-    "../config.ts"
-  ]
+  "include": ["./src", "../shared", "../config.ts"]
 }

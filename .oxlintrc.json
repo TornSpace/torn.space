@@ -5,16 +5,8 @@
     "builtin": true,
     "node": true
   },
-  "ignorePatterns": [
-    "**/build",
-    "**/node_modules"
-  ],
-  "plugins": [
-    "eslint",
-    "import",
-    "oxc",
-    "typescript"
-  ],
+  "ignorePatterns": ["**/build", "**/node_modules"],
+  "plugins": ["eslint", "import", "oxc", "typescript"],
   "rules": {
     // ESLint
     "arrow-body-style": ["warn", "as-needed"],
@@ -25,17 +17,24 @@
     "yoda": "warn",
 
     // Import
-    "import/extensions": ["error", "always", {
-      "checkTypeImports": true,
-      "ignorePackages": true
-    }],
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "checkTypeImports": true,
+        "ignorePackages": true
+      }
+    ],
 
     // TypeScript
     "typescript/adjacent-overload-signatures": "warn",
-    "typescript/explicit-function-return-type": ["warn", {
-      "allowIIFEs": true,
-      "allowTypedFunctionExpressions": true
-    }],
+    "typescript/explicit-function-return-type": [
+      "warn",
+      {
+        "allowIIFEs": true,
+        "allowTypedFunctionExpressions": true
+      }
+    ],
     "typescript/no-array-delete": "off",
     "typescript/no-deprecated": "error",
     "typescript/no-empty-interface": "warn",

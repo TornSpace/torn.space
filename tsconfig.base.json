@@ -11,9 +11,5 @@
     "noImplicitThis": true,
     "newLine": "lf"
   },
-  "exclude": [
-    "**/node_modules/**",
-    "**/references/**",
-    "**/build/**"
-  ]
+  "exclude": ["**/node_modules/**", "**/references/**", "**/build/**"]
 }

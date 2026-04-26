@@ -7,10 +7,5 @@
       "shared/*": ["../shared/src/*"]
     }
   },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.svelte",
-    "../shared/",
-    "./global.d.ts"
-  ]
+  "include": ["./src/**/*.ts", "./src/**/*.svelte", "../shared/", "./global.d.ts"]
 }

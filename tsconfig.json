@@ -8,8 +8,5 @@
     "./shared/tsconfig.json",
     "./tests/tsconfig.json"
   ],
-  "include": [
-    "./**/*.ts",
-    "./**/*.js"
-  ]
+  "include": ["./**/*.ts", "./**/*.js"]
 }

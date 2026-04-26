@@ -1,9 +1,6 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [
-    "**/build",
-    "**/node_modules"
-  ],
+  "ignorePatterns": ["**/build", "**/node_modules", "**/*.md"],
   "overrides": [
     {
       "files": ["**/*.json", "**/*.yml"],
@@ -24,7 +21,18 @@
   },
   "printWidth": 120,
   "sortImports": {
-    "groups": ["external", "builtin", "subpath", "index", "sibling", "parent", "side_effect", "style", "side_effect_style", "type"],
+    "groups": [
+      "external",
+      "builtin",
+      "subpath",
+      "index",
+      "sibling",
+      "parent",
+      "side_effect",
+      "style",
+      "side_effect_style",
+      "type"
+    ],
     "newlinesBetween": true
   },
   "sortPackageJson": {
