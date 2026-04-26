@@ -81,6 +81,7 @@ export function getConfig(isProd: boolean, dir: string): Config {
         console.log(`Sourcing config ${configPath}...`);
         const configText = readFileSync(configPath, "utf-8");
         localConfig = parse(configText);
+        console.log("Config file read succesfully.");
     } else {
         console.log("Config file doesn't exist, creating...");
         localConfig = {
@@ -92,6 +93,7 @@ export function getConfig(isProd: boolean, dir: string): Config {
         };
 
         writeFileSync(configPath, stringify(localConfig, { bracesSameLine: true }));
+        console.log("Config file created.");
     }
 
     util.mergeDeep(config, localConfig);

@@ -4,7 +4,8 @@
   "compilerOptions": {
     "paths": {
       "@/common/*": ["../common/src/*"]
-    }
+    },
+    "types": ["bun"]
   },
   "include": ["./src", "../common", "../config.ts"]
 }
