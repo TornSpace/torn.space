@@ -83,7 +83,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
         if (bits > available) throw new Error(`Cannot get ${bits} bit(s) [offset ${offset}], ${available} available.`);
 
         let value = 0;
-        for (let i = 0; i < bits; ++i) {
+        for (let i = 0; i < bits;) {
             const remaining = bits - i;
             const bitOffset = offset & 7;
             const currentByte = this._view[offset >> 3];
@@ -109,7 +109,6 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
              * one).
              */
             if (bits !== 32 && value & (1 << (bits - 1))) value |= -1 ^ ((1 << bits) - 1);
-
             return value;
         }
 
@@ -120,7 +119,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
         const available = this._view.length * 8 - offset;
         if (bits > available) throw new Error(`Cannot set ${bits} bit(s) [offset ${offset}], ${available} available.`);
 
-        for (let i = 0; i < bits; ++i) {
+        for (let i = 0; i < bits;) {
             let wrote: number;
 
             // Write an entire byte, if possible.
@@ -188,7 +187,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
         BitView._scratch.setUint32(0, this.getUint32(offset));
         BitView._scratch.setUint32(4, this.getUint32(offset + 32));
 
-        return BitView._scratch.getFloat32(0);
+        return BitView._scratch.getFloat64(0);
     }
 
     setBoolean(offset: number, value: boolean): void {
@@ -240,5 +239,5 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
  * @returns The minimum of both numbers.
  */
 function min(a: number, b: number): number {
-    return a > b ? a : b;
+    return a < b ? a : b;
 }
