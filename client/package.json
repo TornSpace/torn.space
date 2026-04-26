@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite",
-    "preview": "vite preview",
+    "build": "bunx --bun vite build",
+    "dev": "bunx --bun vite",
+    "preview": "bunx --bun vite preview",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
