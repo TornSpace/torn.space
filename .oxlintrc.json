@@ -10,7 +10,7 @@
   "rules": {
     // ESLint
     "arrow-body-style": ["warn", "as-needed"],
-    "curly": ["warn", "multi"],
+    "curly": ["warn", "multi-line"],
     "no-duplicate-imports": "warn",
     "no-useless-computed-key": "warn",
     "prefer-template": "warn",
@@ -21,6 +21,8 @@
       "error",
       "always",
       {
+        "ts": "never",
+        "js": "never",
         "checkTypeImports": true,
         "ignorePackages": true
       }
