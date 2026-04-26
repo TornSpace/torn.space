@@ -156,9 +156,8 @@ type SetFn = `set${StreamTypes}`;
 function reader<Name extends GetFn, T extends ArrayBufferLike = ArrayBuffer>(name: Name, size: number) {
     // oxlint-disable-next-line typescript/explicit-function-return-type
     return function (this: BitStream<T>) {
-        if (this._index + size > this._length) 
-            throw new Error("Trying to read past the end of the stream");
-        
+        if (this._index + size > this._length) throw new Error("Trying to read past the end of the stream");
+
         const val = this._view[name](this._index);
         this._index += size;
         return val as ReturnType<BitView[Name]>;
@@ -173,7 +172,11 @@ function writer<Name extends SetFn>(name: SetFn, size: number) {
     };
 }
 
-function readString<T extends ArrayBufferLike = ArrayBuffer>(stream: BitStream<T>, bytes?: number, utf8?: boolean): string {
+function readString<T extends ArrayBufferLike = ArrayBuffer>(
+    stream: BitStream<T>,
+    bytes?: number,
+    utf8?: boolean
+): string {
     if (bytes === 0) return "";
 
     let i = 0;
