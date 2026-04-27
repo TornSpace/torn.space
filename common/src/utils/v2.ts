@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function min(a: number, b: number) {
+function min(a: number, b: number): number {
     return a < b ? a : b;
 }
 
-function max(a: number, b: number) {
+function max(a: number, b: number): number {
     return a > b ? a : b;
 }
 
