@@ -298,6 +298,7 @@ export const v2 = {
 
     /**
      * Linearly interpolate from vector `a` to vector `b` by a factor `t`.
+     *
      * @param t The interpolation factor.
      * @param a The start vector.
      * @param b The end vector.
@@ -311,7 +312,7 @@ export const v2 = {
      *
      * @param a The first vector.
      * @param b The second vector.
-     * @param epsilon The accuracy by which to accept slight differences as "basically equal". Used in calculation as [0, epsilon].
+     * @param epsilon The accuracy by which to accept slight differences as "basically equal".
      */
     eq(a: Vec2, b: Vec2, epsilon = 0.0001): boolean {
         return Math.abs(a.x - b.x) <= epsilon && Math.abs(a.y - b.y) <= epsilon;
