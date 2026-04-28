@@ -15,3 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+export const GameConstants = {
+    gameSpeed: 1,
+    maxPosition: 1024,
+    maxEntityId: (1 << 16) - 1,
+    maxChatLength: 256,
+    player: {
+        maxNameLength: 16
+    }
+};

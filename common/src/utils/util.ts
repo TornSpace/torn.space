@@ -71,7 +71,6 @@ export class AssertionError extends Error {
 
 /**
  * Custom function to not bundle nodejs assert polyfill with the client
- *
  * @author leia-uwu
  * @link https://github.com/survev/survev/blob/master/shared/utils/util.ts
  */

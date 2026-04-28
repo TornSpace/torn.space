@@ -19,7 +19,7 @@
 
 import { expect, test } from "bun:test";
 
-import { BitStream } from "../src/utils/BitStream";
+import { BitStream } from "../src/lib/BitStream";
 
 test("Byte-aligned Unsigned Integers", () => {
     const stream = new BitStream(new ArrayBuffer(100));

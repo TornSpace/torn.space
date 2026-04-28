@@ -28,7 +28,6 @@ import type { Next, ValidationTargets } from "hono/types";
 
 /**
  * Guarantees that the PostgreSQL database connection exists.
- *
  * @param c The context of the request.
  * @param next The request callback.
  * @param app The primary Hono application.
@@ -44,7 +43,6 @@ export async function CachingGuard(c: Context, next: Next, app: App): Promise<vo
 
 /**
  * Guarantees that the PostgreSQL database connection exists.
- *
  * @param c The context of the request.
  * @param next The request callback.
  * @param app The primary Hono application.
@@ -60,7 +58,6 @@ export async function DatabaseGuard(c: Context, next: Next, app: App): Promise<v
 
 /**
  * Guarantees that the PostgreSQL database connection exists.
- *
  * @param c The context of the request.
  * @param next The request callback.
  * @param app The primary Hono application.
@@ -76,7 +73,6 @@ export async function ProxyCheckGuard(c: Context, next: Next, app: App): Promise
 
 /**
  * Rate limiter middleware.
- *
  * @param limit The maximum number of requests in a given timeframe.
  * @param interval The timeframe (in milliseconds).
  */
@@ -101,7 +97,6 @@ export function RateLimiter(limit: number, interval: number): (c: Context, next:
 
 /**
  * Validate a request for a given schema.
- *
  * @param type The target type.
  * @param schema The Zod schema.
  */

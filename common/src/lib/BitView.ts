@@ -24,6 +24,8 @@
  * SOFTWARE.
  */
 
+import { math } from "../utils/math";
+
 /**
  * Similar to `DataView`, excepts allows bit-level reads/writes rather than byte-level. Internally uses `DataView` for
  * data storage.
@@ -41,7 +43,6 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
 
     /**
      * Create a new `BitView`.
-     *
      * @param source The source buffer, must be of type `ArrayBufferLike`.
      * @param byteOffset Optional byte offset.
      * @param byteLength Length of the source buffer.
@@ -73,7 +74,6 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
 
     /**
      * Get bits in the `BitView`.
-     *
      * @param offset The number of don't care values at the beginning of the index.
      * @param bits The number of bits to read.
      * @param signed Whether to read back as a signed or unsigned integer.
@@ -89,7 +89,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
             const currentByte = this._view[offset >> 3];
 
             // The maximum number of bits we can read from the current byte.
-            const max = min(remaining, 8 - bitOffset);
+            const max = math.min(remaining, 8 - bitOffset);
 
             // Create a mask with the correct bit width.
             const mask = (1 << max) - 1;
@@ -131,7 +131,7 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
                 const bitOffset = offset & 7;
                 const byteOffset = offset >> 3;
 
-                wrote = min(remaining, 8 - bitOffset);
+                wrote = math.min(remaining, 8 - bitOffset);
 
                 // Create a mask with the correct bit width.
                 const mask = ~(0xff << wrote);
@@ -229,15 +229,4 @@ export class BitView<T extends ArrayBufferLike = ArrayBuffer> {
         this.setBits(offset, BitView._scratch.getUint32(0), 32);
         this.setBits(offset + 32, BitView._scratch.getUint32(4), 32);
     }
-}
-
-/**
- * V8 Math.min(a, b) is SLOW
- *
- * @param a The first number to compare.
- * @param b The second number to compare.
- * @returns The minimum of both numbers.
- */
-function min(a: number, b: number): number {
-    return a < b ? a : b;
 }

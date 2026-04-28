@@ -15,3 +15,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import { GameConstants } from "../constants";
+import { GameBitStream, Packet } from "../net";
+
+export class JoinPacket implements Packet {
+    name = "";
+
+    serialize(stream: GameBitStream): void {
+        stream.writeASCIIString(this.name, GameConstants.player.maxNameLength);
+    }
+
+    deserialize(stream: GameBitStream): void {
+        this.name = stream.readASCIIString(GameConstants.player.maxNameLength);
+    }
+}

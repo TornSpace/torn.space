@@ -16,7 +16,6 @@ export class TokenBucketLimiter<T = string> {
 
     /**
      * Create a rate limiter.
-     *
      * @param limit The maximum number of tokens in a given timeframe.
      * @param interval The interval at which tokens should restock.
      */
@@ -27,7 +26,6 @@ export class TokenBucketLimiter<T = string> {
 
     /**
      * Consume the token bucket. Additionally checks if the bucket is rate limited.
-     *
      * @param key The unique identifier of the bucket.
      */
     consume(key: T): boolean {
@@ -65,7 +63,6 @@ export class TokenBucketLimiter<T = string> {
 
 /**
  * Obtain the IP associated with a request.
- *
  * @param c The context of the request.
  */
 export function getIP(c: Context): string | undefined {
@@ -84,7 +81,6 @@ export function getIP(c: Context): string | undefined {
 
 /**
  * Hash an IP address.
- *
  * @param ip The IP address.
  */
 export function hashIp(ip: string): string {

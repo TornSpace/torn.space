@@ -15,21 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-function min(a: number, b: number): number {
-    return a < b ? a : b;
-}
-
-function max(a: number, b: number): number {
-    return a > b ? a : b;
-}
+import { math } from "./math";
 
 export type Vec2 = Record<"x" | "y", number>;
 
 export const v2 = {
     /**
      * Create a new `Vec2`.
-     *
      * @param x The x component.
      * @param y The y component. If unspecified, defaults to the x component.
      */
@@ -39,7 +31,6 @@ export const v2 = {
 
     /**
      * Set vector `a` to be equivalent to vector `b`.
-     *
      * @param a The target vector.
      * @param b The source vector.
      */
@@ -50,7 +41,6 @@ export const v2 = {
 
     /**
      * Adds two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -63,7 +53,6 @@ export const v2 = {
 
     /**
      * Subtracts vector `b` from `a`.
-     *
      * @param a The vector to subtract from.
      * @param b The vector to subtract.
      */
@@ -76,7 +65,6 @@ export const v2 = {
 
     /**
      * Multiply vector `a` by a scalar `s`.
-     *
      * @param a The vector to multiply.
      * @param s The scalar to multiply by.
      */
@@ -89,7 +77,6 @@ export const v2 = {
 
     /**
      * Divide vector `a` by a scalar `s`.
-     *
      * @param a The vector to divide.
      * @param s The scalar to divide by.
      */
@@ -102,7 +89,6 @@ export const v2 = {
 
     /**
      * Give the inverse of vector `a`.
-     *
      * @param a The vector to invert.
      */
     inv(a: Vec2): Vec2 {
@@ -114,7 +100,6 @@ export const v2 = {
 
     /**
      * Compute the length of a vector.
-     *
      * @param a The vector to use.
      */
     length(a: Vec2): number {
@@ -123,7 +108,6 @@ export const v2 = {
 
     /**
      * Compute the squared length of a vector.
-     *
      * @param a The vector to use.
      */
     lengthSq(a: Vec2): number {
@@ -133,7 +117,6 @@ export const v2 = {
     /**
      * Resize a vector such that its length is equivalent to 1. This is achieved by dividing each component by the
      * magnitude of the original vector.
-     *
      * @param a The vector to normalize.
      */
     normalize(a: Vec2): Vec2 {
@@ -152,7 +135,6 @@ export const v2 = {
      *
      * The advantage this method has over the previous {@link v2.normalize|normalize} function is that it avoids dividing
      * by numbers close to 0. This ensures that you do not end up with `Infinity` as a result.
-     *
      * @param a The vector to normalize.
      * @param v The fallback vector.
      */
@@ -167,7 +149,6 @@ export const v2 = {
 
     /**
      * Compute the distance between two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -178,7 +159,6 @@ export const v2 = {
 
     /**
      * Compute the distance squared between two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -189,7 +169,6 @@ export const v2 = {
 
     /**
      * Compute the {@link https://en.wikipedia.org/wiki/Taxicab_geometry|Manhattan distance} between two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -199,7 +178,6 @@ export const v2 = {
 
     /**
      * Find the midpoint between two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -212,7 +190,6 @@ export const v2 = {
 
     /**
      * Find the dot product of two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -222,7 +199,6 @@ export const v2 = {
 
     /**
      * Find a vector orthogonal to the specified vector.
-     *
      * @param a The source vector.
      * @param negator Which component to negate. Defaults to the x-component.
      */
@@ -232,7 +208,6 @@ export const v2 = {
 
     /**
      * Find a vector orthogonal to the specified vector.
-     *
      * @param a The vector to project.
      * @param b The vector to project onto.
      */
@@ -242,7 +217,6 @@ export const v2 = {
 
     /**
      * Rotate a vector by an angle.
-     *
      * @param a The vector to rotate.
      * @param theta The angle, in radians.
      */
@@ -258,7 +232,6 @@ export const v2 = {
 
     /**
      * Multiply the components of two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -268,7 +241,6 @@ export const v2 = {
 
     /**
      * Divide the components of vector `a` by the components of vector `b`.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
@@ -278,38 +250,34 @@ export const v2 = {
 
     /**
      * Obtain the minimum components of two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
     minComp(a: Vec2, b: Vec2): Vec2 {
-        return { x: min(a.x, b.x), y: min(a.y, b.y) };
+        return { x: math.min(a.x, b.x), y: math.min(a.y, b.y) };
     },
 
     /**
      * Obtain the maximum components of two vectors.
-     *
      * @param a The first vector.
      * @param b The second vector.
      */
     maxComp(a: Vec2, b: Vec2): Vec2 {
-        return { x: max(a.x, b.x), y: max(a.y, b.y) };
+        return { x: math.max(a.x, b.x), y: math.max(a.y, b.y) };
     },
 
     /**
      * Linearly interpolate from vector `a` to vector `b` by a factor `t`.
-     *
-     * @param t The interpolation factor.
      * @param a The start vector.
      * @param b The end vector.
+     * @param t The interpolation factor.
      */
-    lerp(t: number, a: Vec2, b: Vec2): Vec2 {
+    lerp(a: Vec2, b: Vec2, t: number): Vec2 {
         return v2.add(v2.mult(a, 1.0 - t), v2.mult(b, t));
     },
 
     /**
      * Check if two vectors are equal to each other, within a certain sensitivity.
-     *
      * @param a The first vector.
      * @param b The second vector.
      * @param epsilon The accuracy by which to accept slight differences as "basically equal".

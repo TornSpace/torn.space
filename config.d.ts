@@ -19,7 +19,6 @@
 interface ServerConfig {
     /**
      * The network interface(s) to bind to. `0.0.0.0` binds to all interfaces.
-     *
      * @default "0.0.0.0"
      */
     host: string;
@@ -58,13 +57,11 @@ export interface Config {
     vite: {
         /**
          * The network interface(s) to bind to. `0.0.0.0` binds to all interfaces.
-         *
          * @default "127.0.0.1"
          */
         host: string;
         /**
          * The port to run the dev server on.
-         *
          * @default 3000
          */
         port: number;
@@ -81,7 +78,6 @@ export interface Config {
         timestamp: boolean;
         /**
          * Whether to log informative messages.
-         *
          * @default true
          */
         info: boolean;
@@ -91,13 +87,11 @@ export interface Config {
         debug: boolean;
         /**
          * Whether to log warnings.
-         *
          * @default true
          */
         warn: boolean;
         /**
          * Whether to log errors. In production, these are sent to the server / client webhooks if available.
-         *
          * @default true
          */
         error: boolean;
@@ -115,9 +109,7 @@ export interface Config {
      */
     database: {
         /**
-         * Whether to enable database support. Disabling this will cause all database-related API routes to return a
-         * `503`.
-         *
+         * Whether to enable database support. Disabling this will cause all database-related API routes to return a `503`.
          * @default false
          */
         enabled: boolean;
@@ -173,19 +165,16 @@ export interface Config {
     caching: {
         /**
          * Enables using Redis for caching.
-         *
          * @default false
          */
         enabled: boolean;
         /**
          * Connection string.
-         *
          * @default "127.0.0.1:6379"
          */
         connectionString: string;
         /**
          * Prefix to use when setting and retrieving keys.
-         *
          * @default "TORN"
          */
         prefix: string;
@@ -197,13 +186,11 @@ export interface Config {
 
     /**
      * Game tick rate.
-     *
      * @default 120
      */
     tps: number;
     /**
      * Update packet rate.
-     *
      * @default 60
      */
     ups: number;

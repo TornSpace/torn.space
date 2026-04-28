@@ -45,8 +45,8 @@ export class App extends Hono {
     logger: Logger;
 
     /**
-     * @todo Add type guards to check if the individual modules are enabled, and then assert the type. For now,
-     *   temporary NNA. This, however, is not the best DX.
+     * @todo Add type guards to check if the individual modules are enabled, and then assert the type.
+     * For now, temporary NNA. This, however, is not the best DX.
      */
     db!: ReturnType<typeof drizzle<DrizzleSchema>>;
     redis!: RedisClient;
@@ -117,7 +117,6 @@ export class App extends Hono {
 
     /**
      * Get the value of a cache key.
-     *
      * @param key The key, absent of any prefix.
      */
     getCacheKey(key: string): Promise<string | null> {
@@ -126,7 +125,6 @@ export class App extends Hono {
 
     /**
      * Set the value of a cache key.
-     *
      * @param key The key, absent of any prefix.
      */
     setCacheKey(key: string, value: string): Promise<"OK"> {

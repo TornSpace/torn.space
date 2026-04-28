@@ -15,3 +15,63 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+export const math = {
+    /**
+     * {@link Math.min()} for two arguments.
+     * @param a The first number,
+     * @param b The second number,
+     * @returns The minimum of the two numbers.
+     */
+    min(a: number, b: number): number {
+        return a < b ? a : b;
+    },
+
+    /**
+     * {@link Math.max()} for two arguments.
+     * @param a The first number,
+     * @param b The second number,
+     * @returns The maximum of the two numbers.
+     */
+    max(a: number, b: number): number {
+        return a > b ? a : b;
+    },
+
+    /**
+     * Clamp a number to the specified bounds.
+     * @param a The number to clamp.
+     * @param min The lower bound.
+     * @param max The upper bound.
+     */
+    clamp(a: number, min: number, max: number): number {
+        return a > max ? max : a < min ? min : a;
+    },
+
+    /**
+     * Linearly interpolate from `a` to `b` by a factor `t`.
+     * @param t The interpolation factor.
+     * @param a The start vector.
+     * @param b The end vector.
+     */
+    lerp(a: number, b: number, t: number): number {
+        return a * (1.0 - t) + b * t;
+    },
+
+    /**
+     * Convert an angle from degrees to radians.
+     * @param deg The angle, in degrees.
+     * @returns The angle in radians.
+     */
+    degToRad(deg: number): number {
+        return (deg / 180) * Math.PI;
+    },
+
+    /**
+     * Convert an angle from radians to degrees.
+     * @param deg The angle, in radians.
+     * @returns The angle in degrees.
+     */
+    radToDeg(rad: number): number {
+        return (rad / Math.PI) * 180;
+    }
+};
