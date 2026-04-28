@@ -1,9 +1,10 @@
-import { Context } from "hono";
 import { getConnInfo } from "hono/bun";
 
 import { createHash } from "crypto";
 
 import { config } from "../config";
+
+import type { Context } from "hono";
 
 /**
  * Token bucket limiter.
