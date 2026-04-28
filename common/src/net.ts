@@ -22,7 +22,7 @@ import { InputPacket } from "./net/InputPacket";
 import { JoinPacket } from "./net/JoinPacket";
 import { math } from "./utils/math";
 import { assert } from "./utils/util";
-import { Vec2 } from "./utils/v2";
+import type { Vec2 } from "./utils/v2";
 
 export class GameBitStream extends BitStream {
     static alloc(size: number): GameBitStream {

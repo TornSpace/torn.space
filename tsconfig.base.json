@@ -9,6 +9,7 @@
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
+    "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
     "newLine": "lf"
   },
