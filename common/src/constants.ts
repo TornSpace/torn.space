@@ -25,3 +25,11 @@ export const GameConstants = {
         maxNameLength: 16
     }
 };
+
+export enum PacketType {
+    Join,
+    Joined,
+    Chat,
+
+    Update
+}

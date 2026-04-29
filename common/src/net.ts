@@ -20,9 +20,11 @@ import { BitStream } from "./lib/BitStream";
 import { ChatPacket } from "./net/ChatPacket";
 import { InputPacket } from "./net/InputPacket";
 import { JoinPacket } from "./net/JoinPacket";
+import { UpdatePacket } from "./net/UpdatePacket";
 import { math } from "./utils/math";
 import { assert } from "./utils/util";
 
+import type { PacketType } from "./constants";
 import type { Vec2 } from "./utils/v2";
 
 export class GameBitStream extends BitStream {
@@ -146,6 +148,8 @@ export class GameBitStream extends BitStream {
 }
 
 export abstract class Packet {
+    abstract type: PacketType;
+
     abstract serialize(s: GameBitStream): void;
     abstract deserialize(s: GameBitStream): void;
 }
@@ -232,4 +236,4 @@ export class PacketStream {
 
 ClientToServerPackets.register(JoinPacket, InputPacket);
 
-ServerToClientPackets.register(ChatPacket);
+ServerToClientPackets.register(ChatPacket, UpdatePacket);

@@ -16,22 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants, PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
+import { sound } from "@pixi/sound";
 
-export class ChatPacket implements Packet {
-    type = PacketType.Chat;
+import { v2, type Vec2 } from "@/common/utils/v2";
 
-    playerId = 0;
-    message = "";
+interface SoundOpts {
+    position?: Vec2;
+    falloff: number;
+    maxRange: number;
+    loop: boolean;
+    dynamic: boolean;
+    onComplete?: () => void;
+}
 
-    serialize(stream: GameBitStream): void {
-        stream.writeUint8(this.playerId);
-        stream.writeASCIIString(this.message, GameConstants.maxChatLength);
-    }
+export class GameSound {}
 
-    deserialize(stream: GameBitStream): void {
-        this.playerId = stream.readUint8();
-        this.message = stream.readASCIIString(GameConstants.maxChatLength);
-    }
+export class AudioManager {
+    sounds: GameSound[] = [];
+
+    volume = 1;
+    position = v2.create(0, 0);
+
+    play(name: string, options: SoundOpts): void {}
 }

@@ -16,10 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants } from "../constants";
+import { GameConstants, PacketType } from "../constants";
 import { GameBitStream, Packet } from "../net";
 
 export class JoinPacket implements Packet {
+    type = PacketType.Joined;
     name = "";
 
     serialize(stream: GameBitStream): void {

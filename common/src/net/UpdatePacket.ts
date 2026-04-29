@@ -15,3 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import { PacketType } from "../constants";
+
+import type { GameBitStream, Packet } from "../net";
+
+enum UpdateFlags {
+    DeletedEntities = 1 << 0,
+    FullEntities = 1 << 1,
+    PartialEntities = 1 << 2
+}
+
+export class UpdatePacket implements Packet {
+    type = PacketType.Update;
+
+    serialize(stream: GameBitStream): void {}
+    deserialize(stream: GameBitStream): void {}
+}
