@@ -3,7 +3,7 @@
   "extends": ["../tsconfig.base.json", "./.svelte-kit/tsconfig.json"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
-    "types": ["bun"]
+    "types": ["bun", "vite/client"]
   },
   "include": ["./src/**/*.ts", "./src/**/*.svelte", "../common/", "./global.d.ts"]
 }

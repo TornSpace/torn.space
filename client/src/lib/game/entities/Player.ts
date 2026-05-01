@@ -15,19 +15,5 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
 
-export class DisconnectPacket implements Packet {
-    type = PacketType.Disconnect;
-
-    reason = "";
-
-    serialize(stream: GameBitStream): void {
-        stream.writeASCIIString(this.reason);
-    }
-
-    deserialize(stream: GameBitStream): void {
-        this.reason = stream.readASCIIString();
-    }
-}
+export class Player {}

@@ -15,3 +15,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import type { App } from "./App.svelte";
+import type { ClientEntity } from "./entities/ClientEntity";
+
+import { GameConstants, type ValidEntityType } from "@/common/constants";
+
+export class EntityManager {
+    entities: Array<ClientEntity> = [];
+    idToEntity: Array<ClientEntity | null> = new Array(GameConstants.maxEntityId).fill(null);
+
+    constructor(readonly app: App) {}
+
+    getById<T extends ClientEntity<ValidEntityType>>(id: number): T | undefined {
+        return (this.idToEntity[id] as T) ?? undefined;
+    }
+
+    update(dt: number): void {
+        for (const entity of this.entities) {
+            if (entity.active) entity.update(dt);
+        }
+    }
+}

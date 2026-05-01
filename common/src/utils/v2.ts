@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import { math } from "./math";
 
 export type Vec2 = Record<"x" | "y", number>;
@@ -27,6 +28,14 @@ export const v2 = {
      */
     create(x: number, y?: number): Vec2 {
         return { x, y: y ?? x };
+    },
+
+    /**
+     * Clone an existing `Vec2`.
+     * @param a The vector to clone.
+     */
+    clone(a: Vec2): Vec2 {
+        return v2.create(a.x, a.y);
     },
 
     /**

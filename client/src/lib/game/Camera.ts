@@ -30,8 +30,6 @@ export class Camera {
         eventMode: "none"
     });
 
-    readonly app: App;
-
     _pos = v2.create(0, 0);
     _oldPos = v2.create(0, 0);
 
@@ -42,9 +40,7 @@ export class Camera {
 
     static scale = 64;
 
-    constructor(app: App) {
-        this.app = app;
-    }
+    constructor(readonly app: App) {}
 
     static vecToScreen(a: Vec2): Vec2 {
         return v2.mult(a, this.scale);

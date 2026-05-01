@@ -18,6 +18,13 @@
 
 import { Application, Ticker } from "pixi.js";
 
+import { AudioManager } from "./AudioManager";
+import { Camera } from "./Camera";
+import { EntityManager } from "./EntityManager";
+import { InputManager } from "./InputManager";
+
+import type { Player } from "./entities/Player";
+
 import { GameConstants } from "@/common/constants";
 import { Packet, PacketStream } from "@/common/net";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
@@ -38,7 +45,12 @@ export enum AppState {
 
 export class App {
     pixi = new Application();
+    camera = new Camera(this);
     socket?: WebSocket;
+
+    audioManager = new AudioManager(this);
+    entityManager = new EntityManager(this);
+    inputManager = new InputManager(this);
 
     state = $state.raw(AppState.Splash);
 
@@ -48,6 +60,12 @@ export class App {
     serverDt = 0;
     lastUpdateTime = 0;
     deltaTimes: number[] = [];
+
+    playerId = 0;
+
+    get player(): Player | undefined {
+        return this.entityManager.getById<Player>(this.playerId);
+    }
 
     constructor(canvas: HTMLCanvasElement) {
         this.pixi.init({
@@ -61,8 +79,8 @@ export class App {
     }
 
     connect(): void {
-        // const server =
-        // const addr = window.$host;
+        // TODO: Use config details.
+        const addr = "";
 
         if (this.socket) {
             this.socket.onclose = function (): void {};

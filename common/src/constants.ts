@@ -16,6 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+export enum EntityType {
+    Invalid,
+    Player
+}
+
 export const GameConstants = {
     gameSpeed: 1,
     maxPosition: 1024,
@@ -29,7 +34,13 @@ export const GameConstants = {
 export enum PacketType {
     Join,
     Joined,
+    Disconnect,
     Chat,
-
+    ChatServer,
+    Announcement,
+    Raid,
+    Input,
     Update
 }
+
+export type ValidEntityType = Exclude<EntityType, EntityType.Invalid>;

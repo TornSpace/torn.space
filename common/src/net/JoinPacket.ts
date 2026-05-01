@@ -20,14 +20,31 @@ import { GameConstants, PacketType } from "../constants";
 import { GameBitStream, Packet } from "../net";
 
 export class JoinPacket implements Packet {
-    type = PacketType.Joined;
-    name = "";
+    type = PacketType.Join;
+
+    protocol = 0;
+
+    guest = false;
+    username = "";
+    token = "";
 
     serialize(stream: GameBitStream): void {
-        stream.writeASCIIString(this.name, GameConstants.player.maxNameLength);
+        // Protocol should remain fixed in order and size to avoid breaking older clients.
+        stream.writeUint32(this.protocol);
+
+        // Everything else.
+
+        stream.writeBoolean(this.guest);
+        stream.writeASCIIString(this.username, GameConstants.player.maxNameLength);
+        stream.writeASCIIString(this.token, 32);
     }
 
     deserialize(stream: GameBitStream): void {
-        this.name = stream.readASCIIString(GameConstants.player.maxNameLength);
+        // Same as above.
+        this.protocol = stream.readUint32();
+
+        this.guest = stream.readBoolean();
+        this.username = stream.readASCIIString(GameConstants.player.maxNameLength);
+        this.token = stream.readASCIIString(32);
     }
 }

@@ -15,19 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { PacketType } from "../constants";
+
+import { GameConstants, PacketType } from "../constants";
 import { GameBitStream, Packet } from "../net";
 
-export class DisconnectPacket implements Packet {
-    type = PacketType.Disconnect;
+export class ChatServerPacket implements Packet {
+    type = PacketType.Chat;
 
-    reason = "";
+    playerId = 0;
+    message = "";
 
     serialize(stream: GameBitStream): void {
-        stream.writeASCIIString(this.reason);
+        stream.writeUint8(this.playerId);
+        stream.writeASCIIString(this.message, GameConstants.maxChatLength);
     }
 
     deserialize(stream: GameBitStream): void {
-        this.reason = stream.readASCIIString();
+        this.playerId = stream.readUint8();
+        this.message = stream.readASCIIString(GameConstants.maxChatLength);
     }
 }

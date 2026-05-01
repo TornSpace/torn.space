@@ -16,9 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { PacketType } from "../constants";
 import { GameBitStream, Packet } from "../net";
 
 export class InputPacket implements Packet {
+    type = PacketType.Input;
+
     moveFwd = false;
     moveBwd = false;
     turnLeft = false;
@@ -29,6 +32,7 @@ export class InputPacket implements Packet {
 
     attack = false;
     shield = false;
+    cslot = false;
 
     // queuedWeapon = "" as WeaponDefKey;
 
@@ -46,7 +50,8 @@ export class InputPacket implements Packet {
         "jukeRight",
         "drift",
         "attack",
-        "shield"
+        "shield",
+        "cslot"
         // "queuedWeapon"
     ] as const;
 
@@ -61,6 +66,7 @@ export class InputPacket implements Packet {
 
         stream.writeBoolean(this.attack);
         stream.writeBoolean(this.shield);
+        stream.writeBoolean(this.cslot);
 
         // WeaponDefs.write(stream, this.queuedWeapon);
 
@@ -78,6 +84,7 @@ export class InputPacket implements Packet {
 
         this.attack = stream.readBoolean();
         this.shield = stream.readBoolean();
+        this.cslot = stream.readBoolean();
 
         // this.queuedWeapon = WeaponDefs.read(stream);
 
