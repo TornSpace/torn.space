@@ -21,7 +21,7 @@ import { Container } from "pixi.js";
 import type { App } from "../App.svelte";
 import type { ValidEntityType } from "@/common/constants";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
-import type { Hitbox } from "@/common/utils/hitbox";
+// import type { Hitbox } from "@/common/utils/hitbox";
 
 import { math } from "@/common/utils/math";
 import { v2 } from "@/common/utils/v2";
@@ -47,7 +47,7 @@ export abstract class ClientEntity<T extends ValidEntityType = ValidEntityType> 
     data!: Required<EntitiesNetData[T]>;
     active = false;
 
-    abstract hitbox: Hitbox;
+    // abstract hitbox: Hitbox;
 
     constructor(readonly app: App) {
         this.app.camera.addObject(this.container);

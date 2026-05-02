@@ -20,14 +20,16 @@ import { Application, Ticker } from "pixi.js";
 
 import { AudioManager } from "./AudioManager";
 import { Camera } from "./Camera";
+import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player";
 import { EntityManager } from "./EntityManager";
 import { InputManager } from "./InputManager";
 
 import { EntityType, GameConstants } from "@/common/constants";
-import { Packet, PacketStream } from "@/common/net";
+import { Packet } from "@/common/net";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
 import { math } from "@/common/utils/math";
+import { PacketStream } from "@/common/utils/PacketStream";
 
 export enum AppState {
     Splash,
@@ -70,18 +72,20 @@ export class App {
         return this.entityManager.getById<Player>(this.playerId);
     }
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor() {
         this.entityManager = new EntityManager(this, {
             [EntityType.Loot]: this.lootManager,
             [EntityType.Player]: this.playerManager
         });
+    }
 
+    init(canvas: HTMLCanvasElement): void {
         this.pixi.init({
             canvas,
             resizeTo: window,
             resolution: window.devicePixelRatio ?? 1,
             antialias: true,
-            preference: "webgpu", // TODO: Change back to "webgl" for production.
+            preference: "webgl",
             eventMode: "none"
         });
     }

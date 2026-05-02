@@ -5,5 +5,24 @@
     "lib": ["DOM", "ESNext"],
     "types": ["bun", "svelte", "vite/client"]
   },
-  "include": ["./src/**/*.ts", "./src/**/*.svelte", "../common/", "./global.d.ts"]
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.svelte",
+    "../common/",
+    "./global.d.ts",
+
+    ".svelte-kit/ambient.d.ts",
+    ".svelte-kit/non-ambient.d.ts",
+    ".svelte-kit/types/**/$types.d.ts",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "./src/service-worker.js",
+    "./src/service-worker/**/*.js",
+    "./src/service-worker.ts",
+    "./src/service-worker/**/*.ts",
+    "./src/service-worker.d.ts",
+    "./src/service-worker/**/*.d.ts"
+  ]
 }

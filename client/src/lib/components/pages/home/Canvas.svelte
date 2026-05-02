@@ -1,5 +1,11 @@
 <script lang="ts">
-    import { App } from "../../../game/App";
+    let {
+        canvas = $bindable(),
+        enabled
+    }: {
+        canvas: HTMLCanvasElement
+        enabled: boolean
+    } = $props();
 </script>
 
-<canvas></canvas>
+<canvas bind:this={canvas} class:hidden={!enabled}></canvas>

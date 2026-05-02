@@ -17,10 +17,6 @@
  */
 
 import { BitStream } from "./lib/BitStream";
-import { ChatPacket } from "./net/ChatPacket";
-import { InputPacket } from "./net/InputPacket";
-import { JoinPacket } from "./net/JoinPacket";
-import { UpdatePacket } from "./net/UpdatePacket";
 import { math } from "./utils/math";
 import { assert } from "./utils/util";
 
@@ -154,7 +150,7 @@ export abstract class Packet {
     abstract deserialize(s: GameBitStream): void;
 }
 
-class PacketRegister {
+export class PacketRegister {
     private _nextTypeId = 0;
     readonly typeToId: Record<string, number> = {};
     readonly idToCtor: Array<new () => Packet> = [];
@@ -196,44 +192,3 @@ class PacketRegister {
         return undefined;
     }
 }
-
-const ClientToServerPackets = new PacketRegister();
-const ServerToClientPackets = new PacketRegister();
-
-export class PacketStream {
-    stream: GameBitStream;
-    buffer: ArrayBuffer;
-
-    constructor(source: ArrayBuffer) {
-        this.stream = new GameBitStream(source);
-        this.buffer = source;
-    }
-
-    static alloc(size: number): PacketStream {
-        return new PacketStream(new ArrayBuffer(size));
-    }
-
-    getBuffer(): ArrayBuffer {
-        return this.buffer.slice(0, this.stream.byteIndex);
-    }
-
-    serializeServerPacket(packet: Packet): void {
-        ServerToClientPackets.serializePacket(this.stream, packet);
-    }
-
-    deserializeServerPacket(): Packet | undefined {
-        return ServerToClientPackets.deserializePacket(this.stream);
-    }
-
-    serializeClientPacket(packet: Packet): void {
-        ClientToServerPackets.serializePacket(this.stream, packet);
-    }
-
-    deserializeClientPacket(): Packet | undefined {
-        return ClientToServerPackets.deserializePacket(this.stream);
-    }
-}
-
-ClientToServerPackets.register(JoinPacket, InputPacket);
-
-ServerToClientPackets.register(ChatPacket, UpdatePacket);
