@@ -23,7 +23,7 @@
 
 ## Installation
 In the root directory, run the following command to install packages for all directories and subdirectories.
-```
+```sh
 bun ci
 ```
 
