@@ -18,17 +18,41 @@
 
 export interface ShipDef {
     readonly type: "ship";
+    /**
+     * The English name of the ship.
+     */
     name: string;
+    /**
+     * The price of the ship.
+     */
     price: number;
+    /**
+     * The base health of the ship.
+     */
     hp: number;
+    /**
+     * The base agility of the ship.
+     */
     agility: number;
+    /**
+     * The base cargo size of the ship.
+     */
     cargo: number;
+    /**
+     * The base thrust of the ship.
+     */
     thrust: number;
+    /**
+     * The number of unlocked weapon slots the ship contains.
+     */
     slots: number;
+    /**
+     * The hitbox radius of the ship.
+     */
     width: number;
 }
 
-export const ShipDefs: Record<string, ShipDef> = {
+export const ShipDefs = {
     r0: {
         name: "Rank 0",
         type: "ship",
@@ -263,4 +287,6 @@ export const ShipDefs: Record<string, ShipDef> = {
     /**
      * Ranks 21-25 have been omitted for brevity. If this project succeeds, they will be added.
      */
-};
+} satisfies Record<string, ShipDef>;
+
+export type ShipDefKey = keyof typeof ShipDefs;
