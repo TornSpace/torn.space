@@ -46,7 +46,11 @@ export class EntityManager {
         return (this.entityMap[id] as T) ?? undefined;
     }
 
-    createEntity<T extends ValidEntityType>(type: T, id: number, data: Required<EntitiesNetData[T]>): ClientEntity<T> {
+    createEntity(
+        type: ValidEntityType,
+        id: number,
+        data: Required<EntitiesNetData[ValidEntityType]>
+    ): ClientEntity<ValidEntityType> {
         assert(!this.getById(id), `Entity tried to allocate an occupied spot: ${id}.`);
 
         const entity = this.typePoolMap[type].allocEntity(this.app, id);
@@ -58,7 +62,7 @@ export class EntityManager {
 
         entity.updateFromData(data, true);
 
-        return entity as ClientEntity<T>;
+        return entity;
     }
 
     updateFullEntity(id: number, data: Required<EntitiesNetData[ValidEntityType]>): void {

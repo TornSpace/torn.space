@@ -35,7 +35,7 @@ export enum AppState {
     Splash,
 
     // Anything below is part of the ingame UI.
-    Pilot,
+    Space,
     Home,
     Shop,
     Quests,

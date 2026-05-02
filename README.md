@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./client/src/lib/img/ui/logo.png" alt="Torn.Space Logo" style="height:200px">
+    <img src="./client/src/lib/img/ui/branding/logo.png" alt="Torn.Space Logo" style="height:200px">
 </div>
 <hr />
 <div align="center">

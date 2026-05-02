@@ -21,7 +21,7 @@ import { pgTable } from "drizzle-orm/pg-core";
 export const User = pgTable("user", t => ({
     id: t.serial().primaryKey(),
     createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),
-    username: t.varchar({ length: 32 }).notNull().unique(),
+    username: t.varchar({ length: 16 }).notNull().unique(),
     email: t.varchar({ length: 64 }).notNull().unique(),
     passkey: t.varchar({ length: 64 }).notNull(),
     token: t.varchar({ length: 64 }).notNull().unique()
