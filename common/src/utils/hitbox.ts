@@ -16,38 +16,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export enum EntityType {
-    Invalid,
-    Loot,
-    Player
-}
-
-export const GameConstants = {
-    gameSpeed: 1,
-    maxPosition: 1024,
-    maxEntityId: (1 << 16) - 1,
-    maxChatLength: 256,
-    player: {
-        maxNameLength: 16
-    }
-};
-
-export enum PacketType {
-    Join,
-    Joined,
-    Disconnect,
-    Chat,
-    ChatServer,
-    Announcement,
-    Raid,
-    Input,
-    Update
-}
-
-export enum Team {
-    Human,
-    Alien,
-    Cyborg
-}
-
-export type ValidEntityType = Exclude<EntityType, EntityType.Invalid>;
+export type Hitbox = undefined; // CircleHitbox | RectHitbox | PolygonHitbox;

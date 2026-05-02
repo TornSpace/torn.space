@@ -20,12 +20,11 @@ import { Application, Ticker } from "pixi.js";
 
 import { AudioManager } from "./AudioManager";
 import { Camera } from "./Camera";
+import { PlayerManager, type Player } from "./entities/Player";
 import { EntityManager } from "./EntityManager";
 import { InputManager } from "./InputManager";
 
-import type { Player } from "./entities/Player";
-
-import { GameConstants } from "@/common/constants";
+import { EntityType, GameConstants } from "@/common/constants";
 import { Packet, PacketStream } from "@/common/net";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
 import { math } from "@/common/utils/math";
@@ -49,8 +48,12 @@ export class App {
     socket?: WebSocket;
 
     audioManager = new AudioManager(this);
-    entityManager = new EntityManager(this);
     inputManager = new InputManager(this);
+
+    entityManager: EntityManager;
+
+    lootManager = new LootManager();
+    playerManager = new PlayerManager();
 
     state = $state.raw(AppState.Splash);
 
@@ -68,6 +71,11 @@ export class App {
     }
 
     constructor(canvas: HTMLCanvasElement) {
+        this.entityManager = new EntityManager(this, {
+            [EntityType.Loot]: this.lootManager,
+            [EntityType.Player]: this.playerManager
+        });
+
         this.pixi.init({
             canvas,
             resizeTo: window,
@@ -165,5 +173,7 @@ export class App {
 
         this.serverDt = (now - this.lastUpdateTime) / 1000;
         this.lastUpdateTime = now;
+
+        for (const id of packet.deletedEntities) this.entityManager.deleteEntity(id);
     }
 }

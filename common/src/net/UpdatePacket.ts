@@ -16,12 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { PacketType } from "../constants";
+import { EntityType, PacketType } from "../constants";
 
 import type { GameBitStream, Packet } from "../net";
+import type { Vec2 } from "../utils/v2";
 
+/**
+ * Entity net data.
+ *
+ * Partial data should be used for data that changes often,
+ * while full data should be used for data that rarely changes.
+ */
 export interface EntitiesNetData {
-    
+    [EntityType.Loot]: {
+        full?: {
+            position: Vec2;
+            // type: LootDefKey;
+        };
+    };
+
+    [EntityType.Player]: {
+        position: Vec2;
+        direction: Vec2;
+
+        full?: {
+            dead: boolean;
+        };
+    };
 }
 
 enum UpdateFlags {
@@ -33,6 +54,19 @@ enum UpdateFlags {
 export class UpdatePacket implements Packet {
     type = PacketType.Update;
 
-    serialize(stream: GameBitStream): void {}
-    deserialize(stream: GameBitStream): void {}
+    deletedEntities: number[] = [];
+
+    updateSequence = 0;
+
+    serialize(stream: GameBitStream): void {
+        let flags = 0;
+
+        const flagsIdx = stream.index;
+        stream.writeUint16(flags);
+
+        stream.writeUint8(this.updateSequence);
+    }
+    deserialize(stream: GameBitStream): void {
+        this.updateSequence = stream.readUint8();
+    }
 }

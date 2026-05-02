@@ -20,36 +20,56 @@ import { Container } from "pixi.js";
 
 import type { App } from "../App.svelte";
 import type { ValidEntityType } from "@/common/constants";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { Hitbox } from "@/common/utils/hitbox";
+
+import { math } from "@/common/utils/math";
+import { v2 } from "@/common/utils/v2";
 
 export abstract class ClientEntity<T extends ValidEntityType = ValidEntityType> {
     abstract __type: T;
 
+    declare id: number;
+    declare __poolIdx: number;
+
     container = new Container();
+
+    interpTicker = 0;
+    interpFactor = 0;
+
+    position = v2.create(0, 0);
+    prevPosition = v2.create(0, 0);
+
+    /**
+     * While this is not definitely assigned in the constructor, it is expected
+     * that it is defined during all operations that are invoked upon it.
+     */
+    data!: Required<EntitiesNetData[T]>;
+    active = false;
+
+    abstract hitbox: Hitbox;
 
     constructor(readonly app: App) {
         this.app.camera.addObject(this.container);
     }
 
-    updateFromData(data: EntitiesNetData)
-}
+    updateFromData(data: EntitiesNetData[T], _isNew: boolean): void {
+        this.interpTicker = 0;
 
-export class EntityPool<T extends ClientEntity = ClientEntity> {
-    private pool: T[] = [];
-
-    constructor () {}
-
-    allocEntity (): void {}
-
-    freeEntity (entity: ClientEntity): void {
-        entity.free();
-        entity.active = false;
-
+        if (data.full) {
+            this.data = data as unknown as Required<EntitiesNetData[T]>;
+        } else {
+            const full = this.data.full;
+            this.data = { ...data, full } as unknown as Required<EntitiesNetData[T]>;
+        }
     }
 
-    clear (): void {
-        for (const entity of this.pool) entity.destroy();
+    abstract init(): void;
+    abstract free(): void;
+    abstract destroy(): void;
 
-        this.pool.length = 0;
-        this.activeCount = 0;
+    update(dt: number): void {
+        this.interpTicker += dt;
+        this.interpFactor = math.clamp(this.interpTicker / this.app.serverDt, 0, 1);
     }
 }

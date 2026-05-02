@@ -16,4 +16,104 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export class Player {}
+import { Container, Sprite, Text } from "pixi.js";
+
+import { ClientEntity } from "./ClientEntity";
+
+import { EntityPool } from "../EntityManager";
+
+import type { App } from "../App.svelte";
+import type { GameSound } from "../AudioManager";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+
+import { EntityType, Team } from "@/common/constants";
+import { v2 } from "@/common/utils/v2";
+
+export class Player extends ClientEntity {
+    readonly __type = EntityType.Player;
+
+    // readonly hitbox = new CircleHitbox();
+
+    dead = false;
+
+    images = {
+        ship: new Sprite(),
+        boost: new Sprite(),
+        trail: new Sprite()
+    };
+
+    staticContainer = new Container({
+        visible: false,
+        zIndex: 3
+    });
+
+    nameText = new Text({
+        style: {
+            align: "center",
+            // fill: "blue",
+            fontFamily: "ShareTech",
+            fontSize: 12
+        }
+    });
+
+    direction = v2.create(0, 0);
+    prevDirection = v2.create(0, 0);
+
+    shotSound?: GameSound;
+
+    constructor(readonly app: App) {
+        super(app);
+
+        const images = Object.values(this.images);
+
+        this.container.addChild(...images);
+
+        this.nameText.anchor.set(0.5);
+
+        this.container.zIndex = 2;
+    }
+
+    override init(): void {
+        this.container.visible = true;
+
+        this.app.camera.addObject(this.staticContainer);
+
+        this.staticContainer.addChild(this.nameText);
+    }
+
+    override updateFromData(data: EntitiesNetData[EntityType.Player], isNew: boolean): void {}
+
+    override free(): void {
+        this.container.visible = false;
+        this.staticContainer.visible = false;
+    }
+
+    override destroy(): void {
+        this.container.destroy({ children: true });
+        this.staticContainer.destroy({ children: true });
+    }
+}
+
+export class PlayerManager extends EntityPool<Player> {
+    playerData = new Map<number, PlayerData>();
+
+    constructor() {
+        super(Player);
+    }
+
+    getPlayerData(id: number): PlayerData {
+        const data = this.playerData.get(id)!;
+        return data;
+    }
+
+    override clear(): void {
+        super.clear();
+
+        this.playerData.clear();
+    }
+}
+
+interface PlayerData {
+    name: string;
+    team: Team;
+}
