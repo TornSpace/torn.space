@@ -20,6 +20,10 @@ import { PacketType } from "../constants";
 
 import type { GameBitStream, Packet } from "../net";
 
+export interface EntitiesNetData {
+    
+}
+
 enum UpdateFlags {
     DeletedEntities = 1 << 0,
     FullEntities = 1 << 1,

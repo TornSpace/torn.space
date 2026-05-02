@@ -16,6 +16,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export abstract class ClientEntity<T extends ValidEntityType = ValidEntityType> {}
+import { Container } from "pixi.js";
 
-export class EntityPool {}
+import type { App } from "../App.svelte";
+import type { ValidEntityType } from "@/common/constants";
+
+export abstract class ClientEntity<T extends ValidEntityType = ValidEntityType> {
+    abstract __type: T;
+
+    container = new Container();
+
+    constructor(readonly app: App) {
+        this.app.camera.addObject(this.container);
+    }
+
+    updateFromData(data: EntitiesNetData)
+}
+
+export class EntityPool<T extends ClientEntity = ClientEntity> {
+    private pool: T[] = [];
+
+    constructor () {}
+
+    allocEntity (): void {}
+
+    freeEntity (entity: ClientEntity): void {
+        entity.free();
+        entity.active = false;
+
+    }
+
+    clear (): void {
+        for (const entity of this.pool) entity.destroy();
+
+        this.pool.length = 0;
+        this.activeCount = 0;
+    }
+}
