@@ -48,8 +48,8 @@ export const ShipDefs: Record<string, ShipDef> = {
         agility: 1.75,
         cargo: 8000,
         thrust: 0.7,
-        slots: 3,
-        width: 15e3
+        slots: 2,
+        width: 64
     },
     r2: {
         name: "Rank 2",
@@ -67,7 +67,7 @@ export const ShipDefs: Record<string, ShipDef> = {
         type: "ship",
         price: 25e3,
         hp: 60,
-        agility: 1.5,
+        agility: 1.9,
         cargo: 3e3,
         thrust: 0.8,
         slots: 3,
@@ -124,7 +124,7 @@ export const ShipDefs: Record<string, ShipDef> = {
         hp: 100,
         agility: 0.7,
         cargo: 3e3,
-        thrust: 0.7,
+        thrust: 0.5,
         slots: 7,
         width: 128
     },
