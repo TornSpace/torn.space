@@ -16,27 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants, PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
+import { PacketType } from "../constants";
+import { AbstractPacket, GameBitStream } from "../net";
 
-export class JoinedPacket implements Packet {
-    type = PacketType.Joined;
+export class JoinedPacket implements AbstractPacket {
+    readonly type = PacketType.Joined;
 
-    protocol = 0;
-    name = "";
+    playerId = 0;
 
     serialize(stream: GameBitStream): void {
-        // Protocol should remain fixed in order and size to avoid breaking older clients.
-        stream.writeUint32(this.protocol);
-
-        // Everything else.
-        stream.writeASCIIString(this.name, GameConstants.player.maxNameLength);
+        stream.writeUint16(this.playerId);
     }
 
     deserialize(stream: GameBitStream): void {
-        // Same as above.
-        this.protocol = stream.readUint32();
-
-        this.name = stream.readASCIIString(GameConstants.player.maxNameLength);
+        this.playerId = stream.readUint16();
     }
 }

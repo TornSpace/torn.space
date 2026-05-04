@@ -17,10 +17,10 @@
  */
 
 import { GameConstants, PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
+import { AbstractPacket, GameBitStream } from "../net";
 
-export class ChatPacket implements Packet {
-    type = PacketType.Chat;
+export class ChatPacket implements AbstractPacket {
+    readonly type = PacketType.Chat;
 
     playerId = 0;
     message = "";

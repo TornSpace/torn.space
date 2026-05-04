@@ -17,10 +17,11 @@
  */
 
 import { PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
+// import { WeaponDefs, type WeaponDefKey } from "../defs/weaponDefs";
+import { AbstractPacket, GameBitStream } from "../net";
 
-export class InputPacket implements Packet {
-    type = PacketType.Input;
+export class InputPacket implements AbstractPacket {
+    readonly type = PacketType.Input;
 
     moveFwd = false;
     moveBwd = false;
@@ -34,7 +35,7 @@ export class InputPacket implements Packet {
     shield = false;
     cslot = false;
 
-    // queuedWeapon = "" as WeaponDefKey;
+    queuedSlot = 0;
 
     inputSequence = 0;
 
@@ -51,8 +52,8 @@ export class InputPacket implements Packet {
         "drift",
         "attack",
         "shield",
-        "cslot"
-        // "queuedWeapon"
+        "cslot",
+        "queuedSlot"
     ] as const;
 
     serialize(stream: GameBitStream): void {
@@ -68,7 +69,7 @@ export class InputPacket implements Packet {
         stream.writeBoolean(this.shield);
         stream.writeBoolean(this.cslot);
 
-        // WeaponDefs.write(stream, this.queuedWeapon);
+        stream.writeUint8(this.queuedSlot);
 
         stream.writeUint8(this.inputSequence);
     }
@@ -86,7 +87,7 @@ export class InputPacket implements Packet {
         this.shield = stream.readBoolean();
         this.cslot = stream.readBoolean();
 
-        // this.queuedWeapon = WeaponDefs.read(stream);
+        this.queuedSlot = stream.readUint8();
 
         this.inputSequence = stream.readUint8();
     }
@@ -96,7 +97,8 @@ export class InputPacket implements Packet {
      * @param prev The previous input packet.
      */
     compare(prev: InputPacket): boolean {
-        for (const key of InputPacket.significantFields) {
+        for (let i = 0; i < InputPacket.significantFields.length; i++) {
+            const key = InputPacket.significantFields[i];
             if (this[key] !== prev[key]) return true;
         }
 

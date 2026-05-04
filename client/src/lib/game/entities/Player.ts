@@ -20,19 +20,20 @@ import { Container, Sprite, Text } from "pixi.js";
 
 import { ClientEntity } from "./ClientEntity";
 
-import { EntityPool } from "../EntityManager";
+import { EntityPool } from "../modules/EntityManager";
 
 import type { App } from "../App.svelte";
-import type { GameSound } from "../AudioManager";
+import type { GameSound } from "../modules/AudioManager";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType, Team } from "@/common/constants";
+import { CircleHitbox } from "@/common/utils/hitbox";
 import { v2 } from "@/common/utils/v2";
 
 export class Player extends ClientEntity {
     readonly __type = EntityType.Player;
 
-    // readonly hitbox = new CircleHitbox();
+    readonly hitbox = new CircleHitbox();
 
     dead = false;
 
@@ -56,8 +57,8 @@ export class Player extends ClientEntity {
         }
     });
 
-    direction = v2.create(0, 0);
-    prevDirection = v2.create(0, 0);
+    direction = v2.new(0, 0);
+    prevDirection = v2.new(0, 0);
 
     shotSound?: GameSound;
 

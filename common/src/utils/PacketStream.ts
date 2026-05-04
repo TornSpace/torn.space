@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameBitStream, Packet, PacketRegister } from "../net";
+import { GameBitStream, PacketRegister, type Packet } from "../net";
 import { ChatPacket } from "../net/ChatPacket";
 import { InputPacket } from "../net/InputPacket";
 import { JoinedPacket } from "../net/JoinedPacket";

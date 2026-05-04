@@ -16,57 +16,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Sprite } from "pixi.js";
+import { EntityPool, ServerEntity } from "../Entity";
 
-import { ClientEntity } from "./ClientEntity";
-
-import { EntityPool } from "../modules/EntityManager";
-
-import type { App } from "../App.svelte";
+import type { Game } from "../../modules/Game";
 import type { LootDefKey } from "@/common/defs/lootDefs";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType } from "@/common/constants";
 import { CircleHitbox } from "@/common/utils/hitbox";
 
-export class Loot extends ClientEntity {
+export class Loot extends ServerEntity {
     readonly __type = EntityType.Loot;
+    readonly hitbox = new CircleHitbox();
 
-    type = "" as LootDefKey;
+    type!: LootDefKey;
 
-    sprite = new Sprite({ anchor: 0.5 });
+    update(dt: number): void {}
 
-    readonly hitbox = new CircleHitbox(0);
-
-    constructor(readonly app: App) {
-        super(app);
-
-        this.container.addChild(this.sprite);
-    }
-
-    override init(): void {
-        this.container.visible = true;
-    }
-
-    override updateFromData(data: EntitiesNetData[EntityType.Loot], isNew: boolean): void {
-        super.updateFromData(data, isNew);
-    }
-
-    override update(dt: number): void {
-        super.update(dt);
-    }
-
-    override free(): void {
-        this.container.visible = false;
-    }
-
-    override destroy(): void {
-        this.container.destroy({ children: true });
+    get data(): Required<EntitiesNetData[EntityType.Loot]> {
+        return {
+            full: {
+                position: this.position,
+                type: this.type
+            }
+        };
     }
 }
 
 export class LootManager extends EntityPool<Loot> {
-    constructor() {
-        super(Loot);
+    override readonly type = EntityType.Loot;
+    constructor(game: Game) {
+        super(game, Loot);
     }
 }

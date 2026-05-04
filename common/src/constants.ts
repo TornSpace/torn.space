@@ -24,23 +24,43 @@ export enum EntityType {
 
 export const GameConstants = {
     gameSpeed: 1,
+    leaderboardMaxEntries: 25,
     maxPosition: 1024,
     maxEntityId: (1 << 16) - 1,
     maxChatLength: 256,
     player: {
-        maxNameLength: 16
+        defaultName: "Guest",
+        maxNameLength: 16,
+        /**
+         * The rate at which players heal per tick.
+         * The default is 6 hp per second.
+         * @default 0.05
+         */
+        healRate: 0.05
     }
 };
 
+export interface LeaderboardEntry {
+    playerId: number;
+    rank: number;
+    xp: number;
+}
+
 export enum PacketType {
-    Join,
-    Joined,
+    // Client (to server)
+    Join, // MUST ALWAYS BE FIRST
     Disconnect,
+    DebugToggle,
     Chat,
+    Input,
+    Respawn,
+
+    // Server (to client)
+    Joined,
+    Debug,
     ChatServer,
     Announcement,
     Raid,
-    Input,
     Update
 }
 
@@ -48,6 +68,15 @@ export enum Team {
     Human,
     Alien,
     Cyborg
+}
+
+export enum Trail {
+    None,
+    Blood,
+    Money,
+    Panda,
+    Random,
+    Rainbow
 }
 
 export type ValidEntityType = Exclude<EntityType, EntityType.Invalid>;

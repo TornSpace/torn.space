@@ -16,28 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export enum HitboxType {
-    Circle,
-    Rect
-}
+import { PacketType } from "../constants";
+import { AbstractPacket, GameBitStream } from "../net";
 
-export type Hitbox = CircleHitbox | RectHitbox;
+export class DebugTogglePacket implements AbstractPacket {
+    readonly type = PacketType.DebugToggle;
 
-export abstract class BaseHitbox<T extends HitboxType = HitboxType> {
-    static readonly type: HitboxType;
-    abstract type: HitboxType;
+    enabled = false;
 
-    collidesWith(other: Hitbox): boolean {
-        return false;
+    serialize(stream: GameBitStream): void {
+        stream.writeBoolean(this.enabled);
     }
-}
 
-export class CircleHitbox extends BaseHitbox {
-    static override readonly type = HitboxType.Circle;
-    override readonly type = HitboxType.Circle;
-}
-
-export class RectHitbox extends BaseHitbox {
-    static override readonly type = HitboxType.Rect;
-    override readonly type = HitboxType.Rect;
+    deserialize(stream: GameBitStream): void {
+        this.enabled = stream.readBoolean();
+    }
 }

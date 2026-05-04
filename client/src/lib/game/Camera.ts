@@ -30,8 +30,8 @@ export class Camera {
         eventMode: "none"
     });
 
-    _pos = v2.create(0, 0);
-    _oldPos = v2.create(0, 0);
+    _pos = v2.new(0, 0);
+    _oldPos = v2.new(0, 0);
 
     interpTicker = 0;
 
@@ -81,7 +81,7 @@ export class Camera {
 
         const pos = Camera.vecToScreen(v2.lerp(this._oldPos, this.position, t));
         const cameraPos = v2.inv(
-            v2.add(v2.mult(pos, this.container.scale.x), v2.create(-this.width / 2, -this.height / 2))
+            v2.add(v2.mult(pos, this.container.scale.x), v2.new(-this.width / 2, -this.height / 2))
         );
 
         this.container.position.copyFrom(cameraPos);

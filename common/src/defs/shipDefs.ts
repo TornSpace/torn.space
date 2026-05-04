@@ -16,6 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { DefinitionList } from "../utils/DefinitionList";
+
+import type { WeaponDefKey } from "./weaponDefs";
+
 export interface ShipDef {
     readonly type: "ship";
     /**
@@ -39,9 +43,9 @@ export interface ShipDef {
      */
     cargo: number;
     /**
-     * The base thrust of the ship.
+     * The base speed of the ship.
      */
-    thrust: number;
+    speed: number;
     /**
      * The number of unlocked weapon slots the ship contains.
      */
@@ -50,9 +54,19 @@ export interface ShipDef {
      * The hitbox radius of the ship.
      */
     width: number;
+    /**
+     * Whether the ship is considered an elite ship.
+     * @default false
+     */
+    elite: boolean;
+    /**
+     * The custom slot for elite ships.
+     * @default ""
+     */
+    customWeapon: "" | WeaponDefKey;
 }
 
-export const ShipDefs = {
+const rawDefs = {
     r0: {
         name: "Rank 0",
         type: "ship",
@@ -60,9 +74,11 @@ export const ShipDefs = {
         hp: 80,
         agility: 1.5,
         cargo: 6000,
-        thrust: 0.7,
+        speed: 0.7,
         slots: 1,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r1: {
         name: "Rank 1",
@@ -71,9 +87,11 @@ export const ShipDefs = {
         hp: 100,
         agility: 1.75,
         cargo: 8000,
-        thrust: 0.7,
+        speed: 0.7,
         slots: 2,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r2: {
         name: "Rank 2",
@@ -82,9 +100,11 @@ export const ShipDefs = {
         hp: 120,
         agility: 0.85,
         cargo: 15e3,
-        thrust: 0.6,
+        speed: 0.6,
         slots: 3,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r3: {
         name: "Rank 3",
@@ -93,9 +113,11 @@ export const ShipDefs = {
         hp: 60,
         agility: 1.9,
         cargo: 3e3,
-        thrust: 0.8,
+        speed: 0.8,
         slots: 3,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r4: {
         name: "Rank 4",
@@ -104,9 +126,11 @@ export const ShipDefs = {
         hp: 100,
         agility: 1.9,
         cargo: 2500,
-        thrust: 0.6,
+        speed: 0.6,
         slots: 4,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r5: {
         name: "Rank 5",
@@ -115,9 +139,11 @@ export const ShipDefs = {
         hp: 120,
         agility: 1.3,
         cargo: 5e3,
-        thrust: 0.52,
+        speed: 0.52,
         slots: 5,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r6: {
         name: "Rank 6",
@@ -126,9 +152,11 @@ export const ShipDefs = {
         hp: 90,
         agility: 0.7,
         cargo: 4e3,
-        thrust: 0.58,
+        speed: 0.58,
         slots: 6,
-        width: 64
+        width: 64,
+        elite: false,
+        customWeapon: ""
     },
     r7: {
         name: "Rank 7",
@@ -137,9 +165,11 @@ export const ShipDefs = {
         hp: 130,
         agility: 0.6,
         cargo: 4e3,
-        thrust: 0.4,
+        speed: 0.4,
         slots: 6,
-        width: 128
+        width: 128,
+        elite: false,
+        customWeapon: ""
     },
     r8: {
         name: "Rank 8",
@@ -148,9 +178,11 @@ export const ShipDefs = {
         hp: 100,
         agility: 0.7,
         cargo: 3e3,
-        thrust: 0.5,
+        speed: 0.5,
         slots: 7,
-        width: 128
+        width: 128,
+        elite: false,
+        customWeapon: ""
     },
     r9: {
         name: "Rank 9",
@@ -159,9 +191,11 @@ export const ShipDefs = {
         hp: 130,
         agility: 0.6,
         cargo: 8e3,
-        thrust: 0.35,
+        speed: 0.35,
         slots: 7,
-        width: 128
+        width: 128,
+        elite: false,
+        customWeapon: ""
     },
     r10: {
         name: "Rank 10",
@@ -170,9 +204,11 @@ export const ShipDefs = {
         hp: 120,
         agility: 0.7,
         cargo: 5e3,
-        thrust: 0.4,
+        speed: 0.4,
         slots: 8,
-        width: 128
+        width: 128,
+        elite: false,
+        customWeapon: ""
     },
     r11: {
         name: "Rank 11",
@@ -181,9 +217,11 @@ export const ShipDefs = {
         hp: 110,
         agility: 0.6,
         cargo: 2e3,
-        thrust: 0.42,
+        speed: 0.42,
         slots: 8,
-        width: 128
+        width: 128,
+        elite: false,
+        customWeapon: ""
     },
     r12: {
         name: "Rank 12",
@@ -192,9 +230,11 @@ export const ShipDefs = {
         hp: 230,
         agility: 0.25,
         cargo: 5e4,
-        thrust: 0.25,
+        speed: 0.25,
         slots: 9,
-        width: 192
+        width: 192,
+        elite: false,
+        customWeapon: ""
     },
     r13: {
         name: "Rank 13",
@@ -203,9 +243,11 @@ export const ShipDefs = {
         hp: 180,
         agility: 0.2,
         cargo: 1e4,
-        thrust: 0.27,
+        speed: 0.27,
         slots: 9,
-        width: 185
+        width: 185,
+        elite: false,
+        customWeapon: ""
     },
     r14: {
         name: "Rank 14",
@@ -214,9 +256,11 @@ export const ShipDefs = {
         hp: 140,
         agility: 0.42,
         cargo: 2e3,
-        thrust: 0.32,
+        speed: 0.32,
         slots: 10,
-        width: 128
+        width: 128,
+        elite: false,
+        customWeapon: ""
     },
     r15: {
         name: "Rank 15",
@@ -225,9 +269,11 @@ export const ShipDefs = {
         hp: 230,
         agility: 0.25,
         cargo: 2e4,
-        thrust: 0.26,
+        speed: 0.26,
         slots: 10,
-        width: 190
+        width: 190,
+        elite: false,
+        customWeapon: ""
     },
     r16: {
         name: "Rank 16",
@@ -236,9 +282,11 @@ export const ShipDefs = {
         hp: 130,
         agility: 0.32,
         cargo: 5e3,
-        thrust: 0.38,
+        speed: 0.38,
         slots: 10,
-        width: 128
+        width: 128,
+        elite: true,
+        customWeapon: "turbo"
     },
     r17: {
         name: "Rank 17",
@@ -247,9 +295,11 @@ export const ShipDefs = {
         hp: 430,
         agility: 0.25,
         cargo: 999999,
-        thrust: 0.18,
+        speed: 0.18,
         slots: 10,
-        width: 192
+        width: 192,
+        elite: true,
+        customWeapon: ""
     },
     r18: {
         name: "Rank 18",
@@ -258,9 +308,11 @@ export const ShipDefs = {
         hp: 260,
         agility: 0.3,
         cargo: 1e4,
-        thrust: 0.26,
+        speed: 0.26,
         slots: 10,
-        width: 185
+        width: 185,
+        elite: true,
+        customWeapon: "spreadshot"
     },
     r19: {
         name: "Rank 19",
@@ -269,9 +321,11 @@ export const ShipDefs = {
         hp: 190,
         agility: 0.42,
         cargo: 5e3,
-        thrust: 0.34,
+        speed: 0.34,
         slots: 10,
-        width: 128
+        width: 128,
+        elite: true,
+        customWeapon: ""
     },
     r20: {
         name: "Rank 20",
@@ -280,13 +334,17 @@ export const ShipDefs = {
         hp: 390,
         agility: 0.2,
         cargo: 2e4,
-        thrust: 0.24,
+        speed: 0.24,
         slots: 10,
-        width: 190
+        width: 190,
+        elite: true,
+        customWeapon: "gravity_bomb"
     }
     /**
-     * Ranks 21-25 have been omitted for brevity. If this project succeeds, they will be added.
+     * Ranks 21-25 have been omitted as they are imbalanced. If this project succeeds, they may be added back.
      */
 } satisfies Record<string, ShipDef>;
 
-export type ShipDefKey = keyof typeof ShipDefs;
+export type ShipDefKey = keyof typeof rawDefs;
+
+export const ShipDefs = new DefinitionList<ShipDefKey, ShipDef>(rawDefs);

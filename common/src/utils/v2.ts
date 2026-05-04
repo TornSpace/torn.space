@@ -26,7 +26,7 @@ export const v2 = {
      * @param x The x component.
      * @param y The y component. If unspecified, defaults to the x component.
      */
-    create(x: number, y?: number): Vec2 {
+    new(x: number, y?: number): Vec2 {
         return { x, y: y ?? x };
     },
 
@@ -35,7 +35,7 @@ export const v2 = {
      * @param a The vector to clone.
      */
     clone(a: Vec2): Vec2 {
-        return v2.create(a.x, a.y);
+        return v2.new(a.x, a.y);
     },
 
     /**

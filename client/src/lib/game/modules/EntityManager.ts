@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { App } from "./App.svelte";
-import type { ClientEntity } from "./entities/ClientEntity";
+import type { App } from "../App.svelte";
+import type { ClientEntity } from "../entities/ClientEntity";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { GameConstants, type ValidEntityType } from "@/common/constants";
@@ -112,7 +112,8 @@ export class EntityManager {
     }
 
     update(dt: number): void {
-        for (const entity of this.entities) {
+        for (let i = 0; i < this.entities.length; i++) {
+            const entity = this.entities[i];
             if (entity.active) entity.update(dt);
         }
     }
@@ -155,7 +156,9 @@ export class EntityPool<T extends ClientEntity = ClientEntity> {
         // Clean up any inactive entities.
         if (this.pool.length > 128 && this.activeCount < this.pool.length / 2) {
             const activeEntities: T[] = [];
-            for (const entity of this.pool) {
+            for (let i = 0; i < this.pool.length; i++) {
+                const entity = this.pool[i];
+
                 if (entity.active) activeEntities.push(entity);
                 else entity.destroy();
             }
@@ -165,7 +168,10 @@ export class EntityPool<T extends ClientEntity = ClientEntity> {
     }
 
     clear(): void {
-        for (const entity of this.pool) entity.destroy();
+        for (let i = 0; i < this.pool.length; i++) {
+            const entity = this.pool[i];
+            entity.destroy();
+        }
 
         this.pool.length = 0;
         this.activeCount = 0;

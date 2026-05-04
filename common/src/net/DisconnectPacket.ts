@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
 
-export class DisconnectPacket implements Packet {
-    type = PacketType.Disconnect;
+import { PacketType } from "../constants";
+import { AbstractPacket, GameBitStream } from "../net";
+
+export class DisconnectPacket implements AbstractPacket {
+    readonly type = PacketType.Disconnect;
 
     reason = "";
 

@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { DefinitionList } from "../utils/DefinitionList";
+
 export interface WeaponDef {
     /**
      * The English name of the weapon.
@@ -83,7 +85,7 @@ export interface WeaponDef {
     bot: boolean;
 }
 
-export const WeaponDefs = {
+const rawDefs = {
     // Guns
     stock_gun: {
         name: "Stock Gun",
@@ -97,7 +99,7 @@ export const WeaponDefs = {
         speed: 50,
         charge: 8,
         image: "",
-        sound: "",
+        sound: "shot",
         bot: true
     },
     plasma_gun: {
@@ -112,7 +114,7 @@ export const WeaponDefs = {
         speed: 40,
         charge: 10,
         image: "",
-        sound: "",
+        sound: "shot",
         bot: true
     },
     reverse_gun: {
@@ -127,7 +129,7 @@ export const WeaponDefs = {
         speed: 50,
         charge: 8,
         image: "",
-        sound: "",
+        sound: "shot",
         bot: false
     },
     rifle: {
@@ -142,7 +144,7 @@ export const WeaponDefs = {
         speed: 80,
         charge: 12,
         image: "",
-        sound: "",
+        sound: "shot",
         bot: true
     },
     shotgun: {
@@ -157,7 +159,7 @@ export const WeaponDefs = {
         speed: 50,
         charge: 15,
         image: "",
-        sound: "",
+        sound: "shot",
         bot: true
     },
     machine_gun: {
@@ -172,7 +174,7 @@ export const WeaponDefs = {
         speed: 75,
         charge: 4,
         image: "",
-        sound: "",
+        sound: "minigun",
         bot: true
     },
     minigun: {
@@ -187,7 +189,7 @@ export const WeaponDefs = {
         speed: 60,
         charge: 6,
         image: "",
-        sound: "",
+        sound: "minigun",
         bot: true
     },
     spreadshot: {
@@ -202,7 +204,7 @@ export const WeaponDefs = {
         speed: 60,
         charge: 5,
         image: "",
-        sound: "",
+        sound: "minigun",
         bot: true
     },
     submachinegun: {
@@ -217,7 +219,7 @@ export const WeaponDefs = {
         speed: 70,
         charge: 9,
         image: "",
-        sound: "",
+        sound: "minigun",
         bot: true
     },
 
@@ -234,7 +236,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 4,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
     laser_beam: {
@@ -249,7 +251,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 10,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
     hadron_beam: {
@@ -264,7 +266,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 50,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
     mining_laser: {
@@ -279,7 +281,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 5,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: false
     },
     ore_cannon: {
@@ -294,7 +296,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 5,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: false
     },
     destabilizer: {
@@ -309,7 +311,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 50,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: false
     },
     jammer: {
@@ -324,7 +326,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 30,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: false
     },
     healing_beam: {
@@ -339,7 +341,7 @@ export const WeaponDefs = {
         speed: 0,
         charge: 20,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
 
@@ -356,7 +358,7 @@ export const WeaponDefs = {
         speed: 100,
         charge: 12,
         image: "",
-        sound: "",
+        sound: "missile",
         bot: true
     },
     heavy_missile: {
@@ -371,7 +373,7 @@ export const WeaponDefs = {
         speed: 50,
         charge: 25,
         image: "",
-        sound: "",
+        sound: "missile",
         bot: true
     },
     emp_missile: {
@@ -386,7 +388,7 @@ export const WeaponDefs = {
         speed: 90,
         charge: 25,
         image: "",
-        sound: "",
+        sound: "missile",
         bot: false
     },
     missile_swarm: {
@@ -401,7 +403,7 @@ export const WeaponDefs = {
         speed: 45,
         charge: 18,
         image: "",
-        sound: "",
+        sound: "missile",
         bot: true
     },
     torpedo: {
@@ -416,7 +418,7 @@ export const WeaponDefs = {
         speed: 180,
         charge: 30,
         image: "",
-        sound: "",
+        sound: "missile",
         bot: true
     },
     proximity_fuze: {
@@ -431,7 +433,7 @@ export const WeaponDefs = {
         speed: 75,
         charge: 25,
         image: "",
-        sound: "",
+        sound: "missile",
         bot: true
     },
 
@@ -570,7 +572,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 50,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
     muon_ray: {
@@ -585,7 +587,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 100,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: false
     },
     hypno_ray: {
@@ -600,7 +602,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 25,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
     lepton_pulse: {
@@ -615,7 +617,7 @@ export const WeaponDefs = {
         speed: -1,
         charge: 15,
         image: "",
-        sound: "",
+        sound: "beam",
         bot: true
     },
 
@@ -724,7 +726,7 @@ export const WeaponDefs = {
         speed: 11111,
         charge: 150,
         image: "",
-        sound: "",
+        sound: "hyperspace",
         bot: false
     },
     pulse_wave: {
@@ -834,4 +836,6 @@ export const WeaponDefs = {
     }
 } satisfies Record<string, WeaponDef>;
 
-export type WeaponDefKey = keyof typeof WeaponDefs;
+export type WeaponDefKey = keyof typeof rawDefs;
+
+export const WeaponDefs = new DefinitionList<WeaponDefKey, WeaponDef>(rawDefs);

@@ -16,10 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { App } from "./App.svelte";
+import type { App } from "../App.svelte";
 import type { FederatedWheelEvent } from "pixi.js";
 
 import { InputPacket } from "@/common/net/InputPacket";
+// import type { WeaponDefKey } from "@/common/defs/weaponDefs";
 
 interface Input {
     type: "key" | "wheel";
@@ -44,6 +45,8 @@ export class InputManager {
     sequenceInFlight = false;
     lastSequenceTime = 0;
     inputSequence = 0;
+
+    queuedSlot = 0;
 
     constructor(readonly app: App) {}
 
@@ -139,7 +142,7 @@ export class InputManager {
         packet.shield = this.isInputDown("KeyS");
         packet.cslot = this.isInputDown("KeyC") || this.isInputDown("KeyV");
 
-        // packet.queuedWeapon = this.queuedWeapon;
+        packet.queuedSlot = this.queuedSlot;
 
         // if (this.app.player) {}
 
@@ -157,6 +160,6 @@ export class InputManager {
         }
 
         this.prevPacket = packet;
-        // this.queuedWeapon = "" as WeaponDefKey;
+        this.queuedSlot = -1;
     }
 }

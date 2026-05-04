@@ -15,29 +15,3 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-export enum HitboxType {
-    Circle,
-    Rect
-}
-
-export type Hitbox = CircleHitbox | RectHitbox;
-
-export abstract class BaseHitbox<T extends HitboxType = HitboxType> {
-    static readonly type: HitboxType;
-    abstract type: HitboxType;
-
-    collidesWith(other: Hitbox): boolean {
-        return false;
-    }
-}
-
-export class CircleHitbox extends BaseHitbox {
-    static override readonly type = HitboxType.Circle;
-    override readonly type = HitboxType.Circle;
-}
-
-export class RectHitbox extends BaseHitbox {
-    static override readonly type = HitboxType.Rect;
-    override readonly type = HitboxType.Rect;
-}

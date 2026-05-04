@@ -115,7 +115,7 @@ export class AudioManager {
     sounds: GameSound[] = [];
 
     volume = 1;
-    position = v2.create(0, 0);
+    position = v2.new(0, 0);
 
     constructor(readonly app: App) {}
 

@@ -70,6 +70,7 @@ export function getConfig(isProd: boolean, dir: string): Config {
             connectionString: "127.0.0.1:6379",
             prefix: "TORN"
         },
+        allowDebugging: false,
         rateLimitsEnabled: isProd
     };
 

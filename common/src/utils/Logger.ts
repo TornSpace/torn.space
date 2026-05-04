@@ -62,21 +62,21 @@ export class Logger {
 
     info(topic: string, ...args: any[]): void {
         if (!this.config.info) return;
-        this.log(console.info, styleText("cyan", "INFO"), topic, ...args);
+        this.log(console.info, styleText(["bold", "cyan"], "INFO"), topic, ...args);
     }
 
     warn(topic: string, ...args: any[]): void {
         if (!this.config.warn) return;
-        this.log(console.warn, styleText("yellow", "WARN"), topic, ...args);
+        this.log(console.warn, styleText(["bold", "yellow"], "WARN"), topic, ...args);
     }
 
     error(topic: string, ...args: any[]): void {
         if (!this.config.error) return;
-        this.log(console.error, styleText("red", "ERROR"), topic, ...args);
+        this.log(console.error, styleText(["bold", "red"], "ERROR"), topic, ...args);
     }
 
     debug(topic: string, ...args: any[]): void {
         if (!this.config.debug) return;
-        this.log(console.debug, styleText("white", "DEBUG"), topic, ...args);
+        this.log(console.debug, styleText(["bold", "white"], "DEBUG"), topic, ...args);
     }
 }

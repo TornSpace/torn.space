@@ -17,10 +17,10 @@
  */
 
 import { GameConstants, PacketType } from "../constants";
-import { GameBitStream, Packet } from "../net";
+import { AbstractPacket, GameBitStream } from "../net";
 
-export class JoinPacket implements Packet {
-    type = PacketType.Join;
+export class JoinPacket implements AbstractPacket {
+    readonly type = PacketType.Join;
 
     protocol = 0;
 

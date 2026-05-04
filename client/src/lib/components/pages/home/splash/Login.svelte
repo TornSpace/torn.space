@@ -13,7 +13,7 @@
         <input type="text" placeholder="Username" autocomplete="username" required bind:value={username} class="h-12 rounded-xl p-3">
         <input type="password" placeholder="Password" autocomplete="current-password" required bind:value={password} class="h-12 rounded-xl p-3 w-full">
 
-        <input type="submit" value="Login" class="h-12 rounded-xl p-3 text-[1rem]">
+        <input type="submit" value="Login" class="h-12 rounded-xl p-3 cursor-pointer text-[1rem]">
     </form>
 </div>
 

@@ -18,15 +18,16 @@
 
 import { Application, Ticker } from "pixi.js";
 
-import { AudioManager } from "./AudioManager";
 import { Camera } from "./Camera";
 import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player";
-import { EntityManager } from "./EntityManager";
-import { InputManager } from "./InputManager";
+import { AudioManager } from "./modules/AudioManager";
+import { EntityManager } from "./modules/EntityManager";
+import { InputManager } from "./modules/InputManager";
 
-import { EntityType, GameConstants } from "@/common/constants";
-import { Packet } from "@/common/net";
+import type { Packet } from "@/common/net";
+
+import { EntityType, GameConstants, PacketType } from "@/common/constants";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
 import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
@@ -127,8 +128,8 @@ export class App {
             const packet = stream.deserializeServerPacket();
             if (packet === undefined) break;
 
-            switch (true) {
-                case packet instanceof UpdatePacket:
+            switch (packet.type) {
+                case PacketType.Update:
                     this.updateFromPacket(packet);
                     break;
             }
@@ -178,6 +179,8 @@ export class App {
         this.serverDt = (now - this.lastUpdateTime) / 1000;
         this.lastUpdateTime = now;
 
-        for (const id of packet.deletedEntities) this.entityManager.deleteEntity(id);
+        for (let i = 0; i < packet.deletedEntities.length; i++) {
+            this.entityManager.deleteEntity(packet.deletedEntities[i]);
+        }
     }
 }

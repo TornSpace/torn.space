@@ -21,6 +21,16 @@ import { math } from "./utils/math";
 import { assert } from "./utils/util";
 
 import type { PacketType } from "./constants";
+import type { ChatPacket } from "./net/ChatPacket";
+import type { ChatServerPacket } from "./net/ChatServerPacket";
+import type { DebugPacket } from "./net/DebugPacket";
+import type { DebugTogglePacket } from "./net/DebugTogglePacket";
+import type { DisconnectPacket } from "./net/DisconnectPacket";
+import type { InputPacket } from "./net/InputPacket";
+import type { JoinedPacket } from "./net/JoinedPacket";
+import type { JoinPacket } from "./net/JoinPacket";
+import type { RespawnPacket } from "./net/RespawnPacket";
+import type { UpdatePacket } from "./net/UpdatePacket";
 import type { Vec2 } from "./utils/v2";
 
 export class GameBitStream extends BitStream {
@@ -126,6 +136,22 @@ export class GameBitStream extends BitStream {
     }
 
     /**
+     * Copy bytes from a source stream to this stream.
+     * Note: Both streams' indices (post-offset) must be byte-aligned!
+     * @param src The source bit stream to copy.
+     * @param offset The offset to start copying bytes from.
+     * @param length The amount of bytes to copy.
+     */
+    writeBytes(src: GameBitStream, offset: number, length: number): void {
+        assert(this.index % 8 === 0, "WriteBytes: stream must be byte aligned.");
+
+        const data = new Uint8Array(src.view.view.buffer, offset, length);
+
+        this.view.view.set(data, this.index / 8);
+        this.index += length * 8;
+    }
+
+    /**
      * Read a byte alignment from the bitstream.
      */
     readAlignToNextByte(): void {
@@ -142,25 +168,19 @@ export class GameBitStream extends BitStream {
         if (offset < 8) this.writeBits(0, offset);
     }
 }
-
-export abstract class Packet {
-    abstract type: PacketType;
-
-    abstract serialize(s: GameBitStream): void;
-    abstract deserialize(s: GameBitStream): void;
-}
-
 export class PacketRegister {
     private _nextTypeId = 0;
     readonly typeToId: Record<string, number> = {};
     readonly idToCtor: Array<new () => Packet> = [];
 
     register(...packets: Array<new () => Packet>): void {
-        for (const packet of packets) {
+        for (let i = 0; i < packets.length; i++) {
+            const packet = packets[i];
             if (this.typeToId[packet.name]) {
                 console.warn(`Trying to register ${packet.name} multiple times`);
                 continue;
             }
+
             const id = this._nextTypeId++;
             this.typeToId[packet.name] = id;
             this.idToCtor[id] = packet;
@@ -181,8 +201,10 @@ export class PacketRegister {
             try {
                 const id = stream.readUint8();
                 const packet = new this.idToCtor[id]();
+
                 packet.deserialize(stream);
                 stream.readAlignToNextByte();
+
                 return packet;
             } catch (e) {
                 console.error("Failed deserializing packet: ", e);
@@ -192,3 +214,22 @@ export class PacketRegister {
         return undefined;
     }
 }
+
+export abstract class AbstractPacket {
+    abstract readonly type: PacketType;
+
+    abstract serialize(s: GameBitStream): void;
+    abstract deserialize(s: GameBitStream): void;
+}
+
+export type Packet =
+    | ChatPacket
+    | ChatServerPacket
+    | DebugPacket
+    | DebugTogglePacket
+    | DisconnectPacket
+    | InputPacket
+    | JoinedPacket
+    | JoinPacket
+    | RespawnPacket
+    | UpdatePacket;

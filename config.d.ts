@@ -183,7 +183,6 @@ export interface Config {
      * Enables IP ratelimiting. Enabled by default on production, disabled otherwise.
      */
     rateLimitsEnabled: boolean;
-
     /**
      * Game tick rate.
      * @default 120
@@ -194,6 +193,11 @@ export interface Config {
      * @default 60
      */
     ups: number;
+    /**
+     * Allow the game server to send client debug information.
+     * @default false
+     */
+    allowDebugging: boolean;
 }
 
 export type PartialConfig = DeepPartial<ConfigType>;

@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { EntityType, PacketType } from "../constants";
+import { EntityType, PacketType, type ValidEntityType } from "../constants";
+import { AbstractPacket, GameBitStream } from "../net";
 
-import type { GameBitStream, Packet } from "../net";
+import type { LootDefKey } from "../defs/lootDefs";
 import type { Vec2 } from "../utils/v2";
 
 /**
@@ -31,7 +32,7 @@ export interface EntitiesNetData {
     [EntityType.Loot]: {
         full?: {
             position: Vec2;
-            // type: LootDefKey;
+            type: LootDefKey;
         };
     };
 
@@ -45,14 +46,31 @@ export interface EntitiesNetData {
     };
 }
 
+interface EntitySerialization<T extends ValidEntityType> {
+    // The number of bytes to allocate for the entity serialization cache.
+    partialSize: number;
+    fullSize: number;
+
+    serializePartial: (stream: GameBitStream, data: EntitiesNetData[T]) => void;
+    serializeFull: (stream: GameBitStream, data: Required<EntitiesNetData[T]>["full"]) => void;
+
+    deserializePartial: (stream: GameBitStream) => EntitiesNetData[T];
+    deserializeFull: (stream: GameBitStream) => Required<EntitiesNetData[T]>["full"];
+}
+
+export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization<K> } = {
+    [EntityType.Loot]: {},
+    [EntityType.Player]: {}
+};
+
 enum UpdateFlags {
     DeletedEntities = 1 << 0,
     FullEntities = 1 << 1,
     PartialEntities = 1 << 2
 }
 
-export class UpdatePacket implements Packet {
-    type = PacketType.Update;
+export class UpdatePacket implements AbstractPacket {
+    readonly type = PacketType.Update;
 
     deletedEntities: number[] = [];
 
