@@ -325,7 +325,7 @@ const rawDefs = {
         slots: 10,
         width: 128,
         elite: true,
-        customWeapon: ""
+        customWeapon: "hull_nanobots"
     },
     r20: {
         name: "Rank 20",
