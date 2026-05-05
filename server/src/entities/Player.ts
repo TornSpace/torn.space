@@ -110,15 +110,15 @@ export class Player extends ServerEntity {
         return this._hp;
     }
 
-    get charge(): number {
-        return this._charge;
-    }
-
     set hp(hp: number) {
         if (hp === this.hp) return;
 
         this.hp = math.clamp(hp, 0, this.maxHP);
         this.dirty.hp = true;
+    }
+
+    get charge(): number {
+        return this._charge;
     }
 
     set charge(charge: number) {
