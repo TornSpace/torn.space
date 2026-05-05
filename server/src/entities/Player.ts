@@ -32,7 +32,7 @@ import { v2, type Vec2 } from "@/common/utils/v2";
 
 export class Player extends ServerEntity {
     readonly __type = EntityType.Player;
-    readonly hitbox = new CircleHitbox();
+    readonly hitbox = new CircleHitbox(0);
 
     readonly dirty = {
         id: true,

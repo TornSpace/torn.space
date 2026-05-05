@@ -27,7 +27,7 @@ import { CircleHitbox } from "@/common/utils/hitbox";
 
 export class Loot extends ServerEntity {
     readonly __type = EntityType.Loot;
-    readonly hitbox = new CircleHitbox();
+    readonly hitbox = new CircleHitbox(0);
 
     type!: LootDefKey;
 

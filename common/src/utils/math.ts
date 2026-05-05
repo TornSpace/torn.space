@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { Vec2 } from "./v2";
+
 export const math = {
     /**
      * {@link Math.min()} for two arguments.
@@ -73,5 +75,9 @@ export const math = {
      */
     radToDeg(rad: number): number {
         return (rad / Math.PI) * 180;
+    },
+
+    signedAreaTri(a: Vec2, b: Vec2, c: Vec2): number {
+        return (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x);
     }
 };

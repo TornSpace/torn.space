@@ -33,7 +33,7 @@ import { v2 } from "@/common/utils/v2";
 export class Player extends ClientEntity {
     readonly __type = EntityType.Player;
 
-    readonly hitbox = new CircleHitbox();
+    readonly hitbox = new CircleHitbox(0);
 
     dead = false;
 
