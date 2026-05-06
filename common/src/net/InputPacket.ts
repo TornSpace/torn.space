@@ -35,7 +35,7 @@ export class InputPacket implements AbstractPacket {
     shield = false;
     cslot = false;
 
-    queuedSlot = 0;
+    queuedWeapon = 0;
 
     inputSequence = 0;
 
@@ -53,7 +53,7 @@ export class InputPacket implements AbstractPacket {
         "attack",
         "shield",
         "cslot",
-        "queuedSlot"
+        "queuedWeapon"
     ] as const;
 
     serialize(stream: GameBitStream): void {
@@ -69,7 +69,7 @@ export class InputPacket implements AbstractPacket {
         stream.writeBoolean(this.shield);
         stream.writeBoolean(this.cslot);
 
-        stream.writeUint8(this.queuedSlot);
+        stream.writeUint8(this.queuedWeapon);
 
         stream.writeUint8(this.inputSequence);
     }
@@ -87,7 +87,7 @@ export class InputPacket implements AbstractPacket {
         this.shield = stream.readBoolean();
         this.cslot = stream.readBoolean();
 
-        this.queuedSlot = stream.readUint8();
+        this.queuedWeapon = stream.readUint8();
 
         this.inputSequence = stream.readUint8();
     }

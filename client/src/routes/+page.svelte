@@ -14,6 +14,8 @@
 
     onMount(() => {
         app.init(canvas);
+
+        app.connect();
     });
 </script>
 

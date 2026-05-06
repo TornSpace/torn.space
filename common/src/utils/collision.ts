@@ -96,7 +96,7 @@ export const collision = {
      * @param s1 The end of the line
      * @param pos The position of the circle
      * @param rad The radius of the circle
-     * @return An intersection response with the intersection position and normal Vectors, returns null if they don't intersect
+     * @returns An intersection response with the intersection position and normal Vectors, returns null if they don't intersect
      */
     lineIntersectsCircle(s0: Vec2, s1: Vec2, pos: Vec2, rad: number): LineIntersection {
         let d = v2.sub(s1, s0);
@@ -134,7 +134,7 @@ export const collision = {
      * @param s1 The end of the line
      * @param min The min Vector of the rectangle
      * @param max The max Vector of the rectangle
-     * @return An intersection response with the intersection position and normal Vectors, returns null if they don't intersect
+     * @returns An intersection response with the intersection position and normal Vectors, returns null if they don't intersect
      */
     lineIntersectsRect(s0: Vec2, s1: Vec2, min: Vec2, max: Vec2): LineIntersection {
         let tmin = 0;
@@ -214,7 +214,7 @@ export const collision = {
      * @param rad0 The radius of the first circle
      * @param pos1 The position of the second circle
      * @param rad1 The radius of the second circle
-     * @return An intersection response with the intersection normal and penetration returns null if they don't intersect
+     * @returns An intersection response with the intersection normal and penetration returns null if they don't intersect
      */
     circleCircleIntersection(pos0: Vec2, rad0: number, pos1: Vec2, rad1: number): IntersectionResponse {
         const r = rad0 + rad1;
@@ -238,7 +238,7 @@ export const collision = {
      * @param max The max Vector of the rectangle
      * @param pos The position of the circle
      * @param radius The radius of the circle
-     * @return An intersection response with the intersection normal and penetration returns null if they don't intersect
+     * @returns An intersection response with the intersection normal and penetration returns null if they don't intersect
      */
     rectCircleIntersection(min: Vec2, max: Vec2, pos: Vec2, radius: number): IntersectionResponse {
         if (pos.x >= min.x && pos.x <= max.x && pos.y >= min.y && pos.y <= max.y) {
@@ -283,7 +283,7 @@ export const collision = {
      * @param max The max vector of the first rectangle
      * @param min2 The min Vector of the second rectangle
      * @param max2 The max vector of the second rectangle
-     * @return An intersection response with the intersection normal and penetration, returns null if they don't intersect
+     * @returns An intersection response with the intersection normal and penetration, returns null if they don't intersect
      */
     rectRectIntersection(min0: Vec2, max0: Vec2, min1: Vec2, max1: Vec2): IntersectionResponse {
         const e0 = v2.mult(v2.sub(max0, min0), 0.5);

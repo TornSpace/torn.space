@@ -25,6 +25,7 @@ export enum EntityType {
 export const GameConstants = {
     gameSpeed: 1,
     leaderboardMaxEntries: 25,
+    lootRadius: 16,
     maxPosition: 1024,
     maxEntityId: (1 << 16) - 1,
     maxChatLength: 256,
@@ -36,7 +37,15 @@ export const GameConstants = {
          * The default is 6 hp per second.
          * @default 0.05
          */
-        healRate: 0.05
+        healRate: 0.05,
+        /**
+         * Viewport radius. Should be the maximum of the two viewport dimensions.
+         */
+        viewRadius: 10,
+        /**
+         * The maximum number of weapon slots a player can have.
+         */
+        weaponSlots: 10
     }
 };
 
@@ -56,10 +65,12 @@ export enum PacketType {
     Respawn,
 
     // Server (to client)
-    Joined,
-    Debug,
-    ChatServer,
     Announcement,
+    ChatServer,
+    Death,
+    Debug,
+    Joined,
+    Kill,
     Raid,
     Update
 }
@@ -71,11 +82,29 @@ export enum Team {
 }
 
 export enum Trail {
+    /**
+     * Default trail.
+     */
     None,
+    /**
+     * 1.25x damage.
+     */
     Blood,
+    /**
+     * 1.25x income.
+     */
     Money,
+    /**
+     * 1.25x agility.
+     */
     Panda,
+    /**
+     * 1.25x juking...
+     */
     Random,
+    /**
+     * 1.25x something...
+     */
     Rainbow
 }
 

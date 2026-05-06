@@ -26,7 +26,7 @@ import type { App } from "../App.svelte";
 import type { LootDefKey } from "@/common/defs/lootDefs";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
-import { EntityType } from "@/common/constants";
+import { EntityType, GameConstants } from "@/common/constants";
 import { CircleHitbox } from "@/common/utils/hitbox";
 
 export class Loot extends ClientEntity {
@@ -36,7 +36,7 @@ export class Loot extends ClientEntity {
 
     sprite = new Sprite({ anchor: 0.5 });
 
-    readonly hitbox = new CircleHitbox(0);
+    readonly hitbox = new CircleHitbox(GameConstants.lootRadius);
 
     constructor(readonly app: App) {
         super(app);

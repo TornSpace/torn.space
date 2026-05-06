@@ -5,9 +5,10 @@ import type { Game } from "./Game";
 import type { Packet } from "@/common/net";
 import type { ServerWebSocket } from "bun";
 
-import { PacketType } from "@/common/constants";
+import { GameConstants, PacketType } from "@/common/constants";
 import { DebugFlags, DebugPacket } from "@/common/net/DebugPacket";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
+import { RectHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
 import { v2, type Vec2 } from "@/common/utils/v2";
@@ -94,11 +95,11 @@ export class Client {
             }
             case PacketType.Respawn: {
                 if (!this.player.dead) break;
-                this.game.playerManager.respawnPlayer(player);
+                this.game.playerManager.resetPlayer(this.player);
                 break;
             }
             case PacketType.Disconnect: {
-                this.game.playerManager.removePlayer(player);
+                this.game.playerManager.removePlayer(this.player);
                 break;
             }
             case PacketType.DebugToggle: {
@@ -132,6 +133,7 @@ export class Client {
         // Calculate visible, deleted, and dirty entities, and send them to the client.
         const updatePacket = new UpdatePacket();
 
+        const rect = RectHitbox.fromCircle(GameConstants.player.viewRadius, this.position);
         const newVisibleEntities = this.game.grid.intersectsHitbox(rect);
 
         for (const entity of this.visibleEntities) {
@@ -150,7 +152,7 @@ export class Client {
             updatePacket.playerData = this.player;
             updatePacket.playerDataDirty = this.player.dirty;
         } else {
-            this.position = v2.add(this.position, v2.mul(this.direction, this.speed * dt));
+            this.position = v2.add(this.position, v2.mult(this.direction, this.speed * dt));
 
             updatePacket.cameraPosition = this.position;
             updatePacket.cameraPositionDirty = true;
@@ -167,7 +169,7 @@ export class Client {
             ? this.game.playerManager.players
             : this.game.playerManager.newPlayers;
 
-        updatePacket.deleedPlayers = this.game.playerManager.deletedPlayers;
+        updatePacket.deletedPlayers = this.game.playerManager.deletedPlayers;
 
         //
         // Projectile manager content here.

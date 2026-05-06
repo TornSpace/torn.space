@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { GameConstants, type PacketType } from "./constants";
 import { BitStream } from "./lib/BitStream";
 import { math } from "./utils/math";
 import { assert } from "./utils/util";
 
-import type { PacketType } from "./constants";
 import type { ChatPacket } from "./net/ChatPacket";
 import type { ChatServerPacket } from "./net/ChatServerPacket";
 import type { DebugPacket } from "./net/DebugPacket";
@@ -34,6 +34,8 @@ import type { UpdatePacket } from "./net/UpdatePacket";
 import type { Vec2 } from "./utils/v2";
 
 export class GameBitStream extends BitStream {
+    static epsilon = 1.0001;
+
     static alloc(size: number): GameBitStream {
         return new GameBitStream(new ArrayBuffer(size));
     }
@@ -136,6 +138,51 @@ export class GameBitStream extends BitStream {
     }
 
     /**
+     * Read a position vector from stream with the game default max and minimum X and Y.
+     */
+    readPosition(): Vec2 {
+        return this.readVec2(-32, -32, GameConstants.maxPosition, GameConstants.maxPosition, 16);
+    }
+
+    /**
+     * Write a position vector to the stream with the game default max and minimum X and Y.
+     * @param vector The vector to write.
+     */
+    writePosition(vector: Vec2): void {
+        this.writeVec2(vector, -32, -32, GameConstants.maxPosition, GameConstants.maxPosition, 16);
+    }
+
+    /**
+     * Read an unit vector from the stream.
+     * @param bits The number of bits to read.
+     */
+    readUnit(bits: number): Vec2 {
+        return this.readVec2(
+            -GameBitStream.epsilon,
+            -GameBitStream.epsilon,
+            GameBitStream.epsilon,
+            GameBitStream.epsilon,
+            bits
+        );
+    }
+
+    /**
+     * Write an unit vector to the stream
+     * @param vector The Vector to write.
+     * @param bits The number of bits to write.
+     */
+    writeUnit(vector: Vec2, bits: number): void {
+        this.writeVec2(
+            vector,
+            -GameBitStream.epsilon,
+            -GameBitStream.epsilon,
+            GameBitStream.epsilon,
+            GameBitStream.epsilon,
+            bits
+        );
+    }
+
+    /**
      * Copy bytes from a source stream to this stream.
      * Note: Both streams' indices (post-offset) must be byte-aligned!
      * @param src The source bit stream to copy.
@@ -168,6 +215,7 @@ export class GameBitStream extends BitStream {
         if (offset < 8) this.writeBits(0, offset);
     }
 }
+
 export class PacketRegister {
     private _nextTypeId = 0;
     readonly typeToId: Record<string, number> = {};

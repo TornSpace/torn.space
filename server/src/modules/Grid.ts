@@ -17,7 +17,9 @@
  */
 
 import type { ServerEntity } from "../entities/Entity";
+import type { ValidEntityType } from "@/common/constants";
 
+import { RectHitbox, type Hitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
@@ -83,6 +85,44 @@ export class Grid {
         }
 
         cells.length = 0;
+    }
+
+    /**
+     * Get all entities near this Hitbox
+     * This transforms the Hitbox into a rectangle
+     * and gets all entities intersecting it after rounding it to grid cells
+     * @param Hitbox The Hitbox
+     * @returns A set with the entities near this Hitbox
+     */
+    intersectsHitbox(hitbox: Hitbox): Set<ServerEntity> {
+        const rect = hitbox.toRectangle();
+
+        const min = this._roundToCells(rect.min);
+        const max = this._roundToCells(rect.max);
+
+        const entities = new Set<ServerEntity>();
+
+        for (let x = min.x; x <= max.x; x++) {
+            const xRow = this._grid[x];
+            for (let y = min.y; y <= max.y; y++) {
+                const cellEntities = xRow[y];
+                for (const entity of cellEntities) {
+                    entities.add(entity);
+                }
+            }
+        }
+
+        return entities;
+    }
+
+    intersectPos(pos: Vec2): Array<ServerEntity<ValidEntityType>> {
+        pos = this._roundToCells(pos);
+        return [...this._grid[pos.x][pos.y]];
+    }
+
+    // TODO: Optimize this.
+    intersectLineSegment(a: Vec2, b: Vec2): Set<ServerEntity<ValidEntityType>> {
+        return this.intersectsHitbox(RectHitbox.fromLine(a, b));
     }
 
     private _roundToCells(v: Vec2): Vec2 {

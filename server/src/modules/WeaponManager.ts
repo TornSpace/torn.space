@@ -18,7 +18,7 @@
 
 import type { Player } from "../entities/Player";
 
-import { WeaponDefs } from "@/common/defs/weaponDefs";
+import { WeaponDefs, type WeaponDef } from "@/common/defs/weaponDefs";
 
 enum WeaponState {
     Idle,
@@ -41,8 +41,7 @@ export class WeaponManager {
         if (this.stateTicker > 0) this.stateTicker -= dt;
 
         if (this.stateTicker <= 0) {
-            const wepDef = this.getCurWepDef();
-
+            // const wepDef = this.getCurWepDef();
             switch (this.state) {
                 case WeaponState.Firing: {
                     this.fireWeapon();
@@ -65,7 +64,8 @@ export class WeaponManager {
         }
     }
 
-    getCurWepDef(): void {
-        return WeaponDefs.typeToDef(this.player.activeWeapon);
+    getCurWepDef(): WeaponDef | null {
+        const type = this.player.weapons[this.player.activeWeapon];
+        return type !== "" ? WeaponDefs.typeToDef(type) : null;
     }
 }

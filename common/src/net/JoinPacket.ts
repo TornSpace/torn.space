@@ -33,10 +33,11 @@ export class JoinPacket implements AbstractPacket {
         stream.writeUint32(this.protocol);
 
         // Everything else.
-
         stream.writeBoolean(this.guest);
-        stream.writeASCIIString(this.username, GameConstants.player.maxNameLength);
-        stream.writeASCIIString(this.token, 32);
+        if (!this.guest) {
+            stream.writeASCIIString(this.username, GameConstants.player.maxNameLength);
+            stream.writeASCIIString(this.token, 32);
+        }
     }
 
     deserialize(stream: GameBitStream): void {
@@ -44,7 +45,9 @@ export class JoinPacket implements AbstractPacket {
         this.protocol = stream.readUint32();
 
         this.guest = stream.readBoolean();
-        this.username = stream.readASCIIString(GameConstants.player.maxNameLength);
-        this.token = stream.readASCIIString(32);
+        if (!this.guest) {
+            this.username = stream.readASCIIString(GameConstants.player.maxNameLength);
+            this.token = stream.readASCIIString(32);
+        }
     }
 }

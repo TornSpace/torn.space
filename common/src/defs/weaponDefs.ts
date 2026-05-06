@@ -86,6 +86,23 @@ export interface WeaponDef {
 }
 
 const rawDefs = {
+    // Empty
+    "": {
+        name: "",
+        type: "weapon",
+        price: 0,
+        rank: 0,
+        ammo: -2,
+        projectile: "",
+        range: 0,
+        damage: 0,
+        speed: 0,
+        charge: 0,
+        image: "",
+        sound: "",
+        bot: false
+    },
+
     // Guns
     stock_gun: {
         name: "Stock Gun",

@@ -18,6 +18,8 @@
 
 import { EntityPool, ServerEntity } from "./Entity";
 
+import { WeaponManager } from "../modules/WeaponManager";
+
 import type { Client } from "../modules/ClientManager";
 import type { Game } from "../modules/Game";
 import type { InputPacket } from "@/common/net/InputPacket";
@@ -26,6 +28,7 @@ import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType, GameConstants, Trail, type LeaderboardEntry } from "@/common/constants";
 import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
+import { WeaponDefs, type WeaponDefKey } from "@/common/defs/weaponDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
@@ -62,7 +65,11 @@ export class Player extends ServerEntity {
 
     dead = false;
 
-    weapons = {};
+    weapons = new Array<WeaponDefKey>(GameConstants.player.weaponSlots).fill("");
+    ammo = new Array<number>(GameConstants.player.weaponSlots).fill(0);
+
+    activeWeapon = 0;
+    weaponManager = new WeaponManager(this);
 
     // Asteroids.
     iron = 0;
@@ -142,7 +149,12 @@ export class Player extends ServerEntity {
     }
 
     refillAmmo(): void {
-        for (let i = 0; i < this.weapons.length; i++) {}
+        for (let i = 0; i < this.weapons.length; i++) {
+            const wep = this.weapons[i];
+            if (wep === "") continue;
+
+            this.ammo[i] = WeaponDefs.typeToDef(wep).ammo;
+        }
     }
 
     update(dt: number): void {
@@ -201,6 +213,10 @@ export class Player extends ServerEntity {
 
     fireWeapon(): void {}
 
+    fireEliteWeapon(): void {}
+
+    jettisonCargo(): void {}
+
     /**
      * Process a given input packet.
      * @param packet The packet to process.
@@ -220,7 +236,7 @@ export class Player extends ServerEntity {
         this.tryShield = packet.shield;
         this.cslot = packet.cslot;
 
-        if (this.weapons[packet.queuedSlot]) this.weaponManager.queuedSlot = packet.queuedSlot;
+        if (this.weapons[packet.queuedWeapon]) this.weaponManager.queuedWeapon = packet.queuedWeapon;
     }
 
     get data(): Required<EntitiesNetData[EntityType.Player]> {
@@ -248,7 +264,7 @@ export class PlayerManager extends EntityPool<Player> {
         super(game, Player);
     }
 
-    add(client: Client, packet: JoinPacket, position: Vec2): Player {
+    addPlayer(client: Client, packet: JoinPacket, position: Vec2): Player {
         const player = this.allocEntity(
             client,
             packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx}`,
@@ -283,7 +299,7 @@ export class PlayerManager extends EntityPool<Player> {
             player.dirty[key as keyof typeof player.dirty] = true;
         }
 
-        player.activeSlot = 0;
+        player.activeWeapon = 0;
     }
 
     removePlayer(player: Player): void {

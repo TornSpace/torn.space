@@ -46,7 +46,7 @@ export class InputManager {
     lastSequenceTime = 0;
     inputSequence = 0;
 
-    queuedSlot = 0;
+    queuedWeapon = 0;
 
     constructor(readonly app: App) {}
 
@@ -142,7 +142,7 @@ export class InputManager {
         packet.shield = this.isInputDown("KeyS");
         packet.cslot = this.isInputDown("KeyC") || this.isInputDown("KeyV");
 
-        packet.queuedSlot = this.queuedSlot;
+        packet.queuedWeapon = this.queuedWeapon;
 
         // if (this.app.player) {}
 
@@ -160,6 +160,6 @@ export class InputManager {
         }
 
         this.prevPacket = packet;
-        this.queuedSlot = -1;
+        this.queuedWeapon = -1;
     }
 }

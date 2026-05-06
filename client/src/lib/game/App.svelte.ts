@@ -26,8 +26,11 @@ import { EntityManager } from "./modules/EntityManager";
 import { InputManager } from "./modules/InputManager";
 
 import type { Packet } from "@/common/net";
+import type { JoinedPacket } from "@/common/net/JoinedPacket";
 
 import { EntityType, GameConstants, PacketType } from "@/common/constants";
+import { DisconnectPacket } from "@/common/net/DisconnectPacket";
+import { JoinPacket } from "@/common/net/JoinPacket";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
 import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
@@ -93,7 +96,7 @@ export class App {
 
     connect(): void {
         // TODO: Use config details.
-        const addr = "";
+        const addr = "ws://127.0.0.1:8081/play";
 
         if (this.socket) {
             this.socket.onclose = function (): void {};
@@ -121,6 +124,33 @@ export class App {
         };
     }
 
+    join(username: string, password: string): void {
+        const packet = new JoinPacket();
+
+        // TODO: Pull from config.
+        packet.protocol = 0;
+
+        if (username && password) {
+            packet.guest = false;
+            packet.username = username;
+            packet.token = btoa(password);
+        } else packet.guest = true;
+
+        this.sendPacket(packet);
+    }
+
+    startGame(packet: JoinedPacket): void {
+        this.state = AppState.Space;
+        this.playerId = packet.playerId;
+    }
+
+    disconnect(reason: string): void {
+        const packet = new DisconnectPacket();
+        packet.reason = reason;
+
+        this.sendPacket(packet);
+    }
+
     onMessage(data: ArrayBuffer): void {
         const stream = new PacketStream(data);
 
@@ -129,6 +159,9 @@ export class App {
             if (packet === undefined) break;
 
             switch (packet.type) {
+                case PacketType.Joined:
+                    this.startGame(packet);
+                    break;
                 case PacketType.Update:
                     this.updateFromPacket(packet);
                     break;

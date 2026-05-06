@@ -107,7 +107,7 @@ logger.info("Server", `      ▀       ▀▀▀▀▀▀▀▀▀▀▀  ▀   
 // oxfmt-ignore
 logger.info("Server", `                                                                                                                        `);
 // oxfmt-ignore
-logger.info("Server", `***************************f*********************************************************************************************`);
+logger.info("Server", `*************************************************************************************************************************`);
 // oxfmt-ignore
 logger.info("Server", "This program is free software: you can redistribute it and / or modify it under the terms of the GNU Affero General");
 // oxfmt-ignore
@@ -117,4 +117,9 @@ logger.info("Server", "later version. You should have received a copy of the GNU
 logger.info("Server", "see <https://www.gnu.org/licenses/>.");
 logger.info("Server", "");
 logger.info("Server", "");
-logger.info("Server", "Source code is available at https://github.com/TornSpace/torn.space.");
+logger.info("Server", "Source code is available at <https://github.com/TornSpace/torn.space>.");
+logger.info(
+    "Server",
+    `*************************************************************************************************************************`
+);
+logger.info("Server", `Bound to ${config.gameServer.host}:${config.gameServer.port}.`);

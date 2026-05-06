@@ -89,7 +89,9 @@ export abstract class BaseHitbox<T extends HitboxType = HitboxType> {
         const collisionFn = checkFns[this.type][other.type];
         assert(collisionFn, `"${this.type}" does not support collision checking with "${other.type}"`);
 
-        return collisionFn.reverse ? collisionFn.fn(other, this as unknown as Hitbox) : collisionFn.fn(this as unknown as Hitbox, other);
+        return collisionFn.reverse
+            ? collisionFn.fn(other, this as unknown as Hitbox)
+            : collisionFn.fn(this as unknown as Hitbox, other);
     }
 
     /**
