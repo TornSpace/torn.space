@@ -20,7 +20,7 @@
       "dependencies": {
         "@hono/zod-validator": "^0.7.6",
         "drizzle-orm": "^0.45.2",
-        "hono": "^4.12.16",
+        "hono": "^4.12.17",
         "obscenity": "^0.4.6",
         "pg": "^8.20.0",
         "proxycheck-ts": "^0.0.11",
