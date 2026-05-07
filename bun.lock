@@ -20,7 +20,7 @@
       "dependencies": {
         "@hono/zod-validator": "^0.7.6",
         "drizzle-orm": "^0.45.2",
-        "hono": "^4.12.17",
+        "hono": "^4.12.18",
         "obscenity": "^0.4.6",
         "pg": "^8.20.0",
         "proxycheck-ts": "^0.0.11",
@@ -494,7 +494,7 @@
 
     "hjson": ["hjson@3.2.2", "", { "bin": { "hjson": "bin/hjson" } }, "sha512-MkUeB0cTIlppeSsndgESkfFD21T2nXPRaBStLtf3cAYA2bVEFdXlodZB0TukwZiobPD1Ksax5DK4RTZeaXCI3Q=="],
 
-    "hono": ["hono@4.12.17", "", {}, "sha512-FbJJNb/XgX7YW0hX/V8w5oYLztKEsRLykCMZWt1WdLtsfjzMvmoqWBA4H4t5norinq8/rh20oiZYr+WSl4UzAQ=="],
+    "hono": ["hono@4.12.18", "", {}, "sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqn2G0bSdAOBpX+2uDFHV7kdQ=="],
 
     "is-reference": ["is-reference@3.0.3", "", { "dependencies": { "@types/estree": "^1.0.6" } }, "sha512-ixkJoqQvAP88E6wLydLGGqCJsrFUnqoH6HnaczB8XmDH1oaWU+xxdptvikTgaEhtZ53Ky6YXiBuUI2WXLMCwjw=="],
 

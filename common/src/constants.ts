@@ -26,6 +26,15 @@ export const GameConstants = {
     gameSpeed: 1,
     leaderboardMaxEntries: 25,
     lootRadius: 16,
+    /**
+     * How many sectors per side on the map.
+     */
+    mapSize: 7,
+    /**
+     * The sector width (in game units).
+     * Must be divisible by 2048.
+     */
+    sectorWidth: 14336,
     maxPosition: 1024,
     maxEntityId: (1 << 16) - 1,
     maxChatLength: 256,
