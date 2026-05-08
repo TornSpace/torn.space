@@ -31,11 +31,13 @@ import { EntityType, GameConstants } from "@/common/constants";
 import { Logger } from "@/common/utils/Logger";
 import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
+import { util } from "@/common/utils/util";
+import { v2 } from "@/common/utils/v2";
 
 export class Game {
     grid = new Grid(
-        GameConstants.sectorWidth * GameConstants.maxPosition,
-        GameConstants.sectorWidth * GameConstants.maxPosition
+        GameConstants.sectorWidth * GameConstants.mapSize,
+        GameConstants.sectorWidth * GameConstants.mapSize
     );
 
     entityManager: EntityManager;
@@ -77,6 +79,10 @@ export class Game {
     guestIdx = 0;
 
     constructor(readonly config: Config) {
+        this.logger = new Logger(this.config.logging);
+        this.logger.splash("Server");
+        this.logger.info("Server", `Bound to ${config.gameServer.host}:${config.gameServer.port}.`);
+
         this.entityManager = new EntityManager(this, {
             // [EntityType.Beam]: this.beamManager,
             // [EntityType.Blast]: this.blastManager,
@@ -92,7 +98,35 @@ export class Game {
         });
 
         this.timer = setInterval(this.update.bind(this), 1000 / config.tps);
-        this.logger = new Logger(this.config.logging);
+
+        // Spawn bases.
+        for (const [team, sectors] of Object.entries(GameConstants.base.spawns)) {
+            for (let i = 0; i < sectors.length; i++) {
+                const sector = sectors[i];
+                const sectorVec = v2.new(sector[0], sector[1]);
+                this.baseManager.allocEntity(parseInt(team), sectorVec);
+                this.logger.debug("Game", `Spawned base in sector ${util.sectorToString(sectorVec)}.`);
+            }
+        }
+
+        this.logger.info("Game", `Spawned ${this.baseManager.pool.length} bases.`);
+    }
+
+    /**
+     * Make a request to the API server.
+     * @param endpoint The API endpoint. Must begin with `/`.
+     * @param method The HTTP Request method to use.
+     * @param body An optional payload to send.
+     */
+    fetch(endpoint: string, method: RequestInit["method"], body?: RequestInit["body"]): Promise<Response> {
+        return fetch(this.config.gameServer.apiUrl + endpoint, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this.config.secrets.TORN_GS_KEY}`
+            },
+            body
+        });
     }
 
     update(): void {

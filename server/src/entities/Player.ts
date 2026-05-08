@@ -27,7 +27,7 @@ import type { InputPacket } from "@/common/net/InputPacket";
 import type { JoinPacket } from "@/common/net/JoinPacket";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
-import { EntityType, GameConstants, Team, Trail, type LeaderboardEntry } from "@/common/constants";
+import { EntityType, GameConstants, Team, Trail, type LeaderboardEntry, type PlayerSaveData } from "@/common/constants";
 import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
 import { WeaponDefs, type WeaponDefKey } from "@/common/defs/weaponDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
@@ -59,8 +59,11 @@ export class Player extends AbstractServerEntity {
     velocity = v2.new(0, 0);
     direction = v2.new(0, 0);
 
+    weaponManager = new WeaponManager(this);
+
     lastDockId = -1;
 
+    // Keybinds.
     moveFwd = false;
     moveBwd = false;
     turnLeft = false;
@@ -68,46 +71,29 @@ export class Player extends AbstractServerEntity {
     jukeLeft = false;
     jukeRight = false;
     drift = false;
-
     attack = false;
     tryShield = false;
     cslot = false;
 
+    guild: number | undefined = undefined;
+
+    // States.
     dead = false;
-
-    weapons = new Array<WeaponDefKey>(GameConstants.player.weaponSlots).fill("");
-    ammo = new Array<number>(GameConstants.player.weaponSlots).fill(0);
-
-    activeWeapon = 0;
-    weaponManager = new WeaponManager(this);
-
-    // Asteroids.
-    iron = 0;
-    silver = 0;
-    copper = 0;
-    platinum = 0;
-
-    // Timers.
-    baseTimer = 0;
-    borderTimer = 0;
-    cloakTimer = 0;
-    dockTimer = 0;
-    empTimer = 0;
-    gyroTimer = 0;
-    hyperdriveTimer = 0;
-    jukeTimer = 0;
-    superchargerTimer = 0;
-
     shield = false;
     docked = false;
 
     balance = 8000;
+    lives = 20;
     ship: ShipDefKey = "r0";
     xp = 0;
     rank = 0;
     trail = Trail.None;
+    activeWeapon = 0;
 
-    tech = {
+    weapons = new Array<WeaponDefKey>(GameConstants.player.weaponSlots).fill("");
+    ammo = new Array<number>(GameConstants.player.weaponSlots).fill(0);
+
+    readonly tech = {
         speed: 1,
         radar: 1,
         cargo: 1,
@@ -115,6 +101,31 @@ export class Player extends AbstractServerEntity {
         energy: 1,
         agility: 1
     };
+
+    // Asteroids.
+    readonly ores = {
+        iron: 0,
+        silver: 0,
+        copper: 0,
+        platinum: 0
+    };
+
+    // Stats
+    readonly stats = {
+        kills: 0,
+        baseKills: 0,
+        driftTime: 0
+    };
+
+    // Timers.
+    baseTimer = 0;
+    borderTimer = 0;
+    cloakTimer = 0;
+    empTimer = 0;
+    gyroTimer = 0;
+    hyperdriveTimer = 0;
+    jukeTimer = 0;
+    superchargerTimer = 0;
 
     private _hp = 1;
     private _charge = 0;
@@ -145,8 +156,8 @@ export class Player extends AbstractServerEntity {
         return def.hp * this.tech.hp;
     }
 
-    get ore(): number {
-        return this.iron + this.silver + this.copper + this.platinum;
+    get oreCount(): number {
+        return this.ores.iron + this.ores.silver + this.ores.copper + this.ores.platinum;
     }
 
     override get position(): Vec2 {
@@ -158,7 +169,7 @@ export class Player extends AbstractServerEntity {
         this._position = pos;
     }
 
-    init(client: Client, name: string, team: Team, sector?: Vec2): void {
+    init(client: Client, name: string, team: Team, data?: PlayerSaveData): void {
         this.client = client;
         this.name = name;
         this.team = team;
@@ -167,21 +178,68 @@ export class Player extends AbstractServerEntity {
         // TODO: Probably try and make this efficient.
         // This is also used in multiple locations. Maybe extract to common function?
         let base: Base | undefined;
-        if (sector) base = this.game.baseManager.pool.find(base => v2.eq(sector, base.sector));
-        if (!sector || !base) {
+        if (data?.sector) base = this.game.baseManager.pool.find(base => v2.eq(data.sector, base.sector));
+        if (!data?.sector || !base) {
             const teamBases = this.game.baseManager.pool.filter(base => base.team === this.team);
             base = teamBases[Math.floor(Math.random() * teamBases.length)];
         }
 
-        this.lastDockId = base.id;
-
         // Spawn player at the last logged-off base.
+        this.lastDockId = base.id;
+        this.dock(base);
+
+        // Restore player data, if logged in.
+        if (data) {
+            this.xp = data.xp;
+            this.rank = data.rank;
+            this.balance = data.balance;
+            this.lives = data.lives;
+            this.guild = data.guild;
+            this.ship = `r${data.ship}` as ShipDefKey;
+            this.trail = data.trail;
+            this.weapons = data.weapons;
+            this.tech.speed = data.speed;
+            this.tech.radar = data.radar;
+            this.tech.cargo = data.cargo;
+            this.tech.hp = data.hp;
+            this.tech.energy = data.energy;
+            this.tech.agility = data.agility;
+            this.ores.iron = data.iron;
+            this.ores.silver = data.silver;
+            this.ores.copper = data.copper;
+            this.ores.platinum = data.platinum;
+            this.stats.kills = data.kills;
+            this.stats.baseKills = data.baseKills;
+            this.stats.driftTime = data.driftTime;
+            // this.achievements = data.achievements;
+            // this.quests = data.quests;
+            // this.planets = data.planets;
+            // this.sectors = data.sectors;
+        }
+
+        // Undock player. We give them 3 extra seconds of shielding in case someone is camping.
+        this.undock();
+        this.baseTimer += 3 * this.game.config.tps;
+    }
+
+    dock(base: Base): void {
+        if (this.docked) return;
+
         this.sector = base.sector;
         this.position = v2.new(GameConstants.maxPosition / 2, GameConstants.maxPosition / 2);
+        this.docked = true;
+    }
 
-        // Give player 3 seconds of invulnerability.
-        this.dockTimer = 3 * this.game.config.tps;
+    undock(): void {
+        if (!this.docked) return;
+
+        this.charge = 0;
+        this.hp = this.maxHP;
         this.refillAmmo();
+
+        this.baseTimer = 3 * this.game.config.tps;
+
+        this.docked = false;
     }
 
     refillAmmo(): void {
@@ -200,7 +258,6 @@ export class Player extends AbstractServerEntity {
         if (this.baseTimer >= 0) this.baseTimer -= dt;
         if (this.borderTimer >= 0) this.borderTimer -= dt;
         if (this.cloakTimer >= 0) this.cloakTimer -= dt;
-        if (this.dockTimer >= 0) this.dockTimer -= dt;
         if (this.empTimer >= 0) this.empTimer -= dt;
         if (this.gyroTimer >= 0) this.gyroTimer -= dt;
         if (this.hyperdriveTimer >= 0) this.hyperdriveTimer -= dt;
@@ -208,7 +265,7 @@ export class Player extends AbstractServerEntity {
         if (this.superchargerTimer >= 0) this.superchargerTimer -= dt;
 
         // Heal the player over time.
-        if (!this.shield && this.hp < this.maxHP) this.hp += GameConstants.player.healRate;
+        if (!this.shield && this.hp < this.maxHP) this.hp += dt * GameConstants.player.healRate;
 
         /**
          * For a player to drift, the following conditions must be satisfied:
@@ -229,7 +286,7 @@ export class Player extends AbstractServerEntity {
 
     /**
      * EMP a player.
-     * @param duration The base duration of the EMP.
+     * @param duration The base duration, in seconds, of the EMP.
      */
     emp(duration: number): void {
         const ship = ShipDefs.typeToDef(this.ship);
@@ -282,7 +339,7 @@ export class Player extends AbstractServerEntity {
     fireEliteWeapon(): void {}
 
     jettisonCargo(): void {
-        this.iron = this.silver = this.copper = this.platinum = 0;
+        this.ores.iron = this.ores.silver = this.ores.copper = this.ores.platinum = 0;
     }
 
     /**
@@ -332,12 +389,12 @@ export class PlayerManager extends EntityPool<Player> {
         super(game, Player);
     }
 
-    addPlayer(client: Client, packet: JoinPacket, team: Team, sector?: Vec2): Player {
+    addPlayer(client: Client, packet: JoinPacket, team: Team, data?: PlayerSaveData): Player {
         const player = this.allocEntity(
             client,
             packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx}`,
             team,
-            sector
+            data
         );
 
         this.newPlayers.push(player);

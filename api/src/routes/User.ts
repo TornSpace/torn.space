@@ -25,7 +25,9 @@ import { RawPlayerTeam, RawPlayerTrail } from "../constants";
 import { User } from "../models/User";
 import { AuthGuard, DatabaseGuard, RateLimiter, Validator } from "../utils/middleware";
 
-import { GameConstants, Team, Trail } from "@/common/constants";
+import type { WeaponDefKey } from "@/common/defs/weaponDefs";
+
+import { GameConstants, Team, Trail, type PlayerSaveData } from "@/common/constants";
 import { util } from "@/common/utils/util";
 
 const registerSchema = z.object({
@@ -72,7 +74,7 @@ const updateSchema = z.object({
             .min(0)
             .max(GameConstants.mapSize - 1)
     }),
-    weapons: z.string().array(),
+    weapons: z.array(z.string<WeaponDefKey>()),
 
     speed: z.number().min(0),
     radar: z.number().min(0),
@@ -90,10 +92,10 @@ const updateSchema = z.object({
     baseKills: z.number().min(0),
     driftTime: z.number().min(0),
 
-    achievements: z.number().array(),
-    planets: z.number().array(),
-    sectors: z.number().array()
-});
+    achievements: z.array(z.number()),
+    planets: z.array(z.number()),
+    sectors: z.array(z.number())
+}) satisfies z.ZodType<PlayerSaveData>;
 
 const Router = new Hono()
     .use(RateLimiter(5, 3e4))

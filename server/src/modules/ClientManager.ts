@@ -4,7 +4,7 @@ import type { Game } from "./Game";
 import type { Packet } from "@/common/net";
 import type { ServerWebSocket } from "bun";
 
-import { GameConstants, PacketType } from "@/common/constants";
+import { GameConstants, PacketType, type PlayerSaveData } from "@/common/constants";
 import { DebugFlags, DebugPacket } from "@/common/net/DebugPacket";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
 import { RectHitbox } from "@/common/utils/hitbox";
@@ -84,21 +84,22 @@ export class Client {
             if (packet.guest) this.player = this.game.playerManager.addPlayer(this, packet, packet.team);
             else {
                 const { username, token } = packet;
-
-                fetch(this.game.config.gameServer.apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${this.game.config.secrets.TORN_GS_KEY}`
-                    },
-                    body: JSON.stringify({ username, token })
-                }).then(res => {
-                    if (res.status === 200) {
-                        res.json().then(data => {
-                            this.player = this.game.playerManager.addPlayer(this, packet, data.team, data.sector);
-                        });
-                    }
-                });
+                this.game
+                    .fetch("/user/login", JSON.stringify({ username, token }))
+                    .then(res => {
+                        if (res.status === 200) {
+                            res.json().then((data: PlayerSaveData) => {
+                                this.player = this.game.playerManager.addPlayer(this, packet, data.team, data);
+                            });
+                        } else {
+                            this.game.logger.warn("Failed to authenticate client.");
+                            this.socket.close();
+                        }
+                    })
+                    .catch(err => {
+                        this.game.logger.warn("Failed to authenticate client:", err);
+                        this.socket.close();
+                    });
             }
 
             return;
@@ -149,9 +150,10 @@ export class Client {
     }
 
     sendUpdatePacket(dt: number): void {
-        // Calculate visible, deleted, and dirty entities, and send them to the client.
         const updatePacket = new UpdatePacket();
 
+        // Calculate visible, deleted, and dirty entities, and send them to the client.
+        // TODO: Don't send docked players!
         const rect = RectHitbox.fromCircle(GameConstants.player.viewRadius, this.position);
         const newVisibleEntities = this.game.grid.intersectsHitbox(rect);
 

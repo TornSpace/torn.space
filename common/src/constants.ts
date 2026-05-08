@@ -16,6 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { WeaponDefKey } from "./defs/weaponDefs";
+import type { Vec2 } from "./utils/v2";
+
 export enum EntityType {
     Invalid,
     // Beam,
@@ -31,16 +34,145 @@ export enum EntityType {
     Player
 }
 
-export const GameConstants = {
+export interface LeaderboardEntry {
+    playerId: number;
+    rank: number;
+    xp: number;
+}
+
+export enum PacketType {
+    // Client (to server)
+    Join, // MUST ALWAYS BE FIRST
+    Disconnect,
+    DebugToggle,
+    Chat,
+    Input,
+    Respawn,
+
+    // Server (to client)
+    Announcement,
+    ChatServer,
+    Death,
+    Debug,
+    Joined,
+    Kill,
+    Raid,
+    Update
+}
+
+export interface PlayerSaveData {
+    id: number;
+    xp: number;
+    rank: number;
+    team: Team;
+    balance: number;
+    lives: number;
+    guild?: number;
+    ship: number;
+    trail: Trail;
+    sector: Vec2;
+    weapons: WeaponDefKey[];
+    speed: number;
+    radar: number;
+    cargo: number;
+    hp: number;
+    energy: number;
+    agility: number;
+
+    iron: number;
+    silver: number;
+    copper: number;
+    platinum: number;
+    kills: number;
+    baseKills: number;
+    driftTime: number;
+
+    achievements: number[];
+    // quests: number[];
+    planets: number[];
+    sectors: number[];
+}
+
+export enum Team {
+    Human,
+    Alien,
+    Cyborg
+}
+
+export enum Trail {
     /**
-     * The docking radius of the base.
+     * Default trail.
      */
-    baseRadius: 50,
+    None,
+    /**
+     * 1.25x damage.
+     */
+    Blood,
+    /**
+     * 1.25x income.
+     */
+    Money,
+    /**
+     * 1.25x agility.
+     */
+    Panda,
+    /**
+     * 1.25x juking...
+     */
+    Random,
+    /**
+     * 1.25x something...
+     */
+    Rainbow
+}
+
+export type ValidEntityType = Exclude<EntityType, EntityType.Invalid>;
+
+/**
+ * Game constants.
+ * This **MUST** be kept at the bottom of the file!
+ */
+export const GameConstants = {
+    base: {
+        /**
+         * The docking radius of the base, in game units.
+         */
+        radius: 50,
+        /**
+         * The sector(s) in which the team base(s) will spawn.
+         */
+        spawns: {
+            [Team.Human]: [
+                [4, 2],
+                [6, 2],
+                [5, 4],
+                [4, 6]
+            ],
+            [Team.Alien]: [
+                [1, 0],
+                [3, 0],
+                [2, 2],
+                [5, 1]
+            ],
+            [Team.Cyborg]: [
+                [1, 3],
+                [0, 5],
+                [2, 6],
+                [3, 4]
+            ]
+        }
+    },
     /**
      * The relative speed at which the game runs at. The absolute speed is this multiplied by the tickrate.
      */
     gameSpeed: 1,
+    /**
+     * The maximum number of entries the leaderboard can support.
+     */
     leaderboardMaxEntries: 25,
+    /**
+     * The pickup radius of loot.
+     */
     lootRadius: 16,
     /**
      * How many sectors per side on the map.
@@ -57,14 +189,19 @@ export const GameConstants = {
     maxEntityId: (1 << 16) - 1,
     maxChatLength: 256,
     player: {
+        /**
+         * The time, in seconds, before players are kicked for inactivity.
+         * @default 300
+         */
+        afkTimer: 300,
         defaultName: "Guest",
         maxNameLength: 16,
         /**
-         * The rate at which players heal per tick.
+         * The rate at which players heal per second.
          * The default is 6 hp per second.
-         * @default 0.05
+         * @default 6
          */
-        healRate: 0.05,
+        healRate: 6,
         /**
          * Starting cash for new players.
          */
@@ -85,7 +222,7 @@ export const GameConstants = {
     },
     /**
      * Exp to rank conversion.
-     * Note: This is **intentionally** initially specified as an object so that it is easier to read.
+     * Note: This is **intentionally** specified as an object so that it is easier to read.
      */
     // oxfmt-ignore
     ranks: Object.values({
@@ -128,64 +265,3 @@ export const GameConstants = {
         r36: 1e8
     })
 };
-
-export interface LeaderboardEntry {
-    playerId: number;
-    rank: number;
-    xp: number;
-}
-
-export enum PacketType {
-    // Client (to server)
-    Join, // MUST ALWAYS BE FIRST
-    Disconnect,
-    DebugToggle,
-    Chat,
-    Input,
-    Respawn,
-
-    // Server (to client)
-    Announcement,
-    ChatServer,
-    Death,
-    Debug,
-    Joined,
-    Kill,
-    Raid,
-    Update
-}
-
-export enum Team {
-    Human,
-    Alien,
-    Cyborg
-}
-
-export enum Trail {
-    /**
-     * Default trail.
-     */
-    None,
-    /**
-     * 1.25x damage.
-     */
-    Blood,
-    /**
-     * 1.25x income.
-     */
-    Money,
-    /**
-     * 1.25x agility.
-     */
-    Panda,
-    /**
-     * 1.25x juking...
-     */
-    Random,
-    /**
-     * 1.25x something...
-     */
-    Rainbow
-}
-
-export type ValidEntityType = Exclude<EntityType, EntityType.Invalid>;

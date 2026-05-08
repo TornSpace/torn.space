@@ -38,7 +38,7 @@ export class Base extends ClientEntity {
 
     sprite = new Sprite({ anchor: 0.5 });
 
-    readonly hitbox = new CircleHitbox(GameConstants.baseRadius);
+    readonly hitbox = new CircleHitbox(GameConstants.base.radius);
 
     constructor(readonly app: App) {
         super(app);

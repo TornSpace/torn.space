@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { GameConstants } from "@/common/constants";
 import type { ServerEntity } from "../entities/Entity";
 
 import { RectHitbox, type Hitbox } from "@/common/utils/hitbox";
@@ -25,8 +26,9 @@ import { v2, type Vec2 } from "@/common/utils/v2";
 export class Grid {
     /**
      * The size of an individual cell, in game units.
+     * Be careful not to let `GameConstants.sectorWidth * GameConstants.mapSize / Grid.cellSize` become too big!
      */
-    static readonly cellSize = 16;
+    static readonly cellSize = GameConstants.sectorWidth / 81;
 
     readonly width: number;
     readonly height: number;
@@ -39,8 +41,7 @@ export class Grid {
 
         this._grid = Array.from(
             { length: this.width + 1 },
-            () => Array.from({ length: this.height + 1 }),
-            () => new Set()
+            () => Array.from({ length: this.height + 1 }, () => new Set())
         );
     }
 
@@ -62,8 +63,10 @@ export class Grid {
         const cells = entity.__gridCells;
         const hitbox = entity.hitbox.toRectangle();
 
-        const min = this._roundToCells(hitbox.min);
-        const max = this._roundToCells(hitbox.max);
+        const sectorPos = v2.mult(entity.sector, GameConstants.sectorWidth);
+
+        const min = this._roundToCells(v2.add(hitbox.min, sectorPos));
+        const max = this._roundToCells(v2.add(hitbox.max, sectorPos));
 
         for (let i = min.y; i <= max.y; i++) {
             const row = this._grid[i];

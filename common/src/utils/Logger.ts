@@ -79,4 +79,53 @@ export class Logger {
         if (!this.config.debug) return;
         this.log(console.debug, styleText(["bold", "white"], "DEBUG"), topic, ...args);
     }
+
+    /**
+     * Log a splash message.
+     * @param topic The message topic.
+     */
+    splash (topic: string): void {
+        // oxfmt-ignore
+        this.info(topic, `************************************************************************************************************************`);
+        // oxfmt-ignore
+        this.info(topic, ` ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄     ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ `);
+        // oxfmt-ignore
+        this.info(topic, `▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌   ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌`);
+        // oxfmt-ignore
+        this.info(topic, ` ▀▀▀▀█░█▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌   ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ `);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌   ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌          `);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌ ▐░▌   ▐░▌   ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌          ▐░█▄▄▄▄▄▄▄▄▄ `);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌   ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          ▐░░░░░░░░░░░▌`);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░▌       ▐░▌▐░█▀▀▀▀█░█▀▀ ▐░▌   ▐░▌ ▐░▌    ▀▀▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░█▀▀▀▀▀▀▀▀▀ `);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░▌       ▐░▌▐░▌     ▐░▌  ▐░▌    ▐░▌▐░▌             ▐░▌▐░▌          ▐░▌       ▐░▌▐░▌          ▐░▌          `);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌▐░▌      ▐░▌ ▐░▌     ▐░▐░▌ ▄  ▄▄▄▄▄▄▄▄▄█░▌▐░▌          ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ `);
+        // oxfmt-ignore
+        this.info(topic, `     ▐░▌     ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌      ▐░░▌▐░▌▐░░░░░░░░░░░▌▐░▌          ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌`);
+        // oxfmt-ignore
+        this.info(topic, `      ▀       ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀        ▀▀  ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀            ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ `);
+        // oxfmt-ignore
+        this.info(topic, `                                                                                                                        `);
+        // oxfmt-ignore
+        this.info(topic, `*************************************************************************************************************************`);
+        // oxfmt-ignore
+        this.info(topic, "This program is free software: you can redistribute it and / or modify it under the terms of the GNU Affero General");
+        // oxfmt-ignore
+        this.info(topic, "Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any");
+        // oxfmt-ignore
+        this.info(topic, "later version. You should have received a copy of the GNU Affero General Public License along with this program. If not,");
+        this.info(topic, "see <https://www.gnu.org/licenses/>.");
+        this.info(topic, "");
+        this.info(topic, "");
+        this.info(topic, "Source code is available at <https://github.com/TornSpace/torn.space>.");
+        this.info(
+            topic,
+            `*************************************************************************************************************************`
+        );
+    }
 }
