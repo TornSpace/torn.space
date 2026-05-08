@@ -47,6 +47,9 @@ export abstract class ClientEntity<T extends ValidEntityType = ValidEntityType> 
     data!: Required<EntitiesNetData[T]>;
     active = false;
 
+    /**
+     * Note: On client, this is only used for debugging purposes.
+     */
     abstract hitbox: Hitbox;
 
     constructor(readonly app: App) {

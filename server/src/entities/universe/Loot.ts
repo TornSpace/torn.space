@@ -22,13 +22,13 @@ import type { Game } from "../../modules/Game";
 import type { LootDefKey } from "@/common/defs/lootDefs";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
-import { EntityType } from "@/common/constants";
+import { EntityType, GameConstants } from "@/common/constants";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
 export class Loot extends AbstractServerEntity {
     readonly __type = EntityType.Loot;
-    readonly hitbox = new CircleHitbox(0);
+    readonly hitbox = new CircleHitbox(GameConstants.lootRadius);
 
     type!: LootDefKey;
     direction!: Vec2;

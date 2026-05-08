@@ -158,9 +158,10 @@ export class Player extends AbstractServerEntity {
         this._position = pos;
     }
 
-    init(client: Client, name: string, sector?: Vec2): void {
+    init(client: Client, name: string, team: Team, sector?: Vec2): void {
         this.client = client;
         this.name = name;
+        this.team = team;
 
         // Find the base associated with the sector.
         // TODO: Probably try and make this efficient.
@@ -331,10 +332,11 @@ export class PlayerManager extends EntityPool<Player> {
         super(game, Player);
     }
 
-    addPlayer(client: Client, packet: JoinPacket, sector?: Vec2): Player {
+    addPlayer(client: Client, packet: JoinPacket, team: Team, sector?: Vec2): Player {
         const player = this.allocEntity(
             client,
             packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx}`,
+            team,
             sector
         );
 

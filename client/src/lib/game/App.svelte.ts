@@ -19,6 +19,7 @@
 import { Application, Ticker } from "pixi.js";
 
 import { Camera } from "./Camera";
+import { BaseManager } from "./entities/Base";
 import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player";
 import { AudioManager } from "./modules/AudioManager";
@@ -58,7 +59,16 @@ export class App {
 
     entityManager: EntityManager;
 
+    // beamManager = new BeamManager();
+    // blastManager = new BlastManager();
+    // bulletManager = new BulletManager();
+    // missileManager = new MissileManager();
+    // asteroidManager = new AsteroidManager();
+    baseManager = new BaseManager();
     lootManager = new LootManager();
+    // planetManager = new PlanetManager();
+    // turretManager = new TurretManager();
+    // vortexManager = new VortexManager();
     playerManager = new PlayerManager();
 
     state = $state.raw(AppState.Splash);
@@ -78,7 +88,16 @@ export class App {
 
     constructor() {
         this.entityManager = new EntityManager(this, {
+            // [EntityType.Beam]: this.beamManager,
+            // [EntityType.Blast]: this.blastManager,
+            // [EntityType.Bullet]: this.bulletManager,
+            // [EntityType.Missile]: this.missileManager,
+            // [EntityType.Asteroid]: this.asteroidManager,
+            [EntityType.Base]: this.baseManager,
             [EntityType.Loot]: this.lootManager,
+            // [EntityType.Planet]: this.planetManager,
+            // [EntityType.Turret]: this.turretManager,
+            // [EntityType.Vortex]: this.vortexManager,
             [EntityType.Player]: this.playerManager
         });
     }

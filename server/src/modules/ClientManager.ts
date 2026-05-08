@@ -81,7 +81,7 @@ export class Client {
         if (packet === undefined) return;
 
         if (!this.player && packet.type === PacketType.Join) {
-            if (packet.guest) this.player = this.game.playerManager.addPlayer(this, packet);
+            if (packet.guest) this.player = this.game.playerManager.addPlayer(this, packet, packet.team);
             else {
                 const { username, token } = packet;
 
@@ -95,7 +95,7 @@ export class Client {
                 }).then(res => {
                     if (res.status === 200) {
                         res.json().then(data => {
-                            this.player = this.game.playerManager.addPlayer(this, packet, data.sector);
+                            this.player = this.game.playerManager.addPlayer(this, packet, data.team, data.sector);
                         });
                     }
                 });

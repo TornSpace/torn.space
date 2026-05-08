@@ -18,17 +18,33 @@
 
 import { GameBitStream, PacketRegister, type Packet } from "../net";
 import { ChatPacket } from "../net/ChatPacket";
+import { ChatServerPacket } from "../net/ChatServerPacket";
+import { DeathPacket } from "../net/DeathPacket";
+import { DebugPacket } from "../net/DebugPacket";
+import { DebugTogglePacket } from "../net/DebugTogglePacket";
+import { DisconnectPacket } from "../net/DisconnectPacket";
 import { InputPacket } from "../net/InputPacket";
 import { JoinedPacket } from "../net/JoinedPacket";
 import { JoinPacket } from "../net/JoinPacket";
+import { KillPacket } from "../net/KillPacket";
+import { RespawnPacket } from "../net/RespawnPacket";
 import { UpdatePacket } from "../net/UpdatePacket";
 
 const ClientToServerPackets = new PacketRegister();
 const ServerToClientPackets = new PacketRegister();
 
-ClientToServerPackets.register(JoinPacket, InputPacket);
+ClientToServerPackets.register(JoinPacket, DisconnectPacket, DebugTogglePacket, ChatPacket, InputPacket, RespawnPacket);
 
-ServerToClientPackets.register(JoinedPacket, ChatPacket, UpdatePacket);
+ServerToClientPackets.register(
+    // AnnouncementPacket,
+    ChatServerPacket,
+    DeathPacket,
+    DebugPacket,
+    JoinedPacket,
+    KillPacket,
+    // RaidPacket,
+    UpdatePacket
+);
 
 export class PacketStream {
     stream: GameBitStream;

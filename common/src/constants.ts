@@ -32,12 +32,10 @@ export enum EntityType {
 }
 
 export const GameConstants = {
-    base: {
-        /**
-         * The docking radius of the base.
-         */
-        radius: 50
-    },
+    /**
+     * The docking radius of the base.
+     */
+    baseRadius: 50,
     /**
      * The relative speed at which the game runs at. The absolute speed is this multiplied by the tickrate.
      */

@@ -15,3 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import { PacketType } from "../constants";
+import { AbstractPacket, GameBitStream } from "../net";
+
+export class DeathPacket implements AbstractPacket {
+    readonly type = PacketType.Death;
+
+    lives = 0;
+
+    serialize(stream: GameBitStream): void {
+        stream.writeUint8(this.lives);
+    }
+
+    deserialize(stream: GameBitStream): void {
+        this.lives = stream.readUint8();
+    }
+}

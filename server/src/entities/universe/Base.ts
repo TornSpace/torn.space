@@ -27,7 +27,7 @@ import { v2, type Vec2 } from "@/common/utils/v2";
 
 export class Base extends AbstractServerEntity {
     readonly __type = EntityType.Base;
-    readonly hitbox = new CircleHitbox(GameConstants.base.radius);
+    readonly hitbox = new CircleHitbox(GameConstants.baseRadius);
 
     team!: Team;
     direction!: Vec2;

@@ -15,3 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import { PacketType } from "../constants";
+import { AbstractPacket, GameBitStream } from "../net";
+
+export class KillPacket implements AbstractPacket {
+    readonly type = PacketType.Kill;
+
+    serialize(_stream: GameBitStream): void {}
+    deserialize(_stream: GameBitStream): void {}
+}

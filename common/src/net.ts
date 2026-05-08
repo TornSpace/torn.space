@@ -23,12 +23,14 @@ import { assert } from "./utils/util";
 
 import type { ChatPacket } from "./net/ChatPacket";
 import type { ChatServerPacket } from "./net/ChatServerPacket";
+import type { DeathPacket } from "./net/DeathPacket";
 import type { DebugPacket } from "./net/DebugPacket";
 import type { DebugTogglePacket } from "./net/DebugTogglePacket";
 import type { DisconnectPacket } from "./net/DisconnectPacket";
 import type { InputPacket } from "./net/InputPacket";
 import type { JoinedPacket } from "./net/JoinedPacket";
 import type { JoinPacket } from "./net/JoinPacket";
+import type { KillPacket } from "./net/KillPacket";
 import type { RespawnPacket } from "./net/RespawnPacket";
 import type { UpdatePacket } from "./net/UpdatePacket";
 import type { Vec2 } from "./utils/v2";
@@ -273,11 +275,13 @@ export abstract class AbstractPacket {
 export type Packet =
     | ChatPacket
     | ChatServerPacket
+    | DeathPacket
     | DebugPacket
     | DebugTogglePacket
     | DisconnectPacket
     | InputPacket
     | JoinedPacket
+    | KillPacket
     | JoinPacket
     | RespawnPacket
     | UpdatePacket;
