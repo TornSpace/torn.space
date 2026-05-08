@@ -155,7 +155,7 @@ export class Client {
         // Calculate visible, deleted, and dirty entities, and send them to the client.
         // TODO: Don't send docked players!
         const rect = RectHitbox.fromCircle(GameConstants.player.viewRadius, this.position);
-        const newVisibleEntities = this.game.grid.intersectsHitbox(rect);
+        const newVisibleEntities = this.game.grid.intersectsHitbox(rect, this.sector);
 
         for (const entity of this.visibleEntities) {
             if (!newVisibleEntities.has(entity)) updatePacket.deletedEntities.push(entity.id);

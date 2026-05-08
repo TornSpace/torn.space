@@ -104,6 +104,7 @@ export class Game {
             for (let i = 0; i < sectors.length; i++) {
                 const sector = sectors[i];
                 const sectorVec = v2.new(sector[0], sector[1]);
+
                 this.baseManager.allocEntity(parseInt(team), sectorVec);
                 this.logger.debug("Game", `Spawned base in sector ${util.sectorToString(sectorVec)}.`);
             }

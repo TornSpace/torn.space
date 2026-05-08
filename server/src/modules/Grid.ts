@@ -19,16 +19,22 @@
 import type { ServerEntity } from "../entities/Entity";
 
 import { GameConstants } from "@/common/constants";
-import { RectHitbox, type Hitbox } from "@/common/utils/hitbox";
+import { RectHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
 export class Grid {
     /**
+     * The number of grid cells per sector.
+     * @default 9
+     */
+    static readonly cellsPerSector = 9;
+
+    /**
      * The size of an individual cell, in game units.
      * Be careful not to let `GameConstants.sectorWidth * GameConstants.mapSize / Grid.cellSize` become too big!
      */
-    static readonly cellSize = GameConstants.sectorWidth / 81;
+    static readonly cellSize = GameConstants.sectorWidth / Grid.cellsPerSector;
 
     readonly width: number;
     readonly height: number;
@@ -92,18 +98,14 @@ export class Grid {
     }
 
     /**
-     * Get all entities near this Hitbox
-     * This transforms the Hitbox into a rectangle
-     * and gets all entities intersecting it after rounding it to grid cells
-     * @param Hitbox The Hitbox
-     * @returns A set with the entities near this Hitbox
+     * Get all entities near this hitbox.
+     * This transforms the hitbox into a rectangle and gets all entities intersecting it after rounding it to grid cells and clamping to the target sector.
+     * @param rect The hitbox.
+     * @param sector The sector to check in. All entities outside of this sector will be discarded.
+     * @returns A set with the entities near this Hitbox.
      */
-    intersectsHitbox(hitbox: Hitbox): Set<ServerEntity> {
-        const rect = hitbox.toRectangle();
-
-        const min = this._roundToCells(rect.min);
-        const max = this._roundToCells(rect.max);
-
+    intersectsHitbox(rect: RectHitbox, sector: Vec2): Set<ServerEntity> {
+        const { min, max } = this._roundToSector(rect.min, rect.max, sector);
         const entities = new Set<ServerEntity>();
 
         for (let x = min.x; x <= max.x; x++) {
@@ -119,20 +121,32 @@ export class Grid {
         return entities;
     }
 
-    intersectPos(pos: Vec2): ServerEntity[] {
-        pos = this._roundToCells(pos);
+    intersectPos(pos: Vec2, sector: Vec2): ServerEntity[] {
+        pos = this._roundToCells(v2.add(pos, v2.mult(sector, GameConstants.sectorWidth)));
         return [...this._grid[pos.x][pos.y]];
     }
 
-    // TODO: Optimize this.
-    intersectLineSegment(a: Vec2, b: Vec2): Set<ServerEntity> {
-        return this.intersectsHitbox(RectHitbox.fromLine(a, b));
+    intersectLineSegment(a: Vec2, b: Vec2, sector: Vec2): Set<ServerEntity> {
+        return this.intersectsHitbox(RectHitbox.fromLine(a, b), sector);
     }
 
     private _roundToCells(v: Vec2): Vec2 {
         return {
             x: math.clamp(Math.floor(v.x / Grid.cellSize), 0, this.width),
             y: math.clamp(Math.floor(v.y / Grid.cellSize), 0, this.height)
+        };
+    }
+
+    private _roundToSector(min: Vec2, max: Vec2, sector: Vec2): Record<"min" | "max", Vec2> {
+        const rawMin = this._roundToCells(min);
+        const rawMax = this._roundToCells(max);
+
+        const trueMin = v2.maxComp(rawMin, v2.mult(sector, Grid.cellsPerSector));
+        const trueMax = v2.minComp(rawMax, v2.mult(sector, Grid.cellsPerSector));
+
+        return {
+            min: trueMin,
+            max: trueMax
         };
     }
 }
