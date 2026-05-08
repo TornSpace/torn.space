@@ -84,7 +84,7 @@ export class Logger {
      * Log a splash message.
      * @param topic The message topic.
      */
-    splash (topic: string): void {
+    splash(topic: string): void {
         // oxfmt-ignore
         this.info(topic, `************************************************************************************************************************`);
         // oxfmt-ignore

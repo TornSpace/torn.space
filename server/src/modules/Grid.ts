@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants } from "@/common/constants";
 import type { ServerEntity } from "../entities/Entity";
 
+import { GameConstants } from "@/common/constants";
 import { RectHitbox, type Hitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
@@ -39,9 +39,8 @@ export class Grid {
         this.width = Math.floor(width / Grid.cellSize);
         this.height = Math.floor(height / Grid.cellSize);
 
-        this._grid = Array.from(
-            { length: this.width + 1 },
-            () => Array.from({ length: this.height + 1 }, () => new Set())
+        this._grid = Array.from({ length: this.width + 1 }, () =>
+            Array.from({ length: this.height + 1 }, () => new Set())
         );
     }
 
