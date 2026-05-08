@@ -82,7 +82,18 @@ export class Player extends ClientEntity {
         this.staticContainer.addChild(this.nameText);
     }
 
-    override updateFromData(data: EntitiesNetData[EntityType.Player], isNew: boolean): void {}
+    override updateFromData(data: EntitiesNetData[EntityType.Player], isNew: boolean): void {
+        super.updateFromData(data, isNew);
+
+        this.prevPosition = isNew ? data.position : v2.clone(this.position);
+        this.position = data.position;
+
+        this.hitbox.position = this.position;
+
+        if (data.full) {
+            this.container.visible = this.nameText.visible = !this.dead;
+        }
+    }
 
     override free(): void {
         this.container.visible = false;

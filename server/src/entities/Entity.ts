@@ -17,6 +17,8 @@
  */
 
 import type { Game } from "../modules/Game";
+import type { Player } from "./Player";
+import type { Loot } from "./universe/Loot";
 import type { ValidEntityType } from "@/common/constants";
 import type { Hitbox } from "@/common/utils/hitbox";
 
@@ -24,12 +26,14 @@ import { GameBitStream } from "@/common/net";
 import { EntitySerializations, type EntitiesNetData } from "@/common/net/UpdatePacket";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
-export abstract class ServerEntity<T extends ValidEntityType = ValidEntityType> {
+export abstract class AbstractServerEntity<T extends ValidEntityType = ValidEntityType> {
     abstract readonly __type: T;
-    __gridCells: Vec2[] = [];
+    abstract hitbox: Hitbox;
 
     declare id: number;
     declare __poolIdx: number;
+
+    __gridCells: Vec2[] = [];
 
     active = false;
     registered = false;
@@ -39,8 +43,6 @@ export abstract class ServerEntity<T extends ValidEntityType = ValidEntityType> 
 
     _position: Vec2;
     sector: Vec2;
-
-    abstract hitbox: Hitbox;
 
     constructor(readonly game: Game) {
         this._position = v2.new(0, 0);
@@ -80,10 +82,7 @@ export abstract class ServerEntity<T extends ValidEntityType = ValidEntityType> 
         this.partialStream.writeUint16(this.id);
         this.partialStream.writeUint8(this.__type);
 
-        EntitySerializations[this.__type].serializePartial(
-            this.partialStream,
-            this.data as EntitiesNetData[typeof this.__type]
-        );
+        EntitySerializations[this.__type].serializePartial(this.partialStream, this.data);
 
         this.partialStream.writeAlignToNextByte();
     }
@@ -112,9 +111,11 @@ export abstract class ServerEntity<T extends ValidEntityType = ValidEntityType> 
             return;
         }
 
+        // @ts-expect-error Types will intentionally never intersect.
         this.game.entityManager.typeToPool[this.__type].freeEntity(this);
-        this.game.grid.removeEntity(this);
-        this.game.entityManager.deletedEntities.push(this);
+
+        this.game.grid.removeEntity(this as unknown as ServerEntity);
+        this.game.entityManager.deletedEntities.push(this as unknown as ServerEntity);
     }
 
     abstract get data(): Required<EntitiesNetData[T]>;
@@ -182,3 +183,5 @@ export abstract class EntityPool<T extends ServerEntity> {
         }
     }
 }
+
+export type ServerEntity = Loot | Player;

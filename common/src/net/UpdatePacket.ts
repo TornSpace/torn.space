@@ -30,6 +30,8 @@ import { v2, type Vec2 } from "../utils/v2";
  */
 export interface EntitiesNetData {
     [EntityType.Loot]: {
+        direction: Vec2;
+
         full?: {
             position: Vec2;
             type: LootDefKey;
@@ -51,24 +53,28 @@ interface EntitySerialization<T extends ValidEntityType> {
     partialSize: number;
     fullSize: number;
 
-    serializePartial: (stream: GameBitStream, data: EntitiesNetData[T]) => void;
+    serializePartial: (stream: GameBitStream, data: Omit<EntitiesNetData[T], "full">) => void;
     serializeFull: (stream: GameBitStream, data: Required<EntitiesNetData[T]>["full"]) => void;
 
-    deserializePartial: (stream: GameBitStream) => EntitiesNetData[T];
+    deserializePartial: (stream: GameBitStream) => Omit<EntitiesNetData[T], "full">;
     deserializeFull: (stream: GameBitStream) => Required<EntitiesNetData[T]>["full"];
 }
 
 export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization<K> } = {
     [EntityType.Loot]: {
-        partialSize: 0,
-        fullSize: 6,
-        serializePartial(_stream, _data) {},
+        partialSize: 16,
+        fullSize: 10,
+        serializePartial(stream, data) {
+            stream.writeUnit(data.direction, 16);
+        },
         serializeFull(stream, data) {
             stream.writePosition(data.position);
             LootDefs.write(stream, data.type);
         },
-        deserializePartial(_stream) {
-            return { full: undefined };
+        deserializePartial(stream) {
+            return {
+                direction: stream.readUnit(16)
+            };
         },
         deserializeFull(stream) {
             return {
@@ -238,10 +244,15 @@ export class UpdatePacket implements AbstractPacket {
             stream.readArray(this.fullEntities, 16, () => {
                 const id = stream.readUint16();
                 const entityType = stream.readUint8() as ValidEntityType;
-                const data = EntitySerializations[entityType].deserializePartial(stream);
 
+                const partialData = EntitySerializations[entityType].deserializePartial(stream);
                 stream.readAlignToNextByte();
-                data.full = EntitySerializations[entityType].deserializeFull(stream);
+
+                const data = {
+                    ...partialData,
+                    full: EntitySerializations[entityType].deserializeFull(stream)
+                };
+
                 stream.readAlignToNextByte();
 
                 return {

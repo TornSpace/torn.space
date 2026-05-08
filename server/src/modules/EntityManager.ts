@@ -22,7 +22,7 @@ import type { Loot } from "../entities/universe/Loot";
 import type { Game } from "./Game";
 import type { DebugPacket } from "@/common/net/DebugPacket";
 
-import { EntityType, GameConstants, type ValidEntityType } from "@/common/constants";
+import { EntityType, GameConstants } from "@/common/constants";
 import { assert } from "@/common/utils/util";
 
 export class EntityManager {
@@ -51,8 +51,8 @@ export class EntityManager {
         this.typeToPool = pools;
     }
 
-    getById<T extends ServerEntity<ValidEntityType>>(id: number): T | undefined {
-        return (this.entityMap[id] as T) ?? undefined;
+    getById(id: number): ServerEntity | undefined {
+        return this.entityMap[id] ?? undefined;
     }
 
     allocId(): number {

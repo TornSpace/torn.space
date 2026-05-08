@@ -82,7 +82,27 @@ export class Client {
         if (packet === undefined) return;
 
         if (!this.player && packet.type === PacketType.Join) {
-            this.player = this.game.playerManager.addPlayer(this, packet);
+            let sector: Vec2;
+
+            if (packet.guest) this.player = this.game.playerManager.addPlayer(this, packet);
+            else {
+                const { username, token } = packet;
+
+                fetch(this.game.config.gameServer.apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${this.game.config.secrets.TORN_GS_KEY}`
+                    },
+                    body: JSON.stringify({ username, token })
+                }).then(res => {
+                    if (res.status === 200) {
+                        const data = res.json();
+
+                        this.player = this.game.playerManager.addPlayer(this, packet, data.sector);
+                    }
+                });
+            }
             return;
         }
 

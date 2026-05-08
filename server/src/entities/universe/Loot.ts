@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { EntityPool, ServerEntity } from "../Entity";
+import { AbstractServerEntity, EntityPool } from "../Entity";
 
 import type { Game } from "../../modules/Game";
 import type { LootDefKey } from "@/common/defs/lootDefs";
@@ -24,17 +24,29 @@ import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType } from "@/common/constants";
 import { CircleHitbox } from "@/common/utils/hitbox";
+import { v2, type Vec2 } from "@/common/utils/v2";
 
-export class Loot extends ServerEntity {
+export class Loot extends AbstractServerEntity {
     readonly __type = EntityType.Loot;
     readonly hitbox = new CircleHitbox(0);
 
     type!: LootDefKey;
+    direction!: Vec2;
 
-    update(dt: number): void {}
+    init(type: LootDefKey, position: Vec2): void {
+        this.type = type;
+        this.position = position;
+
+        this.hitbox.position = this.position;
+    }
+
+    update(dt: number): void {
+        this.direction = v2.rotate(this.direction, dt);
+    }
 
     get data(): Required<EntitiesNetData[EntityType.Loot]> {
         return {
+            direction: this.direction,
             full: {
                 position: this.position,
                 type: this.type

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { EntityPool, ServerEntity } from "./Entity";
+import { AbstractServerEntity, EntityPool } from "./Entity";
 
 import { WeaponManager } from "../modules/WeaponManager";
 
@@ -33,7 +33,7 @@ import { CircleHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
-export class Player extends ServerEntity {
+export class Player extends AbstractServerEntity {
     readonly __type = EntityType.Player;
     readonly hitbox = new CircleHitbox(0);
 

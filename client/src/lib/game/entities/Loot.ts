@@ -23,16 +23,19 @@ import { ClientEntity } from "./ClientEntity";
 import { EntityPool } from "../modules/EntityManager";
 
 import type { App } from "../App.svelte";
-import type { LootDefKey } from "@/common/defs/lootDefs";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType, GameConstants } from "@/common/constants";
+import { LootDefs, type LootDefKey } from "@/common/defs/lootDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
+import { v2 } from "@/common/utils/v2";
 
 export class Loot extends ClientEntity {
     readonly __type = EntityType.Loot;
 
     type = "" as LootDefKey;
+
+    direction = v2.new(0, 0);
 
     sprite = new Sprite({ anchor: 0.5 });
 
@@ -50,6 +53,16 @@ export class Loot extends ClientEntity {
 
     override updateFromData(data: EntitiesNetData[EntityType.Loot], isNew: boolean): void {
         super.updateFromData(data, isNew);
+
+        this.direction = data.direction;
+
+        if (data.full) {
+            this.position = data.full.position;
+            this.type = data.full.type;
+
+            // const def = LootDefs.typeToDef(this.type);
+            // sprite from def
+        }
     }
 
     override update(dt: number): void {

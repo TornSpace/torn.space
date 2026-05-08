@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants, PacketType } from "../constants";
+import { GameConstants, PacketType, Team } from "../constants";
 import { AbstractPacket, GameBitStream } from "../net";
 
 export class JoinPacket implements AbstractPacket {
@@ -25,6 +25,7 @@ export class JoinPacket implements AbstractPacket {
     protocol = 0;
 
     guest = false;
+    team!: Team;
     username = "";
     token = "";
 
@@ -37,7 +38,7 @@ export class JoinPacket implements AbstractPacket {
         if (!this.guest) {
             stream.writeASCIIString(this.username, GameConstants.player.maxNameLength);
             stream.writeASCIIString(this.token, 32);
-        }
+        } else stream.writeUint8(this.team);
     }
 
     deserialize(stream: GameBitStream): void {
@@ -48,6 +49,6 @@ export class JoinPacket implements AbstractPacket {
         if (!this.guest) {
             this.username = stream.readASCIIString(GameConstants.player.maxNameLength);
             this.token = stream.readASCIIString(32);
-        }
+        } else this.team = stream.readUint8();
     }
 }
