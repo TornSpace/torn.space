@@ -26,7 +26,7 @@ import type { App } from "../App.svelte";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType, GameConstants } from "@/common/constants";
-import { LootDefs, type LootDefKey } from "@/common/defs/lootDefs";
+import { type LootDefKey } from "@/common/defs/lootDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { v2 } from "@/common/utils/v2";
 

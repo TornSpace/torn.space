@@ -18,6 +18,7 @@
 
 import type { EntityPool, ServerEntity } from "../entities/Entity";
 import type { Player } from "../entities/Player";
+import type { Base } from "../entities/universe/Base";
 import type { Loot } from "../entities/universe/Loot";
 import type { Game } from "./Game";
 import type { DebugPacket } from "@/common/net/DebugPacket";
@@ -38,7 +39,16 @@ export class EntityManager {
     freeIds: number[] = [];
 
     typeToPool: {
+        // [EntityType.Beam]: EntityPool<Beam>;
+        // [EntityType.Blast]: EntityPool<Blast>;
+        // [EntityType.Bullet]: EntityPool<Bullet>;
+        // [EntityType.Missile]: EntityPool<Missile>;
+        // [EntityType.Asteroid]: EntityPool<Asteroid>;
+        [EntityType.Base]: EntityPool<Base>;
         [EntityType.Loot]: EntityPool<Loot>;
+        // [EntityType.Planet]: EntityPool<Planet>;
+        // [EntityType.Turret]: EntityPool<Turret>;
+        // [EntityType.Vortex]: EntityPool<Vortex>;
         [EntityType.Player]: EntityPool<Player>;
     };
 

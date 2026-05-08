@@ -17,7 +17,6 @@
  */
 
 import type { ServerEntity } from "../entities/Entity";
-import type { ValidEntityType } from "@/common/constants";
 
 import { RectHitbox, type Hitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
@@ -118,13 +117,13 @@ export class Grid {
         return entities;
     }
 
-    intersectPos(pos: Vec2): Array<ServerEntity<ValidEntityType>> {
+    intersectPos(pos: Vec2): ServerEntity[] {
         pos = this._roundToCells(pos);
         return [...this._grid[pos.x][pos.y]];
     }
 
     // TODO: Optimize this.
-    intersectLineSegment(a: Vec2, b: Vec2): Set<ServerEntity<ValidEntityType>> {
+    intersectLineSegment(a: Vec2, b: Vec2): Set<ServerEntity> {
         return this.intersectsHitbox(RectHitbox.fromLine(a, b));
     }
 

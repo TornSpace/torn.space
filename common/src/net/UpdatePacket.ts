@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { EntityType, GameConstants, PacketType, type LeaderboardEntry, type ValidEntityType } from "../constants";
+import { EntityType, GameConstants, PacketType, Team, type LeaderboardEntry, type ValidEntityType } from "../constants";
 import { LootDefs, type LootDefKey } from "../defs/lootDefs";
 import { WeaponDefs, type WeaponDefKey } from "../defs/weaponDefs";
 import { AbstractPacket, GameBitStream } from "../net";
@@ -29,6 +29,15 @@ import { v2, type Vec2 } from "../utils/v2";
  * while full data should be used for data that rarely changes.
  */
 export interface EntitiesNetData {
+    [EntityType.Base]: {
+        direction: Vec2;
+
+        full?: {
+            position: Vec2;
+            team: Team;
+        };
+    };
+
     [EntityType.Loot]: {
         direction: Vec2;
 
@@ -61,6 +70,28 @@ interface EntitySerialization<T extends ValidEntityType> {
 }
 
 export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization<K> } = {
+    [EntityType.Base]: {
+        partialSize: 16,
+        fullSize: 10,
+        serializePartial(stream, data) {
+            stream.writeUnit(data.direction, 16);
+        },
+        serializeFull(stream, data) {
+            stream.writePosition(data.position);
+            stream.writeUint8(data.team);
+        },
+        deserializePartial(stream) {
+            return {
+                direction: stream.readUnit(16)
+            };
+        },
+        deserializeFull(stream) {
+            return {
+                position: stream.readPosition(),
+                team: stream.readUint8()
+            };
+        }
+    },
     [EntityType.Loot]: {
         partialSize: 16,
         fullSize: 10,

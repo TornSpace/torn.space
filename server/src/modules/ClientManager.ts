@@ -1,5 +1,4 @@
-import { ServerEntity } from "../entities/Entity";
-
+import type { ServerEntity } from "../entities/Entity";
 import type { Player } from "../entities/Player";
 import type { Game } from "./Game";
 import type { Packet } from "@/common/net";
@@ -82,8 +81,6 @@ export class Client {
         if (packet === undefined) return;
 
         if (!this.player && packet.type === PacketType.Join) {
-            let sector: Vec2;
-
             if (packet.guest) this.player = this.game.playerManager.addPlayer(this, packet);
             else {
                 const { username, token } = packet;
@@ -97,12 +94,13 @@ export class Client {
                     body: JSON.stringify({ username, token })
                 }).then(res => {
                     if (res.status === 200) {
-                        const data = res.json();
-
-                        this.player = this.game.playerManager.addPlayer(this, packet, data.sector);
+                        res.json().then(data => {
+                            this.player = this.game.playerManager.addPlayer(this, packet, data.sector);
+                        });
                     }
                 });
             }
+
             return;
         }
 

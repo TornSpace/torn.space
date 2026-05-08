@@ -18,11 +18,29 @@
 
 export enum EntityType {
     Invalid,
+    // Beam,
+    // Blast,
+    // Bullet,
+    // Missile,
+    // Asteroid,
+    Base,
     Loot,
+    // Planet,
+    // Turret,
+    // Vortex,
     Player
 }
 
 export const GameConstants = {
+    base: {
+        /**
+         * The docking radius of the base.
+         */
+        radius: 50
+    },
+    /**
+     * The relative speed at which the game runs at. The absolute speed is this multiplied by the tickrate.
+     */
     gameSpeed: 1,
     leaderboardMaxEntries: 25,
     lootRadius: 16,
@@ -66,7 +84,51 @@ export const GameConstants = {
          * The maximum number of weapon slots a player can have.
          */
         weaponSlots: 10
-    }
+    },
+    /**
+     * Exp to rank conversion.
+     * Note: This is **intentionally** initially specified as an object so that it is easier to read.
+     */
+    // oxfmt-ignore
+    ranks: Object.values({
+        r0: 0,
+        r1: 1,
+        r2: 5,
+        r3: 10,
+        r4: 20,
+        r5: 50,
+        r6: 100,
+        r7: 200,
+        r8: 500,
+        r9: 1e3,
+        r10: 2e3,
+        r11: 4e3,
+        r12: 8e3,
+        r13: 14e3,
+        r14: 2e4,
+        r15: 4e4,
+        r16: 7e4,
+        r17: 1e5,
+        r18: 14e4,
+        r19: 2e5,
+        r20: 3e5,
+        r21: 5e5,
+        r22: 8e5,
+        r23: 1e6,
+        r24: 15e5,
+        r25: 2e6,
+        r26: 3e6,
+        r27: 5e6,
+        r28: 8e6,
+        r29: 12e6,
+        r30: 16e6,
+        r31: 32e6,
+        r32: 64e6,
+        r33: 1e7,
+        r34: 2e7,
+        r35: 4e7,
+        r36: 1e8
+    })
 };
 
 export interface LeaderboardEntry {

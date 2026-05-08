@@ -18,6 +18,7 @@
 
 import type { Game } from "../modules/Game";
 import type { Player } from "./Player";
+import type { Base } from "./universe/Base";
 import type { Loot } from "./universe/Loot";
 import type { ValidEntityType } from "@/common/constants";
 import type { Hitbox } from "@/common/utils/hitbox";
@@ -184,4 +185,4 @@ export abstract class EntityPool<T extends ServerEntity> {
     }
 }
 
-export type ServerEntity = Loot | Player;
+export type ServerEntity = Base | Loot | Player;

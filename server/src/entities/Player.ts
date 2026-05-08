@@ -16,22 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AbstractServerEntity, EntityPool } from "./Entity";
+import { AbstractServerEntity, EntityPool, type ServerEntity } from "./Entity";
 
 import { WeaponManager } from "../modules/WeaponManager";
 
 import type { Client } from "../modules/ClientManager";
 import type { Game } from "../modules/Game";
+import type { Base } from "./universe/Base";
 import type { InputPacket } from "@/common/net/InputPacket";
 import type { JoinPacket } from "@/common/net/JoinPacket";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
-import { EntityType, GameConstants, Trail, type LeaderboardEntry } from "@/common/constants";
+import { EntityType, GameConstants, Team, Trail, type LeaderboardEntry } from "@/common/constants";
 import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
 import { WeaponDefs, type WeaponDefKey } from "@/common/defs/weaponDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
+
+interface PlayerDamageParams {
+    position: Vec2;
+    amount: number;
+    source?: ServerEntity;
+}
 
 export class Player extends AbstractServerEntity {
     readonly __type = EntityType.Player;
@@ -41,15 +48,18 @@ export class Player extends AbstractServerEntity {
         id: true,
         hp: true,
         weapons: true,
-        ammo: true
+        ammo: true,
+        ore: true
     };
 
     name = "";
     client!: Client;
+    team!: Team;
 
     velocity = v2.new(0, 0);
     direction = v2.new(0, 0);
-    lastDockPosition = v2.new(0, 0); // todo: maybe just reference the entity id?
+
+    lastDockId = -1;
 
     moveFwd = false;
     moveBwd = false;
@@ -73,14 +83,15 @@ export class Player extends AbstractServerEntity {
 
     // Asteroids.
     iron = 0;
-    copper = 0;
     silver = 0;
+    copper = 0;
     platinum = 0;
 
     // Timers.
     baseTimer = 0;
     borderTimer = 0;
     cloakTimer = 0;
+    dockTimer = 0;
     empTimer = 0;
     gyroTimer = 0;
     hyperdriveTimer = 0;
@@ -88,8 +99,9 @@ export class Player extends AbstractServerEntity {
     superchargerTimer = 0;
 
     shield = false;
+    docked = false;
 
-    money = 8000;
+    balance = 8000;
     ship: ShipDefKey = "r0";
     xp = 0;
     rank = 0;
@@ -107,10 +119,13 @@ export class Player extends AbstractServerEntity {
     private _hp = 1;
     private _charge = 0;
 
-    get maxHP(): number {
-        const def = ShipDefs.typeToDef(this.ship);
+    get charge(): number {
+        return this._charge;
+    }
 
-        return def.hp * this.tech.hp;
+    set charge(charge: number) {
+        if (charge === this.charge) return;
+        this.charge = math.clamp(this.charge, 0, this.charge);
     }
 
     get hp(): number {
@@ -124,13 +139,14 @@ export class Player extends AbstractServerEntity {
         this.dirty.hp = true;
     }
 
-    get charge(): number {
-        return this._charge;
+    get maxHP(): number {
+        const def = ShipDefs.typeToDef(this.ship);
+
+        return def.hp * this.tech.hp;
     }
 
-    set charge(charge: number) {
-        if (charge === this.charge) return;
-        this.charge = math.clamp(this.charge, 0, this.charge);
+    get ore(): number {
+        return this.iron + this.silver + this.copper + this.platinum;
     }
 
     override get position(): Vec2 {
@@ -142,13 +158,29 @@ export class Player extends AbstractServerEntity {
         this._position = pos;
     }
 
-    init(client: Client, name: string, sector: Vec2): void {
+    init(client: Client, name: string, sector?: Vec2): void {
         this.client = client;
         this.name = name;
 
+        // Find the base associated with the sector.
+        // TODO: Probably try and make this efficient.
+        // This is also used in multiple locations. Maybe extract to common function?
+        let base: Base | undefined;
+        if (sector) base = this.game.baseManager.pool.find(base => v2.eq(sector, base.sector));
+        if (!sector || !base) {
+            const teamBases = this.game.baseManager.pool.filter(base => base.team === this.team);
+            base = teamBases[Math.floor(Math.random() * teamBases.length)];
+        }
+
+        this.lastDockId = base.id;
+
         // Spawn player at the last logged-off base.
-        this.sector = sector;
+        this.sector = base.sector;
         this.position = v2.new(GameConstants.maxPosition / 2, GameConstants.maxPosition / 2);
+
+        // Give player 3 seconds of invulnerability.
+        this.dockTimer = 3 * this.game.config.tps;
+        this.refillAmmo();
     }
 
     refillAmmo(): void {
@@ -163,9 +195,11 @@ export class Player extends AbstractServerEntity {
     update(dt: number): void {
         if (this.dead) return;
 
+        // Timer extravaganza.
         if (this.baseTimer >= 0) this.baseTimer -= dt;
         if (this.borderTimer >= 0) this.borderTimer -= dt;
         if (this.cloakTimer >= 0) this.cloakTimer -= dt;
+        if (this.dockTimer >= 0) this.dockTimer -= dt;
         if (this.empTimer >= 0) this.empTimer -= dt;
         if (this.gyroTimer >= 0) this.gyroTimer -= dt;
         if (this.hyperdriveTimer >= 0) this.hyperdriveTimer -= dt;
@@ -188,11 +222,39 @@ export class Player extends AbstractServerEntity {
         // The player cannot conduct any further actions while EMP'd.
         if (this.empTimer > 0) return;
 
-        this.move(drifting);
+        this.move(dt, drifting);
         if (this.attack && this.charge > 0) this.fireWeapon();
     }
 
-    move(drifting: boolean): void {
+    /**
+     * EMP a player.
+     * @param duration The base duration of the EMP.
+     */
+    emp(duration: number): void {
+        const ship = ShipDefs.typeToDef(this.ship);
+
+        // EMP works better against elite ships.
+        if (ship.elite) duration *= 1.25;
+
+        // Player instantly stops moving.
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+
+        // Actually EMP the player.
+        this.empTimer = duration * this.game.config.tps;
+    }
+
+    /**
+     * Damage a player.
+     * @param params Damage parameters.
+     */
+    dmg(_params: PlayerDamageParams): void {}
+
+    /**
+     * Player movement.
+     * @param drifting Whether the player is currently drifting.
+     */
+    move(dt: number, _drifting: boolean): void {
         if (this.hyperdriveTimer > 0) {
         }
 
@@ -210,7 +272,7 @@ export class Player extends AbstractServerEntity {
             this.position.x += this.jukeTimer * this.direction.y;
             this.position.y -= this.jukeTimer * this.direction.x;
 
-            this.jukeTimer *= 0.36;
+            this.jukeTimer *= 0.03 * dt;
         }
     }
 
@@ -218,7 +280,9 @@ export class Player extends AbstractServerEntity {
 
     fireEliteWeapon(): void {}
 
-    jettisonCargo(): void {}
+    jettisonCargo(): void {
+        this.iron = this.silver = this.copper = this.platinum = 0;
+    }
 
     /**
      * Process a given input packet.
@@ -267,7 +331,7 @@ export class PlayerManager extends EntityPool<Player> {
         super(game, Player);
     }
 
-    addPlayer(client: Client, packet: JoinPacket, sector: Vec2): Player {
+    addPlayer(client: Client, packet: JoinPacket, sector?: Vec2): Player {
         const player = this.allocEntity(
             client,
             packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx}`,
@@ -286,7 +350,11 @@ export class PlayerManager extends EntityPool<Player> {
     }
 
     resetPlayer(player: Player): void {
-        player.position = player.lastDockPosition;
+        // TODO: Try and optimize below O(n).
+        const teamBases = this.game.baseManager.pool.filter(base => base.team === player.team);
+        const base = teamBases[Math.floor(Math.random() * teamBases.length)];
+
+        player.position = base.position;
 
         this.game.grid.updateEntity(player);
 

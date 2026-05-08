@@ -21,6 +21,7 @@ import { EntityManager } from "./EntityManager";
 import { Grid } from "./Grid";
 
 import { PlayerManager } from "../entities/Player";
+import { BaseManager } from "../entities/universe/Base";
 import { LootManager } from "../entities/universe/Loot";
 
 import type { Config } from "../../../config.d";
@@ -40,7 +41,16 @@ export class Game {
     entityManager: EntityManager;
     clientManager = new ClientManager(this);
 
+    // beamManager = new BeamManager(this);
+    // blastManager = new BlastManager(this);
+    // bulletManager = new BulletManager(this);
+    // missileManager = new MissileManager(this);
+    // asteroidManager = new AsteroidManager(this);
+    baseManager = new BaseManager(this);
     lootManager = new LootManager(this);
+    // planetManager = new PlanetManager(this);
+    // turretManager = new TurretManager(this);
+    // vortexManager = new VortexManager(this);
     playerManager = new PlayerManager(this);
 
     packetStream = new PacketStream(new ArrayBuffer(1 << 10));
@@ -68,7 +78,16 @@ export class Game {
 
     constructor(readonly config: Config) {
         this.entityManager = new EntityManager(this, {
+            // [EntityType.Beam]: this.beamManager,
+            // [EntityType.Blast]: this.blastManager,
+            // [EntityType.Bullet]: this.bulletManager,
+            // [EntityType.Missile]: this.missileManager,
+            // [EntityType.Asteroid]: this.asteroidManager,
+            [EntityType.Base]: this.baseManager,
             [EntityType.Loot]: this.lootManager,
+            // [EntityType.Planet]: this.planetManager,
+            // [EntityType.Turret]: this.turretManager,
+            // [EntityType.Vortex]: this.vortexManager,
             [EntityType.Player]: this.playerManager
         });
 
