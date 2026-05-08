@@ -16,49 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { pgEnum, pgTable } from "drizzle-orm/pg-core";
+import { pgTable } from "drizzle-orm/pg-core";
 
-// import { User } from "./User.js";
+import { User } from "./User";
 
-/**
- * This is not guaranteed to be the same as ReportReason. This is why that enum is not being used here.
- */
-export enum PunishmentReason {
-    Cheating = "cheating",
-    BadChat = "chat",
-    BadName = "badname",
-    Other = "other"
-}
-
-export enum PunishmentAction {
-    Warn = "warn",
-    Mute = "mute",
-    Tempban = "tempban",
-    Ban = "ban" // This is a permanent ban.
-}
-
-export const PunishmentReasonEnum = pgEnum("punishmentReason", PunishmentReason);
-export const PunishmentActionEnum = pgEnum("punishmentAction", PunishmentAction);
+import { PunishmentAction, PunishmentReason } from "../constants";
 
 export const Punishment = pgTable("punishment", t => ({
     id: t.serial().primaryKey(),
-    uuid: t.uuid().notNull().unique().defaultRandom(),
     createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),
     updatedAt: t.timestamp({ withTimezone: true }),
     expiresAt: t.timestamp({ withTimezone: true }),
-    targetName: t.varchar({ length: 16 }).notNull(),
     targetIp: t.text().notNull(),
-    // targetId: t.integer(),
-    /**
-     * Currently, we do not have website-based moderation. So, instead of a User-based ID, we use the Discord user ID.
-     */
-    issuerDiscordId: t.text().notNull(),
-    // issuerId: t.integer().notNull().references(() => User.id, {
-    //     onDelete: "no action",
-    //     onUpdate: "cascade"
-    // }),
+    targetId: t.integer(),
+    issuerId: t
+        .integer()
+        .notNull()
+        .references(() => User.id, {
+            onDelete: "no action",
+            onUpdate: "cascade"
+        }),
     active: t.boolean().notNull().default(false),
-    action: PunishmentActionEnum().notNull(),
-    reason: PunishmentReasonEnum().notNull(),
+    action: PunishmentAction().notNull(),
+    reason: PunishmentReason().notNull(),
     note: t.text()
 }));

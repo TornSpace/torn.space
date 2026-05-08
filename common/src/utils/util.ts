@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { Vec2 } from "./v2";
+
 /**
  * Common functions and utilities.
  */
@@ -49,6 +51,14 @@ export const util = {
         }
 
         return this.mergeDeep(target, ...sources);
+    },
+
+    /**
+     * Convert a sector to string representation.
+     * @param sector The sector vector.
+     */
+    sectorToString(sector: Vec2): string {
+        return `${String.fromCharCode(65 + sector.x)}${sector.y + 1}`;
     }
 };
 

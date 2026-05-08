@@ -16,19 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { RedisClient } from "bun";
-import { drizzle } from "drizzle-orm/node-postgres";
+import { RedisClient, SQL } from "bun";
+import { drizzle } from "drizzle-orm/bun-sql";
 import { Hono } from "hono";
-import { Pool } from "pg";
 import ProxyCheck from "proxycheck-ts";
 
 import { config } from "./config";
 import { Punishment } from "./models/Punishment";
 import { User } from "./models/User";
 
+import type { Guild } from "./models/Guild";
+import type { PgTable } from "drizzle-orm/pg-core";
+
 import { Logger } from "@/common/utils/Logger";
 
-interface DrizzleSchema extends Record<string, unknown> {
+interface DrizzleSchema extends Record<string, PgTable> {
+    guild: typeof Guild;
     punishment: typeof Punishment;
     user: typeof User;
 }
@@ -65,20 +68,19 @@ export class App extends Hono {
 
         // Instantiate the PostgreSQL database.
         if (config.database.enabled) {
-            const pool = new Pool({
-                ...config.database,
-                idleTimeoutMillis: 3e4
-            });
+            const client = new SQL(
+                `postgresql://${config.database.user}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.database}`,
+                {
+                    onconnect: (): void => {
+                        this.logger.info("PostgreSQL", "Connected to database.");
+                    },
+                    onclose: (err): void => {
+                        this.logger.error("PostgreSQL", err ? (err.stack ?? err.message) : "No stacktrace provided.");
+                    }
+                }
+            );
 
-            pool.on("connect", () => {
-                this.logger.info("PostgreSQL", "Connected to database.");
-            });
-
-            pool.on("error", err => {
-                this.logger.error("PostgreSQL", err.stack ?? err.message);
-            });
-
-            this.db = drizzle<DrizzleSchema>({ client: pool });
+            this.db = drizzle<DrizzleSchema>({ client });
         }
 
         // Instantiate the redis connection.

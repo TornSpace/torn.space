@@ -18,11 +18,61 @@
 
 import { pgTable } from "drizzle-orm/pg-core";
 
+import { Guild } from "./Guild";
+
+import { PlayerTeam, PlayerTrail, RawPlayerTrail } from "../constants";
+
+import { GameConstants } from "@/common/constants";
+
 export const User = pgTable("user", t => ({
     id: t.serial().primaryKey(),
     createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),
-    username: t.varchar({ length: 16 }).notNull().unique(),
+    username: t.varchar({ length: GameConstants.player.maxNameLength }).notNull().unique(),
     email: t.varchar({ length: 64 }).notNull().unique(),
-    passkey: t.varchar({ length: 64 }).notNull(),
-    token: t.varchar({ length: 64 }).notNull().unique()
+    token: t.varchar({ length: 64 }).notNull(),
+    /**
+     * User permissions.
+     */
+    // role: PlayerRole()
+
+    // basic player data
+    xp: t.integer().notNull().default(0),
+    rank: t.integer().notNull().default(0),
+    team: PlayerTeam().notNull(),
+    balance: t.integer().notNull().default(GameConstants.player.initialBalance),
+    lives: t.integer().notNull().default(GameConstants.player.maxLives),
+    guild: t.integer().references(() => Guild.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade"
+    }),
+
+    // ship details
+    ship: t.integer().notNull().default(0),
+    trail: PlayerTrail().notNull().default(RawPlayerTrail.None),
+    sector: t.point({ mode: "xy" }).notNull(),
+    weapons: t.text().array().notNull().default(new Array(10).fill(null)),
+
+    // tech
+    speed: t.integer().notNull().default(0),
+    radar: t.integer().notNull().default(0),
+    cargo: t.integer().notNull().default(0),
+    hp: t.integer().notNull().default(0),
+    energy: t.integer().notNull().default(0),
+    agility: t.integer().notNull().default(0),
+
+    // cargo
+    iron: t.integer().notNull().default(0),
+    silver: t.integer().notNull().default(0),
+    copper: t.integer().notNull().default(0),
+    platinum: t.integer().notNull().default(0),
+
+    // stats
+    kills: t.integer().notNull().default(0),
+    baseKills: t.integer().notNull().default(0),
+    driftTime: t.integer().notNull().default(0),
+
+    // achs
+    achievements: t.integer().array().notNull().default([]),
+    planets: t.integer().array().notNull().default([]),
+    sectors: t.integer().array().notNull().default([])
 }));

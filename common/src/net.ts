@@ -141,7 +141,7 @@ export class GameBitStream extends BitStream {
      * Read a position vector from stream with the game default max and minimum X and Y.
      */
     readPosition(): Vec2 {
-        return this.readVec2(-32, -32, GameConstants.maxPosition, GameConstants.maxPosition, 16);
+        return this.readVec2(0, 0, GameConstants.maxPosition, GameConstants.maxPosition, 16);
     }
 
     /**
@@ -149,7 +149,7 @@ export class GameBitStream extends BitStream {
      * @param vector The vector to write.
      */
     writePosition(vector: Vec2): void {
-        this.writeVec2(vector, -32, -32, GameConstants.maxPosition, GameConstants.maxPosition, 16);
+        this.writeVec2(vector, 0, 0, GameConstants.maxPosition, GameConstants.maxPosition, 16);
     }
 
     /**

@@ -15,8 +15,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Hono } from "hono";
 
-const Router = new Hono();
+import { defineConfig } from "drizzle-kit";
 
-export default Router;
+import { config } from "./config";
+
+export default defineConfig({
+    out: "./drizzle/dist",
+    schema: "./drizzle/src/models",
+    dialect: "postgresql",
+    dbCredentials: {
+        url: `postgresql://${config.database.user}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.database}`
+    },
+    strict: true,
+    verbose: true
+});

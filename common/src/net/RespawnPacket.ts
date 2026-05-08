@@ -22,7 +22,6 @@ import { AbstractPacket, GameBitStream } from "../net";
 export class RespawnPacket implements AbstractPacket {
     readonly type = PacketType.Respawn;
 
-    serialize(stream: GameBitStream): void {}
-
-    deserialize(stream: GameBitStream): void {}
+    serialize(_stream: GameBitStream): void {}
+    deserialize(_stream: GameBitStream): void {}
 }

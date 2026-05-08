@@ -32,7 +32,10 @@ import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
 
 export class Game {
-    grid = new Grid(GameConstants.maxPosition, GameConstants.maxPosition);
+    grid = new Grid(
+        GameConstants.sectorWidth * GameConstants.maxPosition,
+        GameConstants.sectorWidth * GameConstants.maxPosition
+    );
 
     entityManager: EntityManager;
     clientManager = new ClientManager(this);

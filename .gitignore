@@ -8,3 +8,4 @@ config.hjson
 build/
 .svelte-kit/
 dist/
+drizzle/

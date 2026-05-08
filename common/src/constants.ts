@@ -32,10 +32,12 @@ export const GameConstants = {
     mapSize: 7,
     /**
      * The sector width (in game units).
-     * Must be divisible by 2048.
      */
-    sectorWidth: 14336,
-    maxPosition: 1024,
+    sectorWidth: 1432,
+    /**
+     * The maximum possible position. Must be a multiple of 2.
+     */
+    maxPosition: 2048,
     maxEntityId: (1 << 16) - 1,
     maxChatLength: 256,
     player: {
@@ -47,6 +49,15 @@ export const GameConstants = {
          * @default 0.05
          */
         healRate: 0.05,
+        /**
+         * Starting cash for new players.
+         */
+        initialBalance: 8e3,
+        /**
+         * The maximum number of lives a player can have.
+         * This is also the default number of lives a player will start with.
+         */
+        maxLives: 20,
         /**
          * Viewport radius. Should be the maximum of the two viewport dimensions.
          */

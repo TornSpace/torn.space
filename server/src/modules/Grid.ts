@@ -24,6 +24,9 @@ import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
 export class Grid {
+    /**
+     * The size of an individual cell, in game units.
+     */
     static readonly cellSize = 16;
 
     readonly width: number;

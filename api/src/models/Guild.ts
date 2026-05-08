@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Hono } from "hono";
+import { pgTable } from "drizzle-orm/pg-core";
 
-const Router = new Hono();
-
-export default Router;
+export const Guild = pgTable("punishment", t => ({
+    id: t.serial().primaryKey()
+}));

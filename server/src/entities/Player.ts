@@ -142,10 +142,13 @@ export class Player extends ServerEntity {
         this._position = pos;
     }
 
-    init(client: Client, name: string, position: Vec2): void {
+    init(client: Client, name: string, sector: Vec2): void {
         this.client = client;
         this.name = name;
-        this.position = position;
+
+        // Spawn player at the last logged-off base.
+        this.sector = sector;
+        this.position = v2.new(GameConstants.maxPosition / 2, GameConstants.maxPosition / 2);
     }
 
     refillAmmo(): void {
@@ -264,11 +267,11 @@ export class PlayerManager extends EntityPool<Player> {
         super(game, Player);
     }
 
-    addPlayer(client: Client, packet: JoinPacket, position: Vec2): Player {
+    addPlayer(client: Client, packet: JoinPacket, sector: Vec2): Player {
         const player = this.allocEntity(
             client,
             packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx}`,
-            position
+            sector
         );
 
         this.newPlayers.push(player);

@@ -17,12 +17,10 @@
  */
 
 import { app } from "./app";
-import AuthRouter from "./routes/Auth";
-import GameRouter from "./routes/Game";
 import ModerationRouter from "./routes/Moderation";
+import UserRouter from "./routes/User";
 
-app.route("/auth", AuthRouter);
-app.route("/game", GameRouter);
+app.route("/user", UserRouter);
 app.route("/moderation", ModerationRouter);
 
 Bun.serve({

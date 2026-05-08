@@ -62,7 +62,7 @@ export function getConfig(isProd: boolean, dir: string): Config {
         },
         secrets: {
             TORN_API_KEY: "",
-            TORN_EMAIL_SECRET: "",
+            TORN_GS_KEY: "",
             TORN_IP_SECRET: ""
         },
         caching: {
@@ -88,6 +88,7 @@ export function getConfig(isProd: boolean, dir: string): Config {
         localConfig = {
             secrets: {
                 TORN_API_KEY: randomBytes(64).toString("base64"),
+                TORN_GS_KEY: randomBytes(64).toString("base64"),
                 TORN_EMAIL_SECRET: randomBytes(32).toString("base64"),
                 TORN_IP_SECRET: randomBytes(32).toString("base64")
             }

@@ -64,7 +64,8 @@ export class Client {
     constructor(
         readonly game: Game,
         readonly socket: ServerWebSocket<SocketData>,
-        public position: Vec2 = v2.new(0, 0)
+        public sector: Vec2 = v2.new(0, 0),
+        public position: Vec2 = v2.new(GameConstants.sectorWidth / 2, GameConstants.sectorWidth / 2)
     ) {}
 
     processPacket(buffer: ArrayBuffer): void {
@@ -152,17 +153,18 @@ export class Client {
             updatePacket.playerData = this.player;
             updatePacket.playerDataDirty = this.player.dirty;
         } else {
+            // Spectators.
             this.position = v2.add(this.position, v2.mult(this.direction, this.speed * dt));
 
             updatePacket.cameraPosition = this.position;
             updatePacket.cameraPositionDirty = true;
 
             // Map bounds.
-            if (this.position.x < 0 || this.position.x > this.game.map.width) this.direction.x *= -1;
-            if (this.position.y < 0 || this.position.y > this.game.map.width) this.direction.y *= -1;
+            if (this.position.x < 0 || this.position.x > GameConstants.maxPosition) this.direction.x *= -1;
+            if (this.position.y < 0 || this.position.y > GameConstants.maxPosition) this.direction.y *= -1;
 
-            this.position.x = math.clamp(this.position.x, 0, this.game.map.width);
-            this.position.y = math.clamp(this.position.y, 0, this.game.map.width);
+            this.position.x = math.clamp(this.position.x, 0, GameConstants.maxPosition);
+            this.position.y = math.clamp(this.position.y, 0, GameConstants.maxPosition);
         }
 
         updatePacket.newPlayers = this.firstPacket

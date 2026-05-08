@@ -22,9 +22,22 @@ import { ZodType } from "zod";
 import { getIP, TokenBucketLimiter } from "./utils";
 
 import { App } from "../app";
+import { config } from "../config";
 
 import type { Context } from "hono";
 import type { Next, ValidationTargets } from "hono/types";
+
+/**
+ * Confirms that the request is being made from an authenticated game server.
+ * @param c The context of the request.
+ * @param next The request callback.
+ */
+export async function AuthGuard(c: Context, next: Next): Promise<void> {
+    const header = c.req.header("Authorization");
+    if (header !== `Bearer ${config.secrets.TORN_GS_KEY}`) return c.status(403);
+
+    await next();
+}
 
 /**
  * Guarantees that the PostgreSQL database connection exists.
@@ -101,7 +114,7 @@ export function RateLimiter(limit: number, interval: number): (c: Context, next:
  * @param schema The Zod schema.
  */
 // oxlint-disable-next-line typescript/explicit-function-return-type
-export function Validator<Schema extends ZodType, Target extends keyof ValidationTargets>(
+export function Validator<Target extends keyof ValidationTargets, Schema extends ZodType>(
     type: Target,
     schema: Schema
 ) {

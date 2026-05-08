@@ -139,17 +139,17 @@ export interface Config {
      */
     secrets: {
         /**
-         * API key used to communicate between API and game servers.
+         * API key used to communicate from API to game servers.
          */
         TORN_API_KEY: string;
+        /**
+         * API key used to communicate from game servers to API.
+         */
+        TORN_GS_KEY: string;
         /**
          * Used to encode IPs before inserting them into the database.
          */
         TORN_IP_SECRET: string;
-        /**
-         * Used to encode emails before inserting them into the database.
-         */
-        TORN_EMAIL_SECRET: string;
         /**
          * Discord bot token for moderation and leaderboard roles.
          */
