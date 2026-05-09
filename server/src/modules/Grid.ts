@@ -18,7 +18,7 @@
 
 import type { ServerEntity } from "../entities/Entity";
 
-import { GameConstants } from "@/common/constants";
+import { EntityType, GameConstants } from "@/common/constants";
 import { RectHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
@@ -113,6 +113,8 @@ export class Grid {
             for (let y = min.y; y <= max.y; y++) {
                 const cellEntities = xRow[y];
                 for (const entity of cellEntities) {
+                    // Visibility modifiers.
+                    if (entity.__type === EntityType.Player && (entity.docked || entity.cloakTimer > 0)) continue;
                     entities.add(entity);
                 }
             }

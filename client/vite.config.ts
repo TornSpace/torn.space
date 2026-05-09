@@ -23,10 +23,12 @@ import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 import { resolve } from "path";
 
+import { atlasPlugin } from "./atlases/atlasPlugin";
+
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
 
-    const plugins: UserConfig["plugins"] = [tailwindcss(), sveltekit()];
+    const plugins: UserConfig["plugins"] = [tailwindcss(), sveltekit(), ...atlasPlugin()];
 
     const serverOptions: ServerOptions = {
         port: 3000,

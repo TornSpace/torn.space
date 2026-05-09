@@ -54,7 +54,7 @@ export class Logger {
         message += levelText;
         message += styleText("dim", " | ");
         message += styleText("bold", topic);
-        message += styleText("dim", " | ");
+        message += styleText("dim", " |");
         message += styleText("reset", "");
 
         fn(message, ...args);

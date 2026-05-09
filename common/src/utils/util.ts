@@ -22,6 +22,11 @@ import type { Vec2 } from "./v2";
  * Common functions and utilities.
  */
 export const util = {
+    daysToMs(days: number): number {
+        const dayInMs = 24 * 60 * 60 * 1000;
+        return days * dayInMs;
+    },
+
     /**
      * @link https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge
      */
