@@ -19,7 +19,6 @@
 // TODO: Try and make this actually work.
 // import atlasDefs from "virtual-atlases";
 
-import Explosions from "$lib/img/explosions/explosions.png";
 import { Assets, type SpritesheetData, type SpritesheetFrameData, type UnresolvedAsset } from "pixi.js";
 
 import type { App } from "../App.svelte";
@@ -64,18 +63,18 @@ export class AssetManager {
 
         for (let i = 0; i < computedSpacing; i++) {
             for (let j = 0; j < computedSpacing; j++) {
-                imgFrames[`${name}${j + i * spriteWidth}`] = {
+                imgFrames[`${name}${j + i * computedSpacing}`] = {
                     frame: {
-                        x: j * computedSpacing,
-                        y: i * computedSpacing,
+                        x: j * spriteWidth,
+                        y: i * spriteWidth,
                         w: spriteWidth,
                         h: spriteWidth
                     },
                     rotated: false,
-                    trimmed: true,
+                    trimmed: false,
                     spriteSourceSize: {
-                        x: j * computedSpacing,
-                        y: i * computedSpacing,
+                        x: 0,
+                        y: 0,
                         w: spriteWidth,
                         h: spriteWidth
                     },
