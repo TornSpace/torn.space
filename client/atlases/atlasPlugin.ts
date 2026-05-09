@@ -120,7 +120,7 @@ async function load(
     id: string,
     buildPromise: Promise<void> | undefined
 ): Promise<string | void> {
-    if (!id.startsWith("atlases-")) return;
+    if (!id.startsWith("atlases")) return;
     if (buildPromise) await buildPromise;
 
     return `export default JSON.parse("${JSON.stringify(atlases)}");`;

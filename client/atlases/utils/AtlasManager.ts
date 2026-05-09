@@ -85,12 +85,19 @@ export class AtlasManager {
         const hash = this.atlasCache[atlas];
         const folder = this.getAtlasFolderPath(atlas, hash);
 
-        const path = join(folder, "data.json");
+        let paths = readdirSync(folder).filter(x => x.endsWith(".json"));
+        if (paths.length === 0) {
+            await this.buildAtlases([{ name: atlas, hash }]);
+            paths = readdirSync(folder).filter(x => x.endsWith(".json"));
+        }
 
-        const file = Bun.file(path);
-        if (!(await file.exists())) await this.buildAtlases([{ name: atlas, hash }]);
+        const spritesheets: SpritesheetData[] = [];
+        for (const path of paths) {
+            const file = Bun.file(join(folder, path));
+            spritesheets.push(await file.json());
+        }
 
-        return await file.json();
+        return spritesheets;
     }
 
     async hashAtlas(atlas: Atlas): Promise<string> {
@@ -134,14 +141,11 @@ export class AtlasManager {
 
         for (const atlas of Object.keys(AtlasManager.atlases) as Atlas[]) {
             const hash = await this.hashAtlas(atlas);
-
             this.atlasCache[atlas] = hash;
 
-            const atlasPath = join(this.getAtlasFolderPath(atlas, hash), "data.json");
-
-            if (!existsSync(atlasPath)) {
+            const path = this.getAtlasFolderPath(atlas, hash);
+            if (!existsSync(path) || readdirSync(path).filter(x => x.endsWith(".json")).length === 0)
                 changedAtlases.push({ name: atlas, hash });
-            }
         }
 
         return changedAtlases;
@@ -219,21 +223,17 @@ export class AtlasManager {
 
                         for (const atlas of data) {
                             const atlasPath = this.getAtlasFolderPath(atlas.name, atlas.hash);
-                            mkdirSync(atlasPath, { recursive: true });
 
+                            mkdirSync(atlasPath, { recursive: true });
                             promises.push(promise);
 
-                            const atlasJSON: SpritesheetData[] = [];
-
-                            for (const sheet of atlas.data) {
+                            for (let i = 0; i < atlas.data.length; i++) {
+                                const sheet = atlas.data[i];
                                 const filePath = join(atlasPath, sheet.data.meta.image!);
+
                                 writeFileSync(filePath, Buffer.from(sheet.buffer));
-
-                                atlasJSON.push(sheet.data);
+                                writeFileSync(join(atlasPath, `${atlas.name}-${i}.json`), JSON.stringify(sheet.data));
                             }
-
-                            const filePath = join(atlasPath, "data.json");
-                            writeFileSync(filePath, JSON.stringify(atlasJSON), "utf-8");
                         }
 
                         proc.kill();

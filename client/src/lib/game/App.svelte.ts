@@ -22,6 +22,7 @@ import { Camera } from "./Camera";
 import { BaseManager } from "./entities/Base";
 import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player";
+import { AssetManager } from "./modules/AssetManager";
 import { AudioManager } from "./modules/AudioManager";
 import { EntityManager } from "./modules/EntityManager";
 import { InputManager } from "./modules/InputManager";
@@ -54,6 +55,7 @@ export class App {
     camera = new Camera(this);
     socket?: WebSocket;
 
+    assetManager = new AssetManager(this);
     audioManager = new AudioManager(this);
     inputManager = new InputManager(this);
 
