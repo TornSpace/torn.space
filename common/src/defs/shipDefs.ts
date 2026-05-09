@@ -60,6 +60,21 @@ export interface ShipDef {
      */
     elite: boolean;
     /**
+     * Human sprite.
+     * @default ""
+     */
+    humanImg: string;
+    /**
+     * Alien sprite.
+     * @default ""
+     */
+    alienImg: string;
+    /**
+     * Cyborg sprite.
+     * @default ""
+     */
+    cyborgImg: string;
+    /**
      * The custom slot for elite ships.
      * @default ""
      */
@@ -78,6 +93,9 @@ const rawDefs = {
         slots: 1,
         width: 64,
         elite: false,
+        humanImg: "b0.img",
+        alienImg: "r0.img",
+        cyborgImg: "g0.img",
         customWeapon: ""
     },
     r1: {
@@ -91,6 +109,9 @@ const rawDefs = {
         slots: 2,
         width: 64,
         elite: false,
+        humanImg: "b1.img",
+        alienImg: "r1.img",
+        cyborgImg: "g1.img",
         customWeapon: ""
     },
     r2: {
@@ -104,6 +125,9 @@ const rawDefs = {
         slots: 3,
         width: 64,
         elite: false,
+        humanImg: "b2.img",
+        alienImg: "r2.img",
+        cyborgImg: "g2.img",
         customWeapon: ""
     },
     r3: {
@@ -117,6 +141,9 @@ const rawDefs = {
         slots: 3,
         width: 64,
         elite: false,
+        humanImg: "b3.img",
+        alienImg: "r3.img",
+        cyborgImg: "g3.img",
         customWeapon: ""
     },
     r4: {
@@ -130,6 +157,9 @@ const rawDefs = {
         slots: 4,
         width: 64,
         elite: false,
+        humanImg: "b4.img",
+        alienImg: "r4.img",
+        cyborgImg: "g4.img",
         customWeapon: ""
     },
     r5: {
@@ -143,6 +173,9 @@ const rawDefs = {
         slots: 5,
         width: 64,
         elite: false,
+        humanImg: "b5.img",
+        alienImg: "r5.img",
+        cyborgImg: "g5.img",
         customWeapon: ""
     },
     r6: {
@@ -156,6 +189,9 @@ const rawDefs = {
         slots: 6,
         width: 64,
         elite: false,
+        humanImg: "b6.img",
+        alienImg: "r6.img",
+        cyborgImg: "g6.img",
         customWeapon: ""
     },
     r7: {
@@ -169,6 +205,9 @@ const rawDefs = {
         slots: 6,
         width: 128,
         elite: false,
+        humanImg: "b7.img",
+        alienImg: "r7.img",
+        cyborgImg: "g7.img",
         customWeapon: ""
     },
     r8: {
@@ -182,6 +221,9 @@ const rawDefs = {
         slots: 7,
         width: 128,
         elite: false,
+        humanImg: "b8.img",
+        alienImg: "r8.img",
+        cyborgImg: "g8.img",
         customWeapon: ""
     },
     r9: {
@@ -195,6 +237,9 @@ const rawDefs = {
         slots: 7,
         width: 128,
         elite: false,
+        humanImg: "b9.img",
+        alienImg: "r9.img",
+        cyborgImg: "g9.img",
         customWeapon: ""
     },
     r10: {
@@ -208,6 +253,9 @@ const rawDefs = {
         slots: 8,
         width: 128,
         elite: false,
+        humanImg: "b10.img",
+        alienImg: "r10.img",
+        cyborgImg: "g10.img",
         customWeapon: ""
     },
     r11: {
@@ -221,6 +269,9 @@ const rawDefs = {
         slots: 8,
         width: 128,
         elite: false,
+        humanImg: "b11.img",
+        alienImg: "r11.img",
+        cyborgImg: "g11.img",
         customWeapon: ""
     },
     r12: {
@@ -234,6 +285,9 @@ const rawDefs = {
         slots: 9,
         width: 192,
         elite: false,
+        humanImg: "b12.img",
+        alienImg: "r12.img",
+        cyborgImg: "g12.img",
         customWeapon: ""
     },
     r13: {
@@ -247,6 +301,9 @@ const rawDefs = {
         slots: 9,
         width: 185,
         elite: false,
+        humanImg: "b13.img",
+        alienImg: "r13.img",
+        cyborgImg: "g13.img",
         customWeapon: ""
     },
     r14: {
@@ -260,6 +317,9 @@ const rawDefs = {
         slots: 10,
         width: 128,
         elite: false,
+        humanImg: "b14.img",
+        alienImg: "r14.img",
+        cyborgImg: "g14.img",
         customWeapon: ""
     },
     r15: {
@@ -273,6 +333,9 @@ const rawDefs = {
         slots: 10,
         width: 190,
         elite: false,
+        humanImg: "b15.img",
+        alienImg: "r15.img",
+        cyborgImg: "g15.img",
         customWeapon: ""
     },
     r16: {
@@ -286,6 +349,9 @@ const rawDefs = {
         slots: 10,
         width: 128,
         elite: true,
+        humanImg: "b16.img",
+        alienImg: "r16.img",
+        cyborgImg: "g16.img",
         customWeapon: "turbo"
     },
     r17: {
@@ -299,6 +365,9 @@ const rawDefs = {
         slots: 10,
         width: 192,
         elite: true,
+        humanImg: "b17.img",
+        alienImg: "r17.img",
+        cyborgImg: "g17.img",
         customWeapon: ""
     },
     r18: {
@@ -312,6 +381,9 @@ const rawDefs = {
         slots: 10,
         width: 185,
         elite: true,
+        humanImg: "b18.img",
+        alienImg: "r18.img",
+        cyborgImg: "g18.img",
         customWeapon: "spreadshot"
     },
     r19: {
@@ -325,6 +397,9 @@ const rawDefs = {
         slots: 10,
         width: 128,
         elite: true,
+        humanImg: "b19.img",
+        alienImg: "r19.img",
+        cyborgImg: "g19.img",
         customWeapon: "hull_nanobots"
     },
     r20: {
@@ -338,6 +413,9 @@ const rawDefs = {
         slots: 10,
         width: 190,
         elite: true,
+        humanImg: "b20.img",
+        alienImg: "r20.img",
+        cyborgImg: "g20.img",
         customWeapon: "gravity_bomb"
     }
     /**

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { Team } from "../constants";
 import { DefinitionList } from "../utils/DefinitionList";
 
 export interface WeaponDef {
@@ -44,7 +45,22 @@ export interface WeaponDef {
      * The projectile the weapon spawns. Empty string means no projectile.
      * @default ""
      */
-    projectile: "bullet" | "plasma" | "beam" | "blast" | "orb" | "mine" | "missile" | "";
+    projectile: "bullet" | "beam" | "blast" | "orb" | "mine" | "missile" | "";
+    /**
+     * The projectile image. Empty string in any subfields means no image.
+     */
+    image: { default: string } | Record<Team, string>;
+    /**
+     * The projectile color. Undefined means no color.
+     * Only used for beams & blasts.
+     * @default undefined
+     */
+    color?: number;
+    /**
+     * The firing sound used for this weapon. Empty string means no sound.
+     * @default ""
+     */
+    sound: string;
     /**
      * The range of the weapon.
      *
@@ -69,20 +85,15 @@ export interface WeaponDef {
      */
     charge: number;
     /**
-     * The projectile image. Empty string means no image.
-     * @default ""
-     */
-    image: string;
-    /**
-     * The firing sound used for this weapon. Empty string means no sound.
-     * @default ""
-     */
-    sound: string;
-    /**
      * Whether bots can spawn with this weapon.
      * @default false
      */
     bot: boolean;
+    /**
+     * Whether this weapon is purchaseable.
+     * @default true
+     */
+    inShop: boolean;
 }
 
 const rawDefs = {
@@ -94,13 +105,14 @@ const rawDefs = {
         rank: 0,
         ammo: -2,
         projectile: "",
+        image: { default: "" },
+        sound: "",
         range: 0,
         damage: 0,
         speed: 0,
         charge: 0,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
 
     // Guns
@@ -111,13 +123,18 @@ const rawDefs = {
         rank: 0,
         ammo: -1,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "shot",
         range: 250,
         damage: 20,
         speed: 50,
         charge: 8,
-        image: "",
-        sound: "shot",
-        bot: true
+        bot: true,
+        inShop: true
     },
     plasma_gun: {
         name: "Plasma Gun",
@@ -125,14 +142,17 @@ const rawDefs = {
         price: 2e3,
         rank: 2,
         ammo: 175,
-        projectile: "plasma",
+        projectile: "bullet",
+        image: {
+            default: "plasmaBullet.img"
+        },
+        sound: "shot",
         range: 150,
         damage: 45,
         speed: 40,
         charge: 10,
-        image: "",
-        sound: "shot",
-        bot: true
+        bot: true,
+        inShop: true
     },
     reverse_gun: {
         name: "Reverse Gun",
@@ -141,13 +161,18 @@ const rawDefs = {
         rank: 1,
         ammo: -1,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "shot",
         range: 250,
         damage: 30,
         speed: 50,
         charge: 8,
-        image: "",
-        sound: "shot",
-        bot: false
+        bot: false,
+        inShop: true
     },
     rifle: {
         name: "Rifle",
@@ -156,13 +181,18 @@ const rawDefs = {
         rank: 5,
         ammo: 50,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "shot",
         range: 750,
         damage: 50,
         speed: 80,
         charge: 12,
-        image: "",
-        sound: "shot",
-        bot: true
+        bot: true,
+        inShop: true
     },
     shotgun: {
         name: "Shotgun",
@@ -171,13 +201,18 @@ const rawDefs = {
         rank: 3,
         ammo: 40,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "shot",
         range: 100,
         damage: 18,
         speed: 50,
         charge: 15,
-        image: "",
-        sound: "shot",
-        bot: true
+        bot: true,
+        inShop: true
     },
     machine_gun: {
         name: "Machine Gun",
@@ -186,13 +221,18 @@ const rawDefs = {
         rank: 4,
         ammo: 500,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "minigun",
         range: 300,
         damage: 20,
         speed: 75,
         charge: 4,
-        image: "",
-        sound: "minigun",
-        bot: true
+        bot: true,
+        inShop: true
     },
     minigun: {
         name: "Minigun",
@@ -201,13 +241,18 @@ const rawDefs = {
         rank: 6,
         ammo: 500,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "minigun",
         range: 250,
         damage: 14,
         speed: 60,
         charge: 6,
-        image: "",
-        sound: "minigun",
-        bot: true
+        bot: true,
+        inShop: true
     },
     spreadshot: {
         name: "Spreadshot",
@@ -216,13 +261,18 @@ const rawDefs = {
         rank: 6,
         ammo: 200,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "minigun",
         range: 250,
         damage: 10,
         speed: 60,
         charge: 5,
-        image: "",
-        sound: "minigun",
-        bot: true
+        bot: true,
+        inShop: true
     },
     submachinegun: {
         name: "Submachinegun",
@@ -231,13 +281,18 @@ const rawDefs = {
         rank: 6,
         ammo: 1e3,
         projectile: "bullet",
+        image: {
+            [Team.Human]: "blueBullet.img",
+            [Team.Alien]: "redBullet.img",
+            [Team.Cyborg]: "greenBullet.img"
+        },
+        sound: "minigun",
         range: 300,
         damage: 13,
         speed: 70,
         charge: 9,
-        image: "",
-        sound: "minigun",
-        bot: true
+        bot: true,
+        inShop: true
     },
 
     // Beams
@@ -248,13 +303,17 @@ const rawDefs = {
         rank: 1,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 200,
         damage: 5,
         speed: -1,
         charge: 4,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
     laser_beam: {
         name: "Laser Beam",
@@ -263,13 +322,17 @@ const rawDefs = {
         rank: 4,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 65,
         damage: 22,
         speed: -1,
         charge: 10,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
     hadron_beam: {
         name: "Hadron Beam",
@@ -278,13 +341,17 @@ const rawDefs = {
         rank: 8,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 135,
         damage: 80,
         speed: -1,
         charge: 50,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
     mining_laser: {
         name: "Mining Laser",
@@ -293,13 +360,17 @@ const rawDefs = {
         rank: 1,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 120,
         damage: 30,
         speed: -1,
         charge: 5,
-        image: "",
-        sound: "beam",
-        bot: false
+        bot: false,
+        inShop: true
     },
     ore_cannon: {
         name: "Ore Cannon",
@@ -308,13 +379,17 @@ const rawDefs = {
         rank: 2,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 280,
         damage: 60,
         speed: -1,
         charge: 5,
-        image: "",
-        sound: "beam",
-        bot: false
+        bot: false,
+        inShop: true
     },
     destabilizer: {
         name: "Destabilizer",
@@ -323,13 +398,17 @@ const rawDefs = {
         rank: 6,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 1e6,
         damage: -1,
         speed: -1,
         charge: 50,
-        image: "",
-        sound: "beam",
-        bot: false
+        bot: false,
+        inShop: true
     },
     jammer: {
         name: "Jammer",
@@ -338,13 +417,17 @@ const rawDefs = {
         rank: 10,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 75,
         damage: 0,
         speed: -1,
         charge: 30,
-        image: "",
-        sound: "beam",
-        bot: false
+        bot: false,
+        inShop: true
     },
     healing_beam: {
         name: "Healing Beam",
@@ -353,13 +436,17 @@ const rawDefs = {
         rank: 8,
         ammo: -1,
         projectile: "beam",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 35,
         damage: -30,
         speed: 0,
         charge: 20,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
 
     // Missiles
@@ -370,13 +457,16 @@ const rawDefs = {
         rank: 0,
         ammo: 20,
         projectile: "missile",
+        image: {
+            default: "missile.img"
+        },
+        sound: "missile",
         range: 750,
         damage: 15,
         speed: 100,
         charge: 12,
-        image: "",
-        sound: "missile",
-        bot: true
+        bot: true,
+        inShop: true
     },
     heavy_missile: {
         name: "Heavy Missile",
@@ -385,13 +475,16 @@ const rawDefs = {
         rank: 3,
         ammo: 20,
         projectile: "missile",
+        image: {
+            default: "heavyMissile.img"
+        },
+        sound: "missile",
         range: 450,
         damage: 40,
         speed: 50,
         charge: 25,
-        image: "",
-        sound: "missile",
-        bot: true
+        bot: true,
+        inShop: true
     },
     emp_missile: {
         name: "EMP Missile",
@@ -400,13 +493,16 @@ const rawDefs = {
         rank: 7,
         ammo: 10,
         projectile: "missile",
+        image: {
+            default: "empMissile.img"
+        },
+        sound: "missile",
         range: 600,
         damage: 15,
         speed: 90,
         charge: 25,
-        image: "",
-        sound: "missile",
-        bot: false
+        bot: false,
+        inShop: true
     },
     missile_swarm: {
         name: "Missile Swarm",
@@ -415,13 +511,16 @@ const rawDefs = {
         rank: 9,
         ammo: 20,
         projectile: "missile",
+        image: {
+            default: "missile.img"
+        },
+        sound: "missile",
         range: 750,
         damage: -1,
         speed: 45,
         charge: 18,
-        image: "",
-        sound: "missile",
-        bot: true
+        bot: true,
+        inShop: true
     },
     torpedo: {
         name: "Torpedo",
@@ -430,13 +529,16 @@ const rawDefs = {
         rank: 5,
         ammo: 15,
         projectile: "missile",
+        image: {
+            default: "torpedoMissile.img"
+        },
+        sound: "missile",
         range: 5e3,
         damage: 15,
         speed: 180,
         charge: 30,
-        image: "",
-        sound: "missile",
-        bot: true
+        bot: true,
+        inShop: true
     },
     proximity_fuze: {
         name: "Proximity Fuze",
@@ -445,13 +547,17 @@ const rawDefs = {
         rank: 5,
         ammo: 20,
         projectile: "missile",
+        image: {
+            // literally no idea what this is supposed to be
+            default: ".img"
+        },
+        sound: "missile",
         range: 600,
         damage: 80,
         speed: 75,
         charge: 25,
-        image: "",
-        sound: "missile",
-        bot: true
+        bot: true,
+        inShop: true
     },
 
     // Mines
@@ -462,13 +568,16 @@ const rawDefs = {
         rank: 0,
         ammo: 20,
         projectile: "mine",
+        image: {
+            default: "mine.img"
+        },
+        sound: "",
         range: 96,
         damage: 140,
         speed: 0,
         charge: 15,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     laser_mine: {
         name: "Laser Mine",
@@ -477,13 +586,16 @@ const rawDefs = {
         rank: 3,
         ammo: 10,
         projectile: "mine",
+        image: {
+            default: "laserMine.img"
+        },
+        sound: "",
         range: 192,
         damage: 90,
         speed: 0,
         charge: 75,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     emp_mine: {
         name: "EMP Mine",
@@ -492,13 +604,16 @@ const rawDefs = {
         rank: 6,
         ammo: 5,
         projectile: "mine",
+        image: {
+            default: "empMine.img"
+        },
+        sound: "",
         range: 96,
         damage: 72,
         speed: 0,
         charge: 25,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     impulse_mine: {
         name: "Impulse Mine",
@@ -507,13 +622,16 @@ const rawDefs = {
         rank: 4,
         ammo: 10,
         projectile: "mine",
+        image: {
+            default: "impulseMine.img"
+        },
+        sound: "",
         range: 20,
         damage: 0,
         speed: -1,
         charge: 25,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     grenades: {
         name: "Grenades",
@@ -522,13 +640,17 @@ const rawDefs = {
         rank: 3,
         ammo: 10,
         projectile: "mine",
+        image: {
+            // not included in spritesheet as of now
+            default: ""
+        },
+        sound: "",
         range: 22,
         damage: 100,
         speed: 25,
         charge: 25,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     pulse_mine: {
         name: "Pulse Mine",
@@ -537,13 +659,16 @@ const rawDefs = {
         rank: 4,
         ammo: 3,
         projectile: "mine",
+        image: {
+            default: "pulseMine.img"
+        },
+        sound: "",
         range: 25,
         damage: 8,
         speed: 0,
         charge: 30,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     magnetic_mine: {
         name: "Magnetic Mine",
@@ -552,13 +677,16 @@ const rawDefs = {
         rank: 12,
         ammo: 10,
         projectile: "mine",
+        image: {
+            default: "magneticMine.img"
+        },
+        sound: "",
         range: 50,
         damage: 100,
         speed: 0,
         charge: 45,
-        image: "",
-        sound: "",
-        bot: true
+        bot: true,
+        inShop: true
     },
     campfire: {
         name: "Campfire",
@@ -567,13 +695,16 @@ const rawDefs = {
         rank: 5,
         ammo: 2,
         projectile: "mine",
+        image: {
+            default: "campfire.img"
+        },
+        sound: "",
         range: 100,
         damage: -30,
         speed: 0,
         charge: 90,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
 
     // Blasts
@@ -584,13 +715,17 @@ const rawDefs = {
         rank: 9,
         ammo: 2,
         projectile: "blast",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 100000,
         damage: -1,
         speed: -1,
         charge: 50,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
     muon_ray: {
         name: "Muon Ray",
@@ -599,13 +734,17 @@ const rawDefs = {
         rank: 10,
         ammo: 1,
         projectile: "blast",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 1e4,
         damage: 300,
         speed: -1,
         charge: 100,
-        image: "",
-        sound: "beam",
-        bot: false
+        bot: false,
+        inShop: true
     },
     hypno_ray: {
         name: "Hypno Ray",
@@ -614,13 +753,17 @@ const rawDefs = {
         rank: 5,
         ammo: -2,
         projectile: "blast",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 1e4,
         damage: 0,
         speed: -1,
         charge: 25,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
     lepton_pulse: {
         name: "Lepton Pulse",
@@ -629,13 +772,17 @@ const rawDefs = {
         rank: 8,
         ammo: -1,
         projectile: "blast",
+        image: {
+            default: ""
+        },
+        color: 0,
+        sound: "beam",
         range: 1e4,
         damage: 20,
         speed: -1,
         charge: 15,
-        image: "",
-        sound: "beam",
-        bot: true
+        bot: true,
+        inShop: true
     },
 
     // Orbs
@@ -646,13 +793,16 @@ const rawDefs = {
         rank: 0,
         ammo: 15,
         projectile: "orb",
+        image: {
+            default: "energyDisk.img"
+        },
+        sound: "",
         range: 150,
         damage: 30,
         speed: 8,
         charge: 25,
-        image: "",
-        sound: "",
-        bot: true
+        bot: true,
+        inShop: true
     },
     photon_orb: {
         name: "Photon Orb",
@@ -661,13 +811,16 @@ const rawDefs = {
         rank: 6,
         ammo: -1,
         projectile: "orb",
+        image: {
+            default: "photonOrb.img"
+        },
+        sound: "",
         range: 140,
         damage: 18,
         speed: 8,
         charge: 12,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
 
     // Misc
@@ -678,13 +831,16 @@ const rawDefs = {
         rank: 8,
         ammo: 4,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: -1,
         damage: -150,
         speed: -1,
         charge: 150,
-        image: "",
-        sound: "",
-        bot: true
+        bot: true,
+        inShop: true
     },
     photon_cloak: {
         name: "Photon Cloak",
@@ -693,13 +849,16 @@ const rawDefs = {
         rank: 4,
         ammo: 3,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: -1,
         damage: -1,
         speed: -1,
         charge: 25,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     generator: {
         name: "Generator",
@@ -708,13 +867,16 @@ const rawDefs = {
         rank: 9,
         ammo: -1,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: -1,
         damage: -1,
         speed: -1,
         charge: 0,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     turbo: {
         name: "Turbo",
@@ -723,13 +885,16 @@ const rawDefs = {
         rank: 2,
         ammo: -1,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: -1,
         damage: -1,
         speed: 1.02,
         charge: 0,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     hyperdrive: {
         name: "Hyperdrive",
@@ -738,13 +903,16 @@ const rawDefs = {
         rank: 5,
         ammo: -2,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "hyperspace",
         range: -1,
         damage: -1,
         speed: 11111,
         charge: 150,
-        image: "",
-        sound: "hyperspace",
-        bot: false
+        bot: false,
+        inShop: true
     },
     pulse_wave: {
         name: "Pulse Wave",
@@ -753,13 +921,16 @@ const rawDefs = {
         rank: 7,
         ammo: 1,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: 1e4,
         damage: 0,
         speed: 40,
         charge: 75,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     electromagnet: {
         name: "Electromagnet",
@@ -768,13 +939,16 @@ const rawDefs = {
         rank: 8,
         ammo: -1,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: 512,
         damage: 0.1666,
         speed: -1,
         charge: 0,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     turret: {
         name: "Turret",
@@ -783,13 +957,18 @@ const rawDefs = {
         rank: 10,
         ammo: -2,
         projectile: "",
+        image: {
+            // No projectile image for turrets, they just get placed and the image
+            // is handled by the turret entity.
+            default: ""
+        },
+        sound: "",
         range: 750,
         damage: 30,
         speed: -1,
         charge: 8,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     gravity_bomb: {
         name: "Gravity Bomb",
@@ -798,13 +977,17 @@ const rawDefs = {
         rank: 10,
         ammo: -2,
         projectile: "",
+        image: {
+            // Same as above.
+            default: ""
+        },
+        sound: "",
         range: 3e3,
         damage: 300,
         speed: 10,
         charge: 0,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     warp_drive: {
         name: "Warp Drive",
@@ -813,13 +996,16 @@ const rawDefs = {
         rank: 7,
         ammo: 2,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: -1,
         damage: -1,
         speed: 716,
         charge: 80,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     },
     supercharger: {
         name: "Supercharger",
@@ -828,13 +1014,16 @@ const rawDefs = {
         rank: 11,
         ammo: -2,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: -1,
         damage: -1,
         speed: -1,
         charge: 0,
-        image: "",
-        sound: "",
-        bot: true
+        bot: true,
+        inShop: true
     },
     navigational_shield: {
         name: "Navigational Shield",
@@ -843,13 +1032,16 @@ const rawDefs = {
         rank: 13,
         ammo: -1,
         projectile: "",
+        image: {
+            default: ""
+        },
+        sound: "",
         range: 0,
         damage: 0,
         speed: 0,
         charge: -1,
-        image: "",
-        sound: "",
-        bot: false
+        bot: false,
+        inShop: true
     }
 } satisfies Record<string, WeaponDef>;
 
