@@ -144,8 +144,9 @@ export class AtlasManager {
             this.atlasCache[atlas] = hash;
 
             const path = this.getAtlasFolderPath(atlas, hash);
-            if (!existsSync(path) || readdirSync(path).filter(x => x.endsWith(".json")).length === 0)
+            if (!existsSync(path) || readdirSync(path).filter(x => x.endsWith(".json")).length === 0) {
                 changedAtlases.push({ name: atlas, hash });
+            }
         }
 
         return changedAtlases;

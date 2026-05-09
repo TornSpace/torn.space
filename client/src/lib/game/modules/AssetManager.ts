@@ -19,7 +19,7 @@
 // TODO: Try and make this actually work.
 // import atlasDefs from "virtual-atlases";
 
-import { Assets, type SpritesheetData, type SpritesheetFrameData, type UnresolvedAsset } from "pixi.js";
+import { Assets, type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 
 import type { App } from "../App.svelte";
 
