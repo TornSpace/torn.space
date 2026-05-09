@@ -68,7 +68,7 @@ export class GameBitStream extends BitStream {
      */
     writeFloat(value: number, min: number, max: number, bits: number): void {
         assert(bits > 0 && bits <= 31, `Bit count "${bits}" out of range, expected (0, 31].`);
-        assert(value < max && value > min, `Value "${bits}" out of range, expected (${min}, ${max}).`);
+        assert(value <= max && value >= min, `Value "${value}" out of range, expected (${min}, ${max}).`);
 
         const range = (1 << bits) - 1;
         const clamped = math.clamp(value, min, max);

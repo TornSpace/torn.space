@@ -45,9 +45,11 @@ export class DebugPacket implements AbstractPacket {
         stream.writeUint8(this.flags);
 
         if (this.flags & DebugFlags.TPS) {
-            stream.writeUint8(this.tpsAvg);
-            stream.writeUint8(this.tpsMin);
-            stream.writeUint8(this.tpsMax);
+            stream.writeUint16(this.tpsAvg);
+            stream.writeUint16(this.tpsMin);
+            stream.writeUint16(this.tpsMax);
+
+            stream.writeFloat(this.msptAvg, 0, 100, 16);
         }
 
         if (this.flags & DebugFlags.Objects) {
@@ -63,9 +65,9 @@ export class DebugPacket implements AbstractPacket {
         this.flags = stream.readUint8();
 
         if (this.flags & DebugFlags.TPS) {
-            this.tpsAvg = stream.readUint8();
-            this.tpsMin = stream.readUint8();
-            this.tpsMax = stream.readUint8();
+            this.tpsAvg = stream.readUint16();
+            this.tpsMin = stream.readUint16();
+            this.tpsMax = stream.readUint16();
 
             this.msptAvg = stream.readFloat(0, 100, 16);
         }
