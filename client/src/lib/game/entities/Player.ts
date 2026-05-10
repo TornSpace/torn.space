@@ -60,6 +60,8 @@ export class Player extends ClientEntity {
     direction = v2.new(0, 0);
     prevDirection = v2.new(0, 0);
 
+    activeWeapon = 0;
+
     shotSound?: GameSound;
 
     constructor(readonly app: App) {

@@ -38,6 +38,7 @@ import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
 
 export enum AppState {
+    Loading,
     Splash,
 
     // Anything below is part of the ingame UI.

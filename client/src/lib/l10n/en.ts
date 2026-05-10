@@ -99,7 +99,7 @@ export default {
             [Team.Human]: "Manta",
             [Team.Alien]: "Wasp",
             [Team.Cyborg]: "Hornet",
-            description: "A big enough cruiser to carry Massive Destruction weapons."
+            description: "A big enough cruiser to carry massive destruction weapons."
         },
         r11: {
             [Team.Human]: "Sailfish",
@@ -143,13 +143,13 @@ export default {
             [Team.Alien]: "Elite Quarrier",
             [Team.Cyborg]: "Elite Honeypot",
             description:
-                "It possesses a C-Ore launcher plus a passive mining web effect on mining beams. Be careful of enemy ones, though."
+                "It possesses a C-Slot Ore launcher plus a passive mining web effect on mining beams. Be careful of enemy ones, though."
         },
         r18: {
             [Team.Human]: "Elite Taurus",
             [Team.Alien]: "Elite Destroyer",
             [Team.Cyborg]: "Elite Galley",
-            description: "A refitted destroyer with an unlimited C-Spreadhot. Perfect for killing turrets in a team."
+            description: "A refitted destroyer with an unlimited Spreadshot as its C-Slot. Perfect for killing turrets."
         },
         r19: {
             [Team.Human]: "Elite Wyvern",
@@ -317,7 +317,7 @@ export default {
     weapons: {
         "": {
             name: "Empty",
-            description: ""
+            description: "[target] died to [source]'s [weapon]."
         },
         stock_gun: {
             name: "Stock Gun",
@@ -502,7 +502,7 @@ export default {
             name: "Grenades",
             description:
                 "Throw this at an enemy and it will explode soon (or as soon as it collides with an enemy), damaging their ship and knocking them back!",
-            killMessages: ["[source] pistoled [target]!", "[source] killed [target]!"]
+            killMessages: ["[source] killed [target]!"]
         },
         pulse_mine: {
             name: "Pulse Mine",

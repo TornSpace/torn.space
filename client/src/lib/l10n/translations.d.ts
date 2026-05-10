@@ -87,7 +87,7 @@ export type Translation = {
             /**
              * A list of kill messages to display when the weapon kills a player.
              *
-             * You can use templates such as `[source]` and `[target]`.
+             * You can use templates such as `[source]`, `[target]`, and `[weapon]`.
              *
              * If this array is not specified, the default kill message is used.
              * Do not leave an empty array!

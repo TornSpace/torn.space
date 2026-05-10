@@ -17,13 +17,15 @@
  */
 
 import type { App } from "../App.svelte";
-import type { FederatedWheelEvent } from "pixi.js";
+import type { FederatedPointerEvent, FederatedWheelEvent } from "pixi.js";
 
+import { GameConstants } from "@/common/constants";
 import { InputPacket } from "@/common/net/InputPacket";
+import { math } from "@/common/utils/math";
 // import type { WeaponDefKey } from "@/common/defs/weaponDefs";
 
 interface Input {
-    type: "key" | "wheel";
+    type: "key" | "mouse" | "wheel";
     down: boolean;
 }
 
@@ -54,6 +56,9 @@ export class InputManager {
         window.addEventListener("keydown", this.onKeyDown.bind(this));
         window.addEventListener("keyup", this.onKeyUp.bind(this));
 
+        this.app.pixi.stage.on("pointerdown", this.onMouseDown.bind(this));
+        this.app.pixi.stage.on("pointerup", this.onMouseUp.bind(this));
+
         this.app.pixi.stage.on("wheel", this.onWheel.bind(this));
     }
 
@@ -73,6 +78,26 @@ export class InputManager {
     onKeyUp(e: KeyboardEvent): void {
         this._inputs[e.code] = {
             type: "key",
+            down: false
+        };
+    }
+
+    /**
+     * Called when a mouse button is pressed.
+     */
+    onMouseDown(e: FederatedPointerEvent): void {
+        this._inputs[`Mouse${e.button}`] = {
+            type: "mouse",
+            down: true
+        };
+    }
+
+    /**
+     * Called when a mouse button is released.
+     */
+    onMouseUp(e: FederatedPointerEvent): void {
+        this._inputs[`Mouse${e.button}`] = {
+            type: "mouse",
             down: false
         };
     }
@@ -138,13 +163,26 @@ export class InputManager {
         packet.jukeRight = this.isInputDown("KeyE");
         packet.drift = shiftKeyPressed && !packet.moveBwd;
 
-        packet.attack = this.isInputDown("Space");
+        packet.attack = this.isInputDown("Space") || this.isInputDown("Mouse0");
         packet.shield = this.isInputDown("KeyS");
         packet.cslot = this.isInputDown("KeyC") || this.isInputDown("KeyV");
 
         packet.queuedWeapon = this.queuedWeapon;
 
-        // if (this.app.player) {}
+        if (this.app.player) {
+            for (let i = 0; i < GameConstants.player.weaponSlots; i++) {
+                if (this.isInputDown(`Digit${i}`) && i !== this.app.player.activeWeapon) {
+                    packet.queuedWeapon = i;
+                    break;
+                }
+            }
+
+            if (this.isInputDown("MWheelDown")) {
+                packet.queuedWeapon = math.min(this.app.player.activeWeapon + 1, GameConstants.player.weaponSlots - 1);
+            } else if (this.isInputDown("MWheelUp")) {
+                packet.queuedWeapon = math.max(this.app.player.activeWeapon - 1, 0);
+            }
+        }
 
         if (packet.compare(this.prevPacket) || this.ticker > 1) {
             if (!this.sequenceInFlight) {
