@@ -26,7 +26,7 @@ export interface AtlasDef {
 
 function readPath(path: string): string[] {
     return readdirSync(resolve(import.meta.dirname, "../src/lib/img", path), { recursive: true, encoding: "utf-8" })
-        .filter(x => x.endsWith(".png") || x.endsWith(".jpg"))
+        .filter(x => x.endsWith(".svg") || x.endsWith(".png") || x.endsWith(".jpg"))
         .map(x => join(path, x).replace(/\\/g, "/"));
 }
 
@@ -41,7 +41,13 @@ export const LootSprites = readPath("loot");
 export const PlanetSprites = readPath("planets");
 export const TurretSprites = readPath("turrets");
 export const VortexSprites = readPath("vorts");
-export const WeaponSprites = readPath("weapons");
+export const WeaponSprites = [
+    readPath("weapons/bullets"),
+    readPath("weapons/mines"),
+    readPath("weapons/missiles"),
+    readPath("weapons/orbs"),
+    "weapons/misc/shockwave.png"
+].flat();
 
 // UI Sprites.
 export const UISprites = {

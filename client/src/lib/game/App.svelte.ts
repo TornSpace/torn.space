@@ -56,10 +56,10 @@ export class App {
     camera = new Camera(this);
     socket?: WebSocket;
 
-    assetManager = new AssetManager(this);
     audioManager = new AudioManager(this);
     inputManager = new InputManager(this);
 
+    assetManager?: AssetManager;
     entityManager: EntityManager;
 
     // beamManager = new BeamManager();
@@ -105,8 +105,8 @@ export class App {
         });
     }
 
-    init(canvas: HTMLCanvasElement): void {
-        this.pixi.init({
+    async init(canvas: HTMLCanvasElement): Promise<void> {
+        await this.pixi.init({
             canvas,
             resizeTo: window,
             resolution: window.devicePixelRatio ?? 1,
@@ -114,6 +114,8 @@ export class App {
             preference: "webgl",
             eventMode: "none"
         });
+
+        this.assetManager = new AssetManager(this, this.pixi.renderer);
     }
 
     connect(): void {

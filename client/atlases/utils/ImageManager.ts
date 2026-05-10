@@ -85,9 +85,9 @@ export class ImageManager {
         const cached = this.cache[path];
         if (!cached) throw new Error(`Couldn't find cached image "${path}".`);
 
-        const fullPath = path.endsWith(".png")
-            ? resolve(AtlasManager.imgFolder, path)
-            : resolve(import.meta.dirname, join(AtlasManager.imgCacheFolder, `${cached.hash}.png`));
+        const fullPath = path.endsWith(".svg")
+            ? resolve(import.meta.dirname, join(AtlasManager.imgCacheFolder, `${cached.hash}.png`))
+            : resolve(AtlasManager.imgFolder, path);
         return {
             edges: cached.edges,
             image: await loadImage(fullPath)

@@ -28,7 +28,7 @@ import { atlasPlugin } from "./atlases/atlasPlugin";
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
 
-    const plugins: UserConfig["plugins"] = [tailwindcss(), sveltekit(), ...atlasPlugin()];
+    const plugins: UserConfig["plugins"] = [...atlasPlugin(), tailwindcss(), sveltekit()];
 
     const serverOptions: ServerOptions = {
         port: 3000,

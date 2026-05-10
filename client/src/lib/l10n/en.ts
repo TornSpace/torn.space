@@ -135,8 +135,7 @@ export default {
             [Team.Human]: "Elite Sailfish",
             [Team.Alien]: "Elite Swift",
             [Team.Cyborg]: "Elite Alcubierre",
-            description:
-                "The first Elite ship, with passively enhanced drifting and simultaneous C-slot turbo."
+            description: "The first Elite ship, with passively enhanced drifting and simultaneous C-slot turbo."
         },
         r17: {
             [Team.Human]: "Elite Beluga",

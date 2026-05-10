@@ -12,8 +12,8 @@
 
     let app = new App();
 
-    onMount(() => {
-        app.init(canvas);
+    onMount(async () => {
+        await app.init(canvas);
 
         app.connect();
     });

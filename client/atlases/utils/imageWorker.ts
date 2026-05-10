@@ -52,7 +52,7 @@ process.on("message", async function (data: ParentMsg) {
 });
 
 async function renderImage(path: string, hash: string): Promise<Edges> {
-    const filename = path.endsWith(".png") ? path : join(AtlasManager.imgCacheFolder, `${hash}.png`);
+    const filename = path.endsWith(".svg") ? join(AtlasManager.imgCacheFolder, `${hash}.png`) : path;
 
     // I hate Windows!
     const img = await loadImage(path);
@@ -75,7 +75,7 @@ async function renderImage(path: string, hash: string): Promise<Edges> {
         };
     }
 
-    if (!path.endsWith(".png")) {
+    if (path.endsWith(".svg")) {
         const buffer = canvas.toBuffer("image/png");
         await Bun.file(filename).write(buffer);
     }

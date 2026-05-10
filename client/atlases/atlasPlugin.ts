@@ -58,11 +58,11 @@ export function atlasPlugin(): Plugin[] {
                     (manager.atlasesJSON[atlas] ??= []).push(...data);
                 }
             },
-            load(id, _options) {
-                load(manager.atlasesJSON, id, manager.buildPromise);
+            async load(id, _options) {
+                return await load(manager.atlasesJSON, id, manager.buildPromise);
             },
-            resolveId(source, _importer, _options) {
-                resolveId(source, manager.buildPromise);
+            async resolveId(source, _importer, _options) {
+                return await resolveId(source, manager.buildPromise);
             }
         },
         {
@@ -80,11 +80,11 @@ export function atlasPlugin(): Plugin[] {
                 manager.buildPromise = devBuild(manager, server);
                 await manager.buildPromise;
             },
-            load(id, _options) {
-                load(manager.atlasesJSON, id, manager.buildPromise);
+            async load(id, _options) {
+                return await load(manager.atlasesJSON, id, manager.buildPromise);
             },
-            resolveId(source, _importer, _options) {
-                resolveId(source, manager.buildPromise);
+            async resolveId(source, _importer, _options) {
+                return await resolveId(source, manager.buildPromise);
             }
         }
     ];
@@ -111,7 +111,7 @@ async function devBuild(manager: AtlasManager, server: ViteDevServer): Promise<v
         (manager.atlasesJSON[atlas] ??= []).push(...data);
     }
 
-    const module = server.moduleGraph.getModuleById("atlases");
+    const module = server.moduleGraph.getModuleById("\0virtual:atlases");
     if (module !== undefined) void server.reloadModule(module);
 }
 
@@ -120,17 +120,17 @@ async function load(
     id: string,
     buildPromise: Promise<void> | undefined
 ): Promise<string | void> {
-    if (!id.startsWith("atlases")) return;
+    if (!id.startsWith("\0virtual:atlases")) return;
     if (buildPromise) await buildPromise;
 
-    return `export default JSON.parse("${JSON.stringify(atlases)}");`;
+    return `export default JSON.parse(\`${JSON.stringify(atlases)}\`);`;
 }
 
 async function resolveId(source: string, buildPromise: Promise<void> | undefined): Promise<string | void> {
-    if (!source.startsWith("virtual-atlases")) return;
+    if (!source.startsWith("virtual:atlases")) return;
     if (buildPromise) await buildPromise;
 
-    return "atlases";
+    return "\0virtual:atlases";
 }
 
 /**
