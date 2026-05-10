@@ -28,7 +28,7 @@ export default {
     achievements: {},
     lore: {
         [Team.Human]:
-            "Ever since we lost planet Earth, the Human race has been hanging on to its existence by a thread- we left our solar system in search of other habitable planets with the sole hope of survival, but very few of them demonstrated promise for long-term settlement. Barren planets unsustainable of supporting life were terraformed into industrious planets to generate the resources we desperately needed to survive in alien worlds. After centuries of toil, the population began to grow and spread. For about a decade we lived in peace and prosperity, until a hostile force attacked. Maintaining our settlements was vital to our survival, so we had no option other than to fight back. Ever since, we have been in conflict with the alien race, and it's unlikely that this war won't end in either civilization's extinction. Please, help us emerge from this struggle alive.",
+            "Ever since we lost planet Earth, the Human race has been hanging on to its existence by a thread. We left our solar system in search of other habitable planets with the sole hope of survival, but very few of them demonstrated promise for long-term settlement. Barren planets unsustainable of supporting life were terraformed into industrious wastelands to generate the resources we desperately needed to survive in alien worlds. After centuries of toil, the population began to grow and spread. For about a decade we lived in peace and prosperity, until a hostile force attacked. Maintaining our settlements was vital to our survival, so we had no option other than to fight back. Ever since, we have been in conflict with the alien race, and it's unlikely that this war won't end in either civilization's extinction. Please, help us emerge from this struggle alive.",
         [Team.Alien]:
             "Humans lack self-awareness. After destroying their planet of origin in armed conflict, they spread from solar system to solar system, polluting worlds and eliminating life. We tried to let them know that their behavior would ultimately be self-destructive, but they refused to listen. They continued to migrate unsustainably around the galaxy, so we stepped in with force. We decided to only attack new colonies of Humans near our own settlements to maintain influence in our share of the galaxy, but the humans reacted violently. They immediately attacked without restraint. We called for resources from neighboring galaxies but reinforcements will not arrive for several decades, so until then, we must suppress the Human crusade for the sake of our own lives, and for the fate of this galaxy.",
         [Team.Cyborg]:
@@ -87,13 +87,13 @@ export default {
             [Team.Human]: "Stingray",
             [Team.Alien]: "Eagle",
             [Team.Cyborg]: "Sceptre",
-            description: "A decent polyvalent explorer vessel"
+            description: "A decent polyvalent explorer vessel."
         },
         r9: {
             [Team.Human]: "Orca",
             [Team.Alien]: "Phoenix",
             [Team.Cyborg]: "Centipede",
-            description: "A strong cruiser... for its size."
+            description: "A strong cruiser for its size."
         },
         r10: {
             [Team.Human]: "Manta",
@@ -105,7 +105,7 @@ export default {
             [Team.Human]: "Sailfish",
             [Team.Alien]: "Swift",
             [Team.Cyborg]: "Alcubierre",
-            description: "A light, fast cruiser. Even more so when using Supercharger."
+            description: "A fast, light cruiser. Even more so when using Supercharger."
         },
         r12: {
             [Team.Human]: "Beluga",
@@ -136,7 +136,7 @@ export default {
             [Team.Alien]: "Elite Swift",
             [Team.Cyborg]: "Elite Alcubierre",
             description:
-                "The first Elite ship, with a passive enhanced drifting boost and C-Slot unlocked (simultaneous turbo with any other item)."
+                "The first Elite ship, with passively enhanced drifting and simultaneous C-slot turbo."
         },
         r17: {
             [Team.Human]: "Elite Beluga",
@@ -581,7 +581,7 @@ export default {
         turret: {
             name: "Turret",
             description:
-                "Place a base turret. Fly over it to claim the kills and money that it earns. Single-use. Only one turret (or sentry) is allowed per sector."
+                "Place a base turret. Fly over it to claim the kills and money that it earns. Single-use. Only one turret permitted per sector."
         },
         gravity_bomb: {
             name: "Gravity Bomb",
@@ -602,7 +602,7 @@ export default {
         navigational_shield: {
             name: "Nav. Shield",
             description:
-                "A Navigational Shield based on a deflector dish, allows starships to travel safely without suffering damage from debris and small asteroids, as well as protecting from a few cosmic rays."
+                "Based on a deflector dish. Allows starships to travel safely without suffering damage from debris and small asteroids, while also protecting them from a few cosmic rays."
         }
     }
 } satisfies Translation;
