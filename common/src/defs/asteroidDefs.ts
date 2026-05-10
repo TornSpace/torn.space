@@ -37,7 +37,6 @@ export interface AsteroidDef {
     hotspot: Vec2;
 }
 
-// iron silver copper platinum
 const rawDefs = {
     iron: {
         type: "asteroid",
