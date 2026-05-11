@@ -220,7 +220,6 @@ export class AssetManager {
             }
         }
 
-        // to avoid writing { animations: undefined }
         const res: SpritesheetData = {
             meta: {
                 image: texture,
@@ -235,9 +234,5 @@ export class AssetManager {
 
         if (animated) Object.assign(res, { [name]: [...Object.keys(imgFrames)] });
         return res;
-    }
-
-    importGlob<T = string>(glob: Record<string, { default: T }>): T[] {
-        return [...Object.values(glob)].map(asset => asset.default);
     }
 }
