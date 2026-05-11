@@ -9,10 +9,10 @@
 <div class="flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300 animate-in fade-in slide-in-from-right">
     <span class="font-bold text-xl">Returning Players</span>
     <form onsubmit={loginUser} class="flex flex-col items-center gap-2 w-full transition-opacity duration-300">
-        <input type="text" placeholder="Username" autocomplete="username" required bind:value={username} class="h-12 rounded-xl p-3">
-        <input type="password" placeholder="Password" autocomplete="current-password" required bind:value={password} class="h-12 rounded-xl p-3 w-full">
+        <input type="text" placeholder="Username" autocomplete="username" required bind:value={username} class="h-10.5 rounded-xl p-3">
+        <input type="password" placeholder="Password" autocomplete="current-password" required bind:value={password} class="h-10.5 rounded-xl p-3 w-full">
 
-        <input type="submit" value="Login" class="h-12 rounded-xl p-3 cursor-pointer text-[1rem]">
+        <input type="submit" value="Login" class="h-10.5 rounded-xl cursor-pointer text-[1rem]">
     </form>
 </div>
 

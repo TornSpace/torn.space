@@ -3,8 +3,8 @@
 
 @font-face {
     font-family: "ShareTech";
-    src: url("../fonts/Share_Tech/ShareTech-Regular.ttf");
-    font-optical-sizing: auto;
+    src: url("../fonts/Share_Tech/ShareTech-Stretched.ttf");
+    font-width: condensed;
     font-style: normal;
     font-weight: 400;
 }
@@ -24,9 +24,9 @@
     --color-alien: hsl(0, 83%, 58%);
     --color-cyborg: hsl(133, 85%, 52%);
 
-    --color-human-lore: hsl(240, 100%, 50%);
-    --color-alien-lore: hsl(0, 100%, 50%);
-    --color-cyborg-lore: hsl(120, 100%, 50%);
+    --color-human-lore: cyan;
+    --color-alien-lore: pink;
+    --color-cyborg-lore: lime;
 
     --color-btn-human: hsl(226, 82%, 57%);
     --color-btn-alien: hsl(358, 92%, 36%);
@@ -41,9 +41,5 @@
     body {
         background-image: url("../img/ui/backgrounds/space.png");
         background-color: hsl(0, 0%, 0%);
-    }
-
-    .font-game {
-        letter-spacing: 0.125rem;
     }
 }

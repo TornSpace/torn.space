@@ -1,6 +1,24 @@
 <script lang="ts"></script>
 
 <div class="flex absolute bottom-2 left-2 gap-1.5">
-    <!-- <a href="/credits">Credits</a> -->
-    <!-- <a href="/changelog">Changelog</a> -->
+    <a href="/credits" target="_blank">Credits</a>
+    <span>|</span>
+    <a href="/changelog" target="_blank">Changelog</a>
+    <span>|</span>
+    <a href="https://github.com/TornSpace/torn.space" target="_blank">GitHub</a>
 </div>
+
+<style>
+    a {
+        color: #808080
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: #a0a0a0;
+    }
+
+    span {
+        color: #606060;
+    }
+</style>

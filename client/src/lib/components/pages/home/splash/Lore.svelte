@@ -7,9 +7,9 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="flex justify-center items-center w-full h-full px-14" onclick={() => app.join()} role="button" tabindex="0">
+<div class="absolute top-0 left-0 flex justify-center items-center w-full h-full px-14" onclick={() => app.join()} role="button" tabindex="0">
     <span
-        class="text-2xl leading-10 cursor-pointer"
+        class="text-[22px] leading-10 cursor-pointer animate-in duration-1500 fade-in slide-in-from-top"
         class:text-human-lore={team === Team.Human}
         class:text-alien-lore={team === Team.Alien}
         class:text-cyborg-lore={team === Team.Cyborg}
@@ -32,18 +32,6 @@
         100% {
             transform: scale(1);
         }
-    }
-
-    @keyframes slideAndFadeIn {
-        0% {
-            transform: translateY(-300%);
-        }
-
-        100% {}
-    }
-
-    span:first-child {
-        animation: slideAndFadeIn 1.5s;
     }
 
     span:last-child {
