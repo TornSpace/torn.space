@@ -1,11 +1,16 @@
 <script lang="ts">
-    const { team, idx, image }: {
-        team: string
+    import { App, AppState } from "$lib/game/App.svelte";
+    import type { Team } from "@/common/constants";
+
+    const { app, teamIdx, teamName, idx, image }: {
+        app: App
+        teamIdx: Team,
+        teamName: string
         idx: number
         image: string
     } = $props();
 
-    const capitalizedTeam = $derived(team.slice(0, 1).toUpperCase() + team.slice(1));
+    const capitalizedTeam = $derived(teamName.slice(0, 1).toUpperCase() + teamName.slice(1));
 </script>
 
 <button
@@ -13,6 +18,7 @@
     class:order-1={idx === 1}
     class:order-2={idx === 2}
     class="flex items-center gap-1 p-3 rounded-xl cursor-pointer w-full h-12 transition-colors duration-300"
+    onclick={() => (app.state = AppState.Lore, app.guestTeamSelect = teamIdx)}
 >
     <img src={image} alt="{capitalizedTeam} rank 0 ship" class="size-8">
     <span class="grow">Join {capitalizedTeam} Team!</span>

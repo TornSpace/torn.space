@@ -17,7 +17,6 @@
  */
 
 import { PacketType } from "../constants";
-// import { WeaponDefs, type WeaponDefKey } from "../defs/weaponDefs";
 import { AbstractPacket, GameBitStream } from "../net";
 
 export class InputPacket implements AbstractPacket {

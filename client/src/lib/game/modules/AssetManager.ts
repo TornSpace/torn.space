@@ -108,8 +108,6 @@ export class AssetManager {
                 this.loadAtlas(atlas);
             }
         }
-
-        console.log(this.atlases, this.assets);
     }
 
     /**
@@ -174,7 +172,7 @@ export class AssetManager {
     }
 
     /**
-     * Create an animated spritesheet JSON given some parameters. Expects a square atlas image.
+     * Create an animated spritesheet JSON given some parameters.
      * @param name The name of the spritesheet.
      * @param texture The name of the image associated with the spritesheet.
      * @param aw The width of the atlas.

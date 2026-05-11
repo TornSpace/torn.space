@@ -71,8 +71,8 @@ interface EntitySerialization<T extends ValidEntityType> {
 
 export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization<K> } = {
     [EntityType.Base]: {
-        partialSize: 16,
-        fullSize: 10,
+        partialSize: 4,
+        fullSize: 5,
         serializePartial(stream, data) {
             stream.writeUnit(data.direction, 16);
         },
@@ -93,8 +93,8 @@ export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization
         }
     },
     [EntityType.Loot]: {
-        partialSize: 16,
-        fullSize: 10,
+        partialSize: 4,
+        fullSize: 5,
         serializePartial(stream, data) {
             stream.writeUnit(data.direction, 16);
         },
@@ -249,7 +249,7 @@ export class UpdatePacket implements AbstractPacket {
         if (this.leaderboardDirty) {
             stream.writeArray(this.leaderboard, 8, entry => {
                 stream.writeUint16(entry.playerId);
-                stream.writeUint16(entry.xp);
+                stream.writeUint32(entry.xp);
                 stream.writeUint8(entry.rank);
             });
 
@@ -376,15 +376,15 @@ function deserializePlayerData(
         data.hp = stream.readUint8();
     }
 
-    stream.writeBoolean(dirty.weapons);
-    if (dirty.weapons) {
+    if (stream.readBoolean()) {
+        dirty.weapons = true;
         for (let i = 0; i < GameConstants.player.weaponSlots; i++) {
             data.weapons[i] = WeaponDefs.read(stream);
         }
     }
 
-    stream.writeBoolean(dirty.ammo);
-    if (dirty.ammo) {
+    if (stream.readBoolean()) {
+        dirty.ammo = true;
         for (let i = 0; i < GameConstants.player.weaponSlots; i++) {
             data.ammo[i] = stream.readInt8();
         }

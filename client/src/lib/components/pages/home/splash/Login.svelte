@@ -1,6 +1,5 @@
 <script lang="ts">
-    let username = $state("");
-    let password = $state("");
+    let { username = $bindable(), password = $bindable() } = $props();
 
     function loginUser(e: SubmitEvent): void {
         e.preventDefault();

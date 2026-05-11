@@ -24,13 +24,15 @@ import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player";
 import { AssetManager } from "./modules/AssetManager";
 import { AudioManager } from "./modules/AudioManager";
+import { ConfigManager } from "./modules/ConfigManager.svelte";
 import { EntityManager } from "./modules/EntityManager";
 import { InputManager } from "./modules/InputManager";
+import { Localization } from "./modules/Localization.svelte";
 
 import type { Packet } from "@/common/net";
 import type { JoinedPacket } from "@/common/net/JoinedPacket";
 
-import { EntityType, GameConstants, PacketType } from "@/common/constants";
+import { EntityType, GameConstants, PacketType, Team } from "@/common/constants";
 import { DisconnectPacket } from "@/common/net/DisconnectPacket";
 import { JoinPacket } from "@/common/net/JoinPacket";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
@@ -40,6 +42,7 @@ import { PacketStream } from "@/common/utils/PacketStream";
 export enum AppState {
     Loading,
     Splash,
+    Lore,
 
     // Anything below is part of the ingame UI.
     Space,
@@ -52,8 +55,10 @@ export enum AppState {
 }
 
 export class App {
+    config = new ConfigManager();
     pixi = new Application();
     camera = new Camera(this);
+    localization = new Localization();
     socket?: WebSocket;
 
     audioManager = new AudioManager(this);
@@ -85,6 +90,15 @@ export class App {
 
     playerId = 0;
 
+    // UI stuff.
+    loginUser = $state("");
+    loginPass = $state("");
+
+    registerUser = $state("");
+    registerPass = $state("");
+
+    guestTeamSelect = $state(Team.Human);
+
     get player(): Player | undefined {
         return this.entityManager.getById<Player>(this.playerId);
     }
@@ -115,6 +129,7 @@ export class App {
             eventMode: "none"
         });
 
+        this.localization.setLocale(this.config.config.language);
         this.assetManager = new AssetManager(this, this.pixi.renderer);
     }
 
@@ -148,16 +163,16 @@ export class App {
         };
     }
 
-    join(username: string, password: string): void {
+    join(): void {
         const packet = new JoinPacket();
 
         // TODO: Pull from config.
         packet.protocol = 0;
 
-        if (username && password) {
+        if (this.loginUser && this.loginPass) {
             packet.guest = false;
-            packet.username = username;
-            packet.token = btoa(password);
+            packet.username = this.loginUser;
+            packet.token = this.loginPass;
         } else packet.guest = true;
 
         this.sendPacket(packet);

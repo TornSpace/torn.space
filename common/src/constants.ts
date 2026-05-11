@@ -194,7 +194,7 @@ export const GameConstants = {
          * @default 300
          */
         afkTimer: 300,
-        defaultName: "Guest",
+        defaultName: "GUEST",
         maxNameLength: 16,
         /**
          * The rate at which players heal per second.

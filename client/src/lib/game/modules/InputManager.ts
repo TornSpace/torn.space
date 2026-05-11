@@ -22,7 +22,6 @@ import type { FederatedPointerEvent, FederatedWheelEvent } from "pixi.js";
 import { GameConstants } from "@/common/constants";
 import { InputPacket } from "@/common/net/InputPacket";
 import { math } from "@/common/utils/math";
-// import type { WeaponDefKey } from "@/common/defs/weaponDefs";
 
 interface Input {
     type: "key" | "mouse" | "wheel";
@@ -171,8 +170,9 @@ export class InputManager {
 
         if (this.app.player) {
             for (let i = 0; i < GameConstants.player.weaponSlots; i++) {
-                if (this.isInputDown(`Digit${i}`) && i !== this.app.player.activeWeapon) {
-                    packet.queuedWeapon = i;
+                const key = i === 9 ? 0 : i + 1;
+                if (this.isInputDown(`Digit${key}`) && key !== this.app.player.activeWeapon) {
+                    packet.queuedWeapon = key;
                     break;
                 }
             }

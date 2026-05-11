@@ -13,15 +13,16 @@
     let app = new App();
 
     onMount(async () => {
+        await app.config.load();
         await app.init(canvas);
 
         app.connect();
     });
 </script>
 
-{#if app.state === AppState.Splash}
-    <Splash />
+{#if app.state < AppState.Space}
+    <Splash {app} />
 {:else}
     <Game {app} />
 {/if}
-<Canvas bind:canvas={canvas} enabled={app.state > AppState.Splash} />
+<Canvas bind:canvas={canvas} enabled={app.state > AppState.Lore} />

@@ -30,6 +30,7 @@ import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 import { EntityType, GameConstants, Team, Trail, type LeaderboardEntry, type PlayerSaveData } from "@/common/constants";
 import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
 import { WeaponDefs, type WeaponDefKey } from "@/common/defs/weaponDefs";
+import { JoinedPacket } from "@/common/net/JoinedPacket";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
@@ -144,9 +145,9 @@ export class Player extends AbstractServerEntity {
     }
 
     set hp(hp: number) {
-        if (hp === this.hp) return;
+        if (hp === this._hp) return;
 
-        this.hp = math.clamp(hp, 0, this.maxHP);
+        this._hp = math.clamp(hp, 0, this.maxHP);
         this.dirty.hp = true;
     }
 
@@ -392,7 +393,7 @@ export class PlayerManager extends EntityPool<Player> {
     addPlayer(client: Client, packet: JoinPacket, team: Team, data?: PlayerSaveData): Player {
         const player = this.allocEntity(
             client,
-            packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx}`,
+            packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx++}`,
             team,
             data
         );
@@ -403,7 +404,12 @@ export class PlayerManager extends EntityPool<Player> {
         this.resetPlayer(player);
         this.updateLeaderboard();
 
-        this.game.logger.info("Server", `"${player.name} joined the game.`);
+        this.game.logger.info("Server", `"${player.name}" joined the game.`);
+
+        const joinedPacket = new JoinedPacket();
+        joinedPacket.playerId = player.id;
+
+        player.client.sendPacket(joinedPacket);
 
         return player;
     }
@@ -436,7 +442,7 @@ export class PlayerManager extends EntityPool<Player> {
         player.destroy();
         this.deletedPlayers.push(player.id);
 
-        this.game.logger.info(`"${player.name}" left the game.`);
+        this.game.logger.info("Game", `"${player.name}" left the game.`);
     }
 
     updateLeaderboard(): void {
