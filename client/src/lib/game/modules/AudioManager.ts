@@ -117,7 +117,9 @@ export class AudioManager {
     volume = 1;
     position = v2.new(0, 0);
 
-    constructor(readonly app: App) {}
+    constructor(readonly app: App) {
+        sound.disableAutoPause = true;
+    }
 
     /**
      * Load all sounds.
@@ -136,7 +138,7 @@ export class AudioManager {
             soundsToLoad[name] = sounds[file].default;
         }
 
-        sound.add(soundsToLoad);
+        sound.add(soundsToLoad, { autoPlay: false });
     }
 
     play(name: string, options: Partial<SoundOpts>): GameSound {

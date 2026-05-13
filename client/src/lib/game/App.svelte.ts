@@ -16,19 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Application, Ticker } from "pixi.js";
+import { Application, Graphics, Texture, Ticker, TilingSprite } from "pixi.js";
 
-import { Camera } from "./Camera";
 import { BaseManager } from "./entities/Base";
 import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player";
 import { AssetManager } from "./modules/AssetManager";
 import { AudioManager } from "./modules/AudioManager";
+import { Camera } from "./modules/Camera";
 import { ConfigManager } from "./modules/ConfigManager.svelte";
 import { EntityManager } from "./modules/EntityManager";
 import { InputManager } from "./modules/InputManager";
 import { Localization } from "./modules/Localization.svelte";
 
+import type { ClientEntity } from "./entities/ClientEntity";
 import type { Packet } from "@/common/net";
 import type { JoinedPacket } from "@/common/net/JoinedPacket";
 
@@ -38,6 +39,8 @@ import { JoinPacket } from "@/common/net/JoinPacket";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
 import { math } from "@/common/utils/math";
 import { PacketStream } from "@/common/utils/PacketStream";
+import { assert } from "@/common/utils/util";
+import { v2, type Vec2 } from "@/common/utils/v2";
 
 export enum AppState {
     Loading,
@@ -64,7 +67,7 @@ export class App {
     audioManager = new AudioManager(this);
     inputManager = new InputManager(this);
 
-    assetManager?: AssetManager;
+    assetManager!: AssetManager;
     entityManager: EntityManager;
 
     // beamManager = new BeamManager();
@@ -99,6 +102,11 @@ export class App {
 
     guestTeamSelect = $state(Team.Human);
 
+    // PIXI stuff.
+    bgSprite?: TilingSprite;
+    mapGraphics = new Graphics({ zIndex: 1 });
+    mapStars: Vec2[] = [];
+
     get player(): Player | undefined {
         return this.entityManager.getById<Player>(this.playerId);
     }
@@ -120,6 +128,8 @@ export class App {
     }
 
     async init(canvas: HTMLCanvasElement): Promise<void> {
+        this.localization.setLocale(this.config.config.language);
+
         await this.pixi.init({
             canvas,
             resizeTo: window,
@@ -129,8 +139,16 @@ export class App {
             eventMode: "none"
         });
 
-        this.localization.setLocale(this.config.config.language);
         this.assetManager = new AssetManager(this, this.pixi.renderer);
+        this.audioManager.init();
+
+        this.pixi.ticker.add(this.update.bind(this));
+        this.pixi.renderer.on("resize", this.resize.bind(this));
+
+        this.pixi.stage.addChild(this.camera.container);
+
+        this.resize();
+        this.connect();
     }
 
     connect(): void {
@@ -165,9 +183,7 @@ export class App {
 
     join(): void {
         const packet = new JoinPacket();
-
-        // TODO: Pull from config.
-        packet.protocol = 0;
+        packet.protocol = GameConstants.protocol;
 
         if (this.loginUser && this.loginPass) {
             packet.guest = false;
@@ -181,6 +197,8 @@ export class App {
     startGame(packet: JoinedPacket): void {
         this.state = AppState.Space;
         this.playerId = packet.playerId;
+
+        this.drawMap();
     }
 
     disconnect(reason: string): void {
@@ -208,6 +226,113 @@ export class App {
         }
     }
 
+    /**
+     * Sets up the game for drawing the background. Called only once.
+     */
+    drawMap(): void {
+        const bgTex = this.assetManager.getAsset<Texture>("space.img");
+        this.bgSprite = new TilingSprite({
+            texture: bgTex,
+            width: 2048 * 3,
+            height: 2048 * 3,
+            anchor: 0.5
+        });
+
+        this.camera.addObject(this.bgSprite);
+        this.camera.addObject(this.mapGraphics);
+
+        this.drawBackground();
+
+        for (let i = 0; i < GameConstants.client.starCount; i++) {
+            this.mapStars[i] = v2.new(Math.random(), Math.random());
+        }
+    }
+
+    /**
+     * Draws background image, vignette, and stars.
+     * Called once every update frame.
+     */
+    drawBackground(): void {
+        if (!this.bgSprite) return;
+
+        // Space image background.
+        const bgDelta = v2.new(
+            math.remap(
+                math.mod(this.camera.position.x * GameConstants.client.backgroundSpeed, this.camera.width),
+                0,
+                this.camera.width,
+                0,
+                this.bgSprite.texture.width
+            ),
+            math.remap(
+                math.mod(this.camera.position.y * GameConstants.client.backgroundSpeed, this.camera.height),
+                0,
+                this.camera.height,
+                0,
+                this.bgSprite.texture.height
+            )
+        );
+
+        this.bgSprite.position.copyFrom(Camera.vecToScreen(v2.sub(this.camera.position, bgDelta)));
+        this.mapGraphics.clear();
+
+        // Vignette background. We divide by 1.5 instead of 2 to allow for a bit of padding around the viewable area.
+        const dims = v2.new(this.camera.width, this.camera.height);
+
+        const chalfdims = v2.mult(dims, 1 / (1.5 * this.camera.container.scale.x));
+        const cmin = v2.sub(this.camera.position, chalfdims);
+        const cmax = v2.add(this.camera.position, chalfdims);
+
+        const vmin = Camera.vecToScreen(cmin);
+        const vmax = Camera.vecToScreen(cmax);
+
+        this.mapGraphics.rect(vmin.x, vmin.y, vmax.x - vmin.x, vmax.y - vmin.y).fill({ color: 0x000000, alpha: 0.5 });
+
+        // Stars background.
+        const wm = (vmax.x - vmin.x) / GameConstants.client.starMirrors;
+        const hm = (vmax.y - vmin.y) / GameConstants.client.starMirrors;
+
+        const rdims = v2.new(wm, hm);
+        // this.mapGraphics.rect(vmin.x, vmin.y, vmax.x - vmin.x, vmax.y - vmin.y).fill({ color: 0x1e90ff });
+
+        for (let i = 0; i < this.mapStars.length; i++) {
+            const star = this.mapStars[i];
+            const color = `rgb(${128 + 32 * (i % 4)},${128 + 32 * ((i / 4) % 4)},${128 + 32 * ((i / 16) % 4)})`;
+
+            let parallax = (100 - i) / 100.0;
+            parallax = parallax ** 4;
+
+            // Star position relative to viewport center.
+            const starPos = v2.mulComp(star, rdims);
+
+            // Stars have a minimum size of 1x1 (game units) and maximum size of 3x3. Game units are 1px on a 1920x1080 screen.
+            const starSize = 3 - i / (GameConstants.client.starCount / 2);
+            this.mapGraphics.setStrokeStyle({ width: starSize });
+
+            const dx = this.camera.position.x * (parallax + 0.1) * GameConstants.client.starSpeed;
+            const dy = this.camera.position.y * (parallax + 0.1) * GameConstants.client.starSpeed;
+
+            const x = this.camera.position.x + math.mod(starPos.x - dx, wm);
+            const y = this.camera.position.y + math.mod(starPos.y - dy, hm);
+
+            for (let j = 0; j < GameConstants.client.starMirrors; j++) {
+                for (let k = 0; k < GameConstants.client.starMirrors; k++) {
+                    const min = Camera.vecToScreen(
+                        v2.new(
+                            j * wm + x - this.camera.width / (2 * this.camera.container.scale.x),
+                            k * hm + y - this.camera.height / (2 * this.camera.container.scale.y)
+                        )
+                    );
+                    const max = Camera.vecToScreen(v2.add(min, v2.new(starSize)));
+
+                    this.mapGraphics.rect(min.x, min.y, max.x - min.x, max.y - min.y).fill({ color });
+                }
+            }
+
+            // TODO: Hyperdrive line effect.
+        }
+    }
+
     resize(): void {
         this.camera.resize();
     }
@@ -230,6 +355,8 @@ export class App {
         this.inputManager.update(dt);
         this.entityManager.update(dt);
         this.audioManager.update();
+
+        this.drawBackground();
 
         this.camera.render(dt);
 
@@ -254,5 +381,36 @@ export class App {
         for (let i = 0; i < packet.deletedEntities.length; i++) {
             this.entityManager.deleteEntity(packet.deletedEntities[i]);
         }
+
+        for (let i = 0; i < packet.newPlayers.length; i++) {
+            const newPlayer = packet.newPlayers[i];
+            this.playerManager.playerData.set(newPlayer.id, {
+                name: newPlayer.name,
+                team: newPlayer.team
+            });
+        }
+
+        for (let i = 0; i < packet.deletedPlayers.length; i++) {
+            this.playerManager.playerData.delete(packet.deletedPlayers[i]);
+        }
+
+        for (let i = 0; i < packet.fullEntities.length; i++) {
+            const entityData = packet.fullEntities[i];
+            assert(entityData.__type, "Invalid entity type.");
+
+            let entity: ClientEntity | undefined = this.entityManager.getById(entityData.id);
+
+            if (entity === undefined) {
+                entity = this.entityManager.createEntity(entityData.__type, entityData.id, entityData.data);
+            } else this.entityManager.updateFullEntity(entityData.id, entityData.data);
+        }
+
+        for (let i = 0; i < packet.partialEntities.length; i++) {
+            const entityData = packet.partialEntities[i];
+            this.entityManager.updatePartialEntity(entityData.id, entityData.data);
+        }
+
+        if (packet.cameraPositionDirty) this.camera.position = packet.cameraPosition;
+        else if (this.player) this.camera.position = this.player.position;
     }
 }

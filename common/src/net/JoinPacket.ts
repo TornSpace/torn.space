@@ -30,7 +30,7 @@ export class JoinPacket implements AbstractPacket {
     token = "";
 
     serialize(stream: GameBitStream): void {
-        // Protocol should remain fixed in order and size to avoid breaking older clients.
+        // Protocol should remain fixed in size and order to avoid breaking older clients.
         stream.writeUint32(this.protocol);
 
         // Everything else.

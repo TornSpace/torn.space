@@ -1,6 +1,6 @@
 <script lang="ts"></script>
 
-<div class="flex absolute bottom-2 left-2 gap-1.5">
+<div class="flex absolute bottom-2 left-2 gap-1.5 duration-1500 animate-in fade-in">
     <a href="/credits" target="_blank">Credits</a>
     <span>|</span>
     <a href="/changelog" target="_blank">Changelog</a>
@@ -10,7 +10,7 @@
 
 <style>
     a {
-        color: #808080
+        color: #808080;
     }
 
     a:hover {

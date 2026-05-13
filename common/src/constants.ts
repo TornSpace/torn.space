@@ -163,6 +163,27 @@ export const GameConstants = {
         }
     },
     /**
+     * Client-specific configuration.
+     */
+    client: {
+        /**
+         * The rate at which the client experiences background traversal.
+         */
+        backgroundSpeed: 0.8,
+        /**
+         * Star mirror count.
+         */
+        starMirrors: 3,
+        /**
+         * Total star count.
+         */
+        starCount: 30,
+        /**
+         * Base star movement speed.
+         */
+        starSpeed: 3
+    },
+    /**
      * The relative speed at which the game runs at. The absolute speed is this multiplied by the tickrate.
      */
     gameSpeed: 1,
@@ -220,6 +241,11 @@ export const GameConstants = {
          */
         weaponSlots: 10
     },
+    /**
+     * The current protocol version. Used to determine if clients are out of date.
+     * Increment this whenever a definition or anything related to packet serialization is changed.
+     */
+    protocol: 0,
     /**
      * Exp to rank conversion.
      * Note: This is **intentionally** specified as an object so that it is easier to read.

@@ -18,7 +18,7 @@
 
 import { Container } from "pixi.js";
 
-import type { App } from "./App.svelte";
+import type { App } from "../App.svelte";
 
 import { math } from "@/common/utils/math";
 import { v2, type Vec2 } from "@/common/utils/v2";
@@ -38,7 +38,14 @@ export class Camera {
     width = 1;
     height = 1;
 
-    static scale = 64;
+    /**
+     * How many pixels each game unit is.
+     */
+    static scale = 1;
+    /**
+     * Player zoom.
+     */
+    private _zoom = 960;
 
     constructor(readonly app: App) {}
 
@@ -61,6 +68,17 @@ export class Camera {
         this.interpTicker = 0;
     }
 
+    get zoom(): number {
+        return this._zoom;
+    }
+
+    set zoom(zoom: number) {
+        if (zoom === this._zoom) return;
+
+        this._zoom = zoom;
+        this.resize();
+    }
+
     resize(): void {
         this.width = this.app.pixi.screen.width;
         this.height = this.app.pixi.screen.height;
@@ -70,7 +88,7 @@ export class Camera {
 
         const maxScreenDim = math.max(minDim * (16 / 9), maxDim);
 
-        this.container.scale.set((maxScreenDim * 0.5) / Camera.scale);
+        this.container.scale.set((maxScreenDim * 0.5) / (this._zoom * Camera.scale));
         this.render(1);
     }
 

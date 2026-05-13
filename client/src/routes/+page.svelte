@@ -13,10 +13,10 @@
     let app = new App();
 
     onMount(async () => {
+        canvas.oncontextmenu = (e): void => e.preventDefault();
+
         await app.config.load();
         await app.init(canvas);
-
-        app.connect();
     });
 </script>
 

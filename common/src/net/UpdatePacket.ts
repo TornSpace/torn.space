@@ -157,8 +157,9 @@ export class UpdatePacket implements AbstractPacket {
     fullEntities: Array<Entity & { data: Required<EntitiesNetData[Entity["__type"]]> }> = [];
 
     newPlayers: Array<{
-        name: string;
         id: number;
+        team: Team;
+        name: string;
     }> = [];
 
     deletedPlayers: number[] = [];
@@ -174,7 +175,7 @@ export class UpdatePacket implements AbstractPacket {
 
     playerData = {
         hp: 0,
-        weapons: [] as Array<WeaponDefKey>,
+        weapons: [] as Array<WeaponDefKey | "">,
         ammo: [] as number[]
     };
 
@@ -222,6 +223,7 @@ export class UpdatePacket implements AbstractPacket {
         if (this.newPlayers.length) {
             stream.writeArray(this.newPlayers, 8, player => {
                 stream.writeUint16(player.id);
+                stream.writeUint8(player.team);
                 stream.writeASCIIString(player.name, GameConstants.player.maxNameLength);
             });
 
@@ -313,6 +315,7 @@ export class UpdatePacket implements AbstractPacket {
         if (flags & UpdateFlags.NewPlayers) {
             stream.readArray(this.newPlayers, 8, () => ({
                 id: stream.readUint16(),
+                team: stream.readUint8(),
                 name: stream.readASCIIString(GameConstants.player.maxNameLength)
             }));
         }
@@ -350,7 +353,7 @@ function serializeActivePlayerData(
     stream.writeBoolean(dirty.weapons);
     if (dirty.weapons) {
         for (let i = 0; i < data.weapons.length; i++) {
-            const def = data.weapons[i];
+            const def = data.weapons[i] as WeaponDefKey;
             WeaponDefs.write(stream, def);
         }
     }

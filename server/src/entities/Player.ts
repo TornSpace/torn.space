@@ -91,7 +91,7 @@ export class Player extends AbstractServerEntity {
     trail = Trail.None;
     activeWeapon = 0;
 
-    weapons = new Array<WeaponDefKey>(GameConstants.player.weaponSlots).fill("");
+    weapons = new Array<WeaponDefKey | "">(GameConstants.player.weaponSlots).fill("");
     ammo = new Array<number>(GameConstants.player.weaponSlots).fill(0);
 
     readonly tech = {
@@ -391,6 +391,8 @@ export class PlayerManager extends EntityPool<Player> {
     }
 
     addPlayer(client: Client, packet: JoinPacket, team: Team, data?: PlayerSaveData): Player {
+        if (!packet.username && this.game.guestIdx === 255) this.game.guestIdx = 0;
+
         const player = this.allocEntity(
             client,
             packet.username || `${GameConstants.player.defaultName} ${this.game.guestIdx++}`,
@@ -404,7 +406,7 @@ export class PlayerManager extends EntityPool<Player> {
         this.resetPlayer(player);
         this.updateLeaderboard();
 
-        this.game.logger.info("Server", `"${player.name}" joined the game.`);
+        this.game.logger.info("Game", `"${player.name}" joined the game.`);
 
         const joinedPacket = new JoinedPacket();
         joinedPacket.playerId = player.id;
@@ -440,6 +442,7 @@ export class PlayerManager extends EntityPool<Player> {
 
     removePlayer(player: Player): void {
         player.destroy();
+
         this.deletedPlayers.push(player.id);
 
         this.game.logger.info("Game", `"${player.name}" left the game.`);

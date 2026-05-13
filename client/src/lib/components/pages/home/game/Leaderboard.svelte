@@ -18,5 +18,3 @@
         <tbody></tbody>
     </table>
 </div>
-
-<style></style>

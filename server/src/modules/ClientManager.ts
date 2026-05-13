@@ -38,7 +38,7 @@ export class ClientManager {
         for (let i = 0; i < this.clients.length; i++) {
             const client = this.clients[i];
 
-            if (client.socket.readyState !== 1) continue;
+            if (client.socket.readyState !== 1 || !client.sentJoinPacket) continue;
             client.sendPackets(dt);
         }
     }
@@ -54,6 +54,8 @@ export class Client {
 
     debug = true;
     forceSendDebugInfo = true;
+
+    sentJoinPacket = false;
 
     private packetStream = PacketStream.alloc(1 << 16);
     private visibleEntities = new Set<ServerEntity>();
@@ -81,8 +83,10 @@ export class Client {
         if (packet === undefined) return;
 
         if (!this.player && packet.type === PacketType.Join) {
-            if (packet.guest) this.player = this.game.playerManager.addPlayer(this, packet, packet.team);
-            else {
+            if (packet.guest) {
+                this.player = this.game.playerManager.addPlayer(this, packet, packet.team);
+                this.sentJoinPacket = true;
+            } else {
                 const { username, token } = packet;
                 this.game
                     .fetch("/user/login", JSON.stringify({ username, token }))
@@ -90,6 +94,7 @@ export class Client {
                         if (res.status === 200) {
                             res.json().then((data: PlayerSaveData) => {
                                 this.player = this.game.playerManager.addPlayer(this, packet, data.team, data);
+                                this.sentJoinPacket = true;
                             });
                         } else {
                             this.game.logger.warn("Failed to authenticate client.");

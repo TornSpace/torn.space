@@ -60,6 +60,28 @@ export const math = {
     },
 
     /**
+     * Unsigned modulo.
+     * @param a The number to mod.
+     * @param m The number to mod by.
+     */
+    mod(a: number, m: number): number {
+        return ((a % m) + m) % m;
+    },
+
+    /**
+     * Remap a number from one range to another.
+     * @param v The value to remap.
+     * @param a The initial range minimum value.
+     * @param b The initial range maximum value.
+     * @param x The targeted range minimum value.
+     * @param y The targeted range maximum value.
+     */
+    remap(v: number, a: number, b: number, x: number, y: number): number {
+        const t = math.clamp((v - a) / (b - a), 0.0, 1.0);
+        return math.lerp(x, y, t);
+    },
+
+    /**
      * Convert an angle from degrees to radians.
      * @param deg The angle, in degrees.
      * @returns The angle in radians.

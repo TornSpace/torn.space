@@ -25,6 +25,7 @@ import type { Hitbox } from "@/common/utils/hitbox";
 
 import { GameBitStream } from "@/common/net";
 import { EntitySerializations, type EntitiesNetData } from "@/common/net/UpdatePacket";
+import { assert } from "@/common/utils/util";
 import { v2, type Vec2 } from "@/common/utils/v2";
 
 export abstract class AbstractServerEntity<T extends ValidEntityType = ValidEntityType> {
@@ -182,6 +183,37 @@ export abstract class EntityPool<T extends ServerEntity> {
 
             this.pool = activeEntities;
         }
+    }
+}
+
+/**
+ * Abstracts away all `entityManager.getById()` calls so that entities may be dereferenced properly.
+ */
+export class EntityHandle<T extends ServerEntity> {
+    readonly type: T["__type"];
+    id: number;
+
+    constructor(
+        id: number,
+        readonly game: Game
+    ) {
+        this.id = id;
+
+        const entity = this.game.entityManager.getById(this.id);
+        assert(entity, "Tried to create EntityHandle with non existing entity");
+
+        this.type = entity.__type;
+    }
+
+    get(): T | undefined {
+        if (!this.id) return undefined;
+
+        const entity = this.game.entityManager.getById(this.id);
+        if (!entity || entity.__type !== this.type) {
+            this.id = 0;
+            return undefined;
+        }
+        return entity as T;
     }
 }
 
