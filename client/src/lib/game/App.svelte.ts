@@ -189,7 +189,10 @@ export class App {
             packet.guest = false;
             packet.username = this.loginUser;
             packet.token = this.loginPass;
-        } else packet.guest = true;
+        } else {
+            packet.guest = true;
+            packet.team = this.guestTeamSelect;
+        }
 
         this.sendPacket(packet);
     }
@@ -258,14 +261,14 @@ export class App {
         // Space image background.
         const bgDelta = v2.new(
             math.remap(
-                math.mod(this.camera.position.x * GameConstants.client.backgroundSpeed, this.camera.width),
+                math.mod(this.camera.position.x * GameConstants.client.backgroundSpeed, this.camera.width / Camera.scale),
                 0,
                 this.camera.width,
                 0,
                 this.bgSprite.texture.width
             ),
             math.remap(
-                math.mod(this.camera.position.y * GameConstants.client.backgroundSpeed, this.camera.height),
+                math.mod(this.camera.position.y * GameConstants.client.backgroundSpeed, this.camera.height / Camera.scale),
                 0,
                 this.camera.height,
                 0,
@@ -276,10 +279,10 @@ export class App {
         this.bgSprite.position.copyFrom(Camera.vecToScreen(v2.sub(this.camera.position, bgDelta)));
         this.mapGraphics.clear();
 
-        // Vignette background. We divide by 1.5 instead of 2 to allow for a bit of padding around the viewable area.
+        // Vignette background. Probably can simplify calculations here.
         const dims = v2.new(this.camera.width, this.camera.height);
 
-        const chalfdims = v2.mult(dims, 1 / (1.5 * this.camera.container.scale.x));
+        const chalfdims = v2.mult(dims, 1 / (2 * this.camera.container.scale.x * Camera.scale));
         const cmin = v2.sub(this.camera.position, chalfdims);
         const cmax = v2.add(this.camera.position, chalfdims);
 
@@ -293,7 +296,6 @@ export class App {
         const hm = (vmax.y - vmin.y) / GameConstants.client.starMirrors;
 
         const rdims = v2.new(wm, hm);
-        // this.mapGraphics.rect(vmin.x, vmin.y, vmax.x - vmin.x, vmax.y - vmin.y).fill({ color: 0x1e90ff });
 
         for (let i = 0; i < this.mapStars.length; i++) {
             const star = this.mapStars[i];
@@ -309,21 +311,21 @@ export class App {
             const starSize = 3 - i / (GameConstants.client.starCount / 2);
             this.mapGraphics.setStrokeStyle({ width: starSize });
 
-            const dx = this.camera.position.x * (parallax + 0.1) * GameConstants.client.starSpeed;
-            const dy = this.camera.position.y * (parallax + 0.1) * GameConstants.client.starSpeed;
+            const dx = Camera.unitToScreen(this.camera.position.x) * parallax * GameConstants.client.starSpeed;
+            const dy = Camera.unitToScreen(this.camera.position.y) * parallax * GameConstants.client.starSpeed;
 
-            const x = this.camera.position.x + math.mod(starPos.x - dx, wm);
-            const y = this.camera.position.y + math.mod(starPos.y - dy, hm);
+            const x = Camera.unitToScreen(this.camera.position.x) + math.mod(starPos.x - dx, wm);
+            const y = Camera.unitToScreen(this.camera.position.y) + math.mod(starPos.y - dy, hm);
 
             for (let j = 0; j < GameConstants.client.starMirrors; j++) {
                 for (let k = 0; k < GameConstants.client.starMirrors; k++) {
-                    const min = Camera.vecToScreen(
+                    const min =
                         v2.new(
                             j * wm + x - this.camera.width / (2 * this.camera.container.scale.x),
                             k * hm + y - this.camera.height / (2 * this.camera.container.scale.y)
                         )
-                    );
-                    const max = Camera.vecToScreen(v2.add(min, v2.new(starSize)));
+                    ;
+                    const max = v2.add(min, v2.new(starSize));
 
                     this.mapGraphics.rect(min.x, min.y, max.x - min.x, max.y - min.y).fill({ color });
                 }

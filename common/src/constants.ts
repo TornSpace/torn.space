@@ -137,7 +137,7 @@ export const GameConstants = {
         /**
          * The docking radius of the base, in game units.
          */
-        radius: 50,
+        radius: 8,
         /**
          * The sector(s) in which the team base(s) will spawn.
          */
@@ -169,7 +169,7 @@ export const GameConstants = {
         /**
          * The rate at which the client experiences background traversal.
          */
-        backgroundSpeed: 0.8,
+        backgroundSpeed: 2,
         /**
          * Star mirror count.
          */
@@ -181,7 +181,7 @@ export const GameConstants = {
         /**
          * Base star movement speed.
          */
-        starSpeed: 3
+        starSpeed: 6
     },
     /**
      * The relative speed at which the game runs at. The absolute speed is this multiplied by the tickrate.
@@ -202,7 +202,7 @@ export const GameConstants = {
     /**
      * The sector width (in game units).
      */
-    sectorWidth: 1432,
+    sectorWidth: 224,
     /**
      * The maximum possible position. Must be a multiple of 2.
      */
@@ -235,7 +235,7 @@ export const GameConstants = {
         /**
          * Viewport radius. Should be the maximum of the two viewport dimensions.
          */
-        viewRadius: 10,
+        viewRadius: 25,
         /**
          * The maximum number of weapon slots a player can have.
          */

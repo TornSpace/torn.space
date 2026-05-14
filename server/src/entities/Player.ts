@@ -43,7 +43,7 @@ interface PlayerDamageParams {
 
 export class Player extends AbstractServerEntity {
     readonly __type = EntityType.Player;
-    readonly hitbox = new CircleHitbox(0);
+    readonly hitbox = new CircleHitbox(ShipDefs.typeToDef("r0").width);
 
     readonly dirty = {
         id: true,
@@ -226,7 +226,7 @@ export class Player extends AbstractServerEntity {
     dock(base: Base): void {
         if (this.docked) return;
 
-        this.sector = base.sector;
+        this.sector = v2.clone(base.sector);
         this.position = v2.new(GameConstants.maxPosition / 2, GameConstants.maxPosition / 2);
         this.docked = true;
     }

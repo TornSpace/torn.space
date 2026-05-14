@@ -41,11 +41,11 @@ export class Camera {
     /**
      * How many pixels each game unit is.
      */
-    static scale = 1;
+    static scale = 64;
     /**
      * Player zoom.
      */
-    private _zoom = 960;
+    private _zoom = 15;
 
     constructor(readonly app: App) {}
 

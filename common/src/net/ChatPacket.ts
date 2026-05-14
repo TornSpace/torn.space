@@ -22,16 +22,13 @@ import { AbstractPacket, GameBitStream } from "../net";
 export class ChatPacket implements AbstractPacket {
     readonly type = PacketType.Chat;
 
-    playerId = 0;
     message = "";
 
     serialize(stream: GameBitStream): void {
-        stream.writeUint8(this.playerId);
         stream.writeASCIIString(this.message, GameConstants.maxChatLength);
     }
 
     deserialize(stream: GameBitStream): void {
-        this.playerId = stream.readUint8();
         this.message = stream.readASCIIString(GameConstants.maxChatLength);
     }
 }

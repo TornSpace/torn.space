@@ -31,10 +31,16 @@ export class Grid {
     static readonly cellsPerSector = 9;
 
     /**
+     * The number of cells per side of sector.
+     * We cache this number to avoid expensive `Math.sqrt()`.
+     */
+    static readonly cellsPerSectorSide = Math.sqrt(Grid.cellsPerSector);
+
+    /**
      * The size of an individual cell, in game units.
      * Be careful not to let `GameConstants.sectorWidth * GameConstants.mapSize / Grid.cellSize` become too big!
      */
-    static readonly cellSize = GameConstants.sectorWidth / Grid.cellsPerSector;
+    static readonly cellSize = GameConstants.sectorWidth / Grid.cellsPerSectorSide;
 
     readonly width: number;
     readonly height: number;
@@ -108,10 +114,10 @@ export class Grid {
         const { min, max } = this._roundToSector(rect.min, rect.max, sector);
         const entities = new Set<ServerEntity>();
 
-        for (let x = min.x; x <= max.x; x++) {
-            const xRow = this._grid[x];
-            for (let y = min.y; y <= max.y; y++) {
-                const cellEntities = xRow[y];
+        for (let y = min.y; y <= max.y; y++) {
+            const row = this._grid[y];
+            for (let x = min.x; x <= max.x; x++) {
+                const cellEntities = row[x];
                 for (const entity of cellEntities) {
                     // Visibility modifiers.
                     if (entity.__type === EntityType.Player && (entity.docked || entity.cloakTimer > 0)) continue;
@@ -140,15 +146,20 @@ export class Grid {
     }
 
     private _roundToSector(min: Vec2, max: Vec2, sector: Vec2): Record<"min" | "max", Vec2> {
-        const rawMin = this._roundToCells(min);
-        const rawMax = this._roundToCells(max);
+        const offset = v2.mult(sector, GameConstants.sectorWidth);
 
-        const trueMin = v2.maxComp(rawMin, v2.mult(sector, Grid.cellsPerSector));
-        const trueMax = v2.minComp(rawMax, v2.mult(sector, Grid.cellsPerSector));
+        const relMin = v2.new(math.clamp(min.x, 0, GameConstants.sectorWidth), math.clamp(min.y, 0, GameConstants.sectorWidth));
+        const relMax = v2.new(math.clamp(max.x, 0, GameConstants.sectorWidth), math.clamp(max.y, 0, GameConstants.sectorWidth));
+
+        const absMin = v2.add(relMin, offset);
+        const absMax = v2.add(relMax, offset);
+
+        const cellMin = this._roundToCells(absMin);
+        const cellMax = this._roundToCells(absMax);
 
         return {
-            min: trueMin,
-            max: trueMax
+            min: cellMin,
+            max: cellMax
         };
     }
 }

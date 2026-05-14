@@ -37,8 +37,8 @@ export class Base extends AbstractServerEntity {
     init(team: Team, sector: Vec2): void {
         this.team = team;
         this.sector = sector;
-        this.position = v2.new(GameConstants.sectorWidth / 2, GameConstants.sectorWidth / 2);
 
+        this.position = v2.new(GameConstants.sectorWidth / 2, GameConstants.sectorWidth / 2);
         this.hitbox.position = this.position;
     }
 

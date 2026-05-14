@@ -65,7 +65,6 @@ export class Client {
     constructor(
         readonly game: Game,
         readonly socket: ServerWebSocket<SocketData>,
-        public sector: Vec2 = v2.new(0, 0),
         public position: Vec2 = v2.new(GameConstants.sectorWidth / 2, GameConstants.sectorWidth / 2)
     ) {}
 
@@ -155,12 +154,12 @@ export class Client {
     }
 
     sendUpdatePacket(dt: number): void {
+        if (!this.player) return;
         const updatePacket = new UpdatePacket();
 
         // Calculate visible, deleted, and dirty entities, and send them to the client.
-        // TODO: Don't send docked players!
         const rect = RectHitbox.fromCircle(GameConstants.player.viewRadius, this.position);
-        const newVisibleEntities = this.game.grid.intersectsHitbox(rect, this.sector);
+        const newVisibleEntities = this.game.grid.intersectsHitbox(rect, this.player.sector);
 
         for (const entity of this.visibleEntities) {
             if (!newVisibleEntities.has(entity)) updatePacket.deletedEntities.push(entity.id);
@@ -177,7 +176,14 @@ export class Client {
         if (this.player) {
             updatePacket.playerData = this.player;
             updatePacket.playerDataDirty = this.player.dirty;
+
+            updatePacket.newPlayers = this.firstPacket
+                ? this.game.playerManager.players
+                : this.game.playerManager.newPlayers;
+
+            updatePacket.deletedPlayers = this.game.playerManager.deletedPlayers;
         } else {
+            // TODO: Finish this.
             // Spectators.
             this.position = v2.add(this.position, v2.mult(this.direction, this.speed * dt));
 
@@ -191,12 +197,6 @@ export class Client {
             this.position.x = math.clamp(this.position.x, 0, GameConstants.maxPosition);
             this.position.y = math.clamp(this.position.y, 0, GameConstants.maxPosition);
         }
-
-        updatePacket.newPlayers = this.firstPacket
-            ? this.game.playerManager.players
-            : this.game.playerManager.newPlayers;
-
-        updatePacket.deletedPlayers = this.game.playerManager.deletedPlayers;
 
         //
         // Projectile manager content here.

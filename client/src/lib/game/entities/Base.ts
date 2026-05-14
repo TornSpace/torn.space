@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Sprite } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 
 import { ClientEntity } from "./ClientEntity";
 
@@ -28,6 +28,7 @@ import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 import { EntityType, GameConstants, Team } from "@/common/constants";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { v2 } from "@/common/utils/v2";
+import { BaseDefs } from "@/common/defs/baseDefs";
 
 export class Base extends ClientEntity {
     readonly __type = EntityType.Base;
@@ -35,6 +36,7 @@ export class Base extends ClientEntity {
     team!: Team;
 
     direction = v2.new(0, 0);
+    oldDirection = v2.new(0, 0);
 
     sprite = new Sprite({ anchor: 0.5 });
 
@@ -53,18 +55,31 @@ export class Base extends ClientEntity {
     override updateFromData(data: EntitiesNetData[EntityType.Base], isNew: boolean): void {
         super.updateFromData(data, isNew);
 
+        this.oldDirection = v2.clone(this.direction);
         this.direction = data.direction;
 
         if (data.full) {
             this.position = data.full.position;
+            this.hitbox.position = data.full.position;
+
             this.team = data.full.team;
 
-            // const def = LootDefs.typeToDef(this.type);
-            // sprite from def
+            const def = BaseDefs.typeToDef(`${this.team}`);
+            this.sprite.texture = this.app.assetManager.getAsset<Texture>(def.worldImg);
+            this.sprite.position = this.position;
         }
     }
 
     override update(dt: number): void {
+        const direction = v2.lerp(
+            this.oldDirection,
+            this.direction,
+            this.interpFactor
+        );
+        
+        this.container.position = this.position;
+        this.sprite.rotation = Math.atan2(direction.y, direction.x);
+
         super.update(dt);
     }
 
