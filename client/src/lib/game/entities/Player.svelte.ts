@@ -20,7 +20,7 @@ import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
 
 import { ClientEntity } from "./ClientEntity";
 
-import { Camera } from "../modules/Camera";
+import { Camera } from "../modules/Camera.svelte";
 import { EntityPool } from "../modules/EntityManager.svelte";
 
 import type { App } from "../App.svelte";

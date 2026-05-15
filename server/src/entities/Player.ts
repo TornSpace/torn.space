@@ -282,43 +282,46 @@ export class Player extends AbstractServerEntity {
      * @param drifting Whether the player is currently drifting.
      */
     move(dt: number, drifting: boolean): void {
-        let speed = v2.length(this.velocity);
-        if (this.hyperdriveTimer > 0) {
-            speed =
-                (WeaponDefs.typeToDef("hyperdrive").speed - math.square(100 - this.hyperdriveTimer)) /
-                (this.ship === "r16" ? 7 : 10);
-        }
+        // let speed = v2.length(this.velocity);
+        // if (this.hyperdriveTimer > 0) {
+        //     speed =
+        //         (WeaponDefs.typeToDef("hyperdrive").speed - math.square(100 - this.hyperdriveTimer)) /
+        //         (this.ship === "r16" ? 7 : 10);
+        // }
 
-        const def = ShipDefs.typeToDef(this.ship);
+        // const def = ShipDefs.typeToDef(this.ship);
 
         // TODO: Update for new coordinate system.
         // In english, your thrust is (this.thrust = your ship's thrust * thrust upgrade). Multiply by 1.8. Double if using supercharger.
         // Reduce if carrying lots of ore. If drifting, *=1.6 if elite raider, *=1.45 if not.
-        const newSpeed =
-            ((def.speed * (this.superchargerTimer > 0 ? 2 : 1) * 1.8) / ((this.oreCount / def.cargo + 3) / 3.5)) *
-            (drifting && this.moveFwd && this.turnLeft !== this.turnRight ? (this.ship === "r16" ? 1.6 : 1.45) : 1);
+        // const newSpeed =
+        //     ((def.speed * (this.superchargerTimer > 0 ? 2 : 1) * 1.8) / ((this.oreCount / def.cargo + 3) / 3.5)) *
+        //     (drifting && this.moveFwd && this.turnLeft !== this.turnRight ? (this.ship === "r16" ? 1.6 : 1.45) : 1);
 
         // Reusable Trig
-        const angle = v2.toRad(this.direction);
-        const driftAngle = v2.toRad(this.driftDirection);
+        // const angle = v2.toRad(this.direction);
+        // const driftAngle = v2.toRad(this.driftDirection);
 
-        const ssa = Math.sin(angle);
-        const ssd = Math.sin(driftAngle);
-        const csa = Math.cos(angle);
-        const csd = Math.cos(driftAngle);
+        // const ssa = Math.sin(angle);
+        // const ssd = Math.sin(driftAngle);
+        // const csa = Math.cos(angle);
+        // const csd = Math.cos(driftAngle);
 
-        this.velocity.x = csd * speed;
-        this.velocity.y = ssd * speed;
+        // this.velocity.x = csd * speed;
+        // this.velocity.y = ssd * speed;
 
-        if (this.moveFwd) {
-            this.velocity.x += csa * newSpeed;
-            this.velocity.y += ssa * newSpeed;
-        }
+        // if (this.moveFwd) {
+        //     this.velocity.x += csa * newSpeed;
+        //     this.velocity.y += ssa * newSpeed;
+        // }
 
-        if (this.moveBwd && drifting) {
-            this.velocity.x -= (csa * newSpeed) / 2;
-            this.velocity.y -= (ssa * newSpeed) / 2;
-        }
+        // if (this.moveBwd && drifting) {
+        //     this.velocity.x -= (csa * newSpeed) / 2;
+        //     this.velocity.y -= (ssa * newSpeed) / 2;
+        // }
+
+        if (this.moveFwd) this.velocity.y = 1;
+        else this.velocity.y = 0;
 
         // this.driftDirection = Math.atan2(this.velocity.y, this.velocity.x);
 
@@ -327,18 +330,18 @@ export class Player extends AbstractServerEntity {
         this.position.y += this.velocity.y;
 
         // Juking.
-        if ((this.jukeLeft || this.jukeRight) && this.charge > 0) {
-            this.charge = -22;
+        // if ((this.jukeLeft || this.jukeRight) && this.charge > 0) {
+        //     this.charge = -22;
 
-            this.jukeTimer = (this.trail === Trail.Random ? 1.25 : 1) * (this.jukeLeft ? 22 : -22);
-        }
+        //     this.jukeTimer = (this.trail === Trail.Random ? 1.25 : 1) * (this.jukeLeft ? 22 : -22);
+        // }
 
-        if (Math.abs(this.jukeTimer) > 1) {
-            this.position.x += this.jukeTimer * this.direction.y;
-            this.position.y -= this.jukeTimer * this.direction.x;
+        // if (Math.abs(this.jukeTimer) > 1) {
+        //     this.position.x += this.jukeTimer * this.direction.y;
+        //     this.position.y -= this.jukeTimer * this.direction.x;
 
-            this.jukeTimer *= 0.03 * dt;
-        }
+        //     this.jukeTimer *= 0.03 * dt;
+        // }
 
         // Crossing sectors. Note that it is considered undefined behavior if x or y are an element of [0, GameConstants.sectorWidth].
         if (this.position.x < 0 && this.sector.x > 0) {

@@ -14,7 +14,7 @@
     <br>
     <span>TPS: {app.debug.tpsAvg}/{app.debug.tpsMin}/{app.debug.tpsMax} (avg/min/max)</span>
     <br>
-    <span>Position: {app.player?.position.x.toFixed(1) ?? "NaN"}/{app.player?.position.y.toFixed(1) ?? "NaN"} (x/y)</span>
+    <span>Position: {app.camera.position.x.toFixed(1) ?? "NaN"}/{app.camera.position.y.toFixed(1) ?? "NaN"} (x/y)</span>
     <br>
     <br>
     <span>Client Entities: {app.entityManager.entities.length}</span>

@@ -30,7 +30,7 @@ export class Camera {
         eventMode: "none"
     });
 
-    _pos = v2.new(0, 0);
+    _pos = $state(v2.new(0, 0));
     _oldPos = v2.new(0, 0);
 
     interpTicker = 0;

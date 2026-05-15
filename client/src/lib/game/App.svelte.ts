@@ -23,7 +23,7 @@ import { LootManager } from "./entities/Loot";
 import { PlayerManager, type Player } from "./entities/Player.svelte";
 import { AssetManager } from "./modules/AssetManager";
 import { AudioManager } from "./modules/AudioManager";
-import { Camera } from "./modules/Camera";
+import { Camera } from "./modules/Camera.svelte";
 import { ConfigManager } from "./modules/ConfigManager.svelte";
 import { EntityManager } from "./modules/EntityManager.svelte";
 import { InputManager } from "./modules/InputManager";
