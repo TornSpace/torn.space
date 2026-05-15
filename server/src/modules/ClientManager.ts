@@ -50,7 +50,7 @@ export class Client {
     pingSequence = 0;
 
     speed = 1;
-    direction = v2.new(0, 1);
+    direction = v2.new(1, 0);
 
     debug = true;
     forceSendDebugInfo = true;

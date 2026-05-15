@@ -137,7 +137,11 @@ export const GameConstants = {
         /**
          * The docking radius of the base, in game units.
          */
-        radius: 8,
+        radius: 0.075,
+        /**
+         * The speed at which bases rotate.
+         */
+        rotateSpeed: 0.03,
         /**
          * The sector(s) in which the team base(s) will spawn.
          */
@@ -169,7 +173,7 @@ export const GameConstants = {
         /**
          * The rate at which the client experiences background traversal.
          */
-        backgroundSpeed: 2,
+        backgroundSpeed: 0.03125,
         /**
          * Star mirror count.
          */
@@ -181,7 +185,7 @@ export const GameConstants = {
         /**
          * Base star movement speed.
          */
-        starSpeed: 6
+        starSpeed: 0.09375
     },
     /**
      * The relative speed at which the game runs at. The absolute speed is this multiplied by the tickrate.

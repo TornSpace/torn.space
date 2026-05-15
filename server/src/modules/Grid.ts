@@ -148,8 +148,14 @@ export class Grid {
     private _roundToSector(min: Vec2, max: Vec2, sector: Vec2): Record<"min" | "max", Vec2> {
         const offset = v2.mult(sector, GameConstants.sectorWidth);
 
-        const relMin = v2.new(math.clamp(min.x, 0, GameConstants.sectorWidth), math.clamp(min.y, 0, GameConstants.sectorWidth));
-        const relMax = v2.new(math.clamp(max.x, 0, GameConstants.sectorWidth), math.clamp(max.y, 0, GameConstants.sectorWidth));
+        const relMin = v2.new(
+            math.clamp(min.x, 0, GameConstants.sectorWidth),
+            math.clamp(min.y, 0, GameConstants.sectorWidth)
+        );
+        const relMax = v2.new(
+            math.clamp(max.x, 0, GameConstants.sectorWidth),
+            math.clamp(max.y, 0, GameConstants.sectorWidth)
+        );
 
         const absMin = v2.add(relMin, offset);
         const absMax = v2.add(relMax, offset);

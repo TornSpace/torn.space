@@ -18,6 +18,7 @@
 
 import { EntityType, GameConstants, PacketType, Team, type LeaderboardEntry, type ValidEntityType } from "../constants";
 import { LootDefs, type LootDefKey } from "../defs/lootDefs";
+import { ShipDefs, type ShipDefKey } from "../defs/shipDefs";
 import { WeaponDefs, type WeaponDefKey } from "../defs/weaponDefs";
 import { AbstractPacket, GameBitStream } from "../net";
 import { v2, type Vec2 } from "../utils/v2";
@@ -50,9 +51,12 @@ export interface EntitiesNetData {
     [EntityType.Player]: {
         position: Vec2;
         direction: Vec2;
+        hp: number;
 
         full?: {
             dead: boolean;
+            ship: ShipDefKey;
+            team: Team;
         };
     };
 }
@@ -94,7 +98,7 @@ export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization
     },
     [EntityType.Loot]: {
         partialSize: 4,
-        fullSize: 5,
+        fullSize: 4 + LootDefs.bits,
         serializePartial(stream, data) {
             stream.writeUnit(data.direction, 16);
         },
@@ -115,24 +119,30 @@ export const EntitySerializations: { [K in ValidEntityType]: EntitySerialization
         }
     },
     [EntityType.Player]: {
-        partialSize: 8,
-        fullSize: 1,
+        partialSize: 10,
+        fullSize: 2 + ShipDefs.bytes,
         serializePartial(stream, data): void {
             stream.writePosition(data.position);
             stream.writeUnit(data.direction, 16);
+            stream.writeUint16(data.hp);
         },
         serializeFull(stream, data): void {
             stream.writeBoolean(data.dead);
+            stream.writeUint8(data.team);
+            ShipDefs.write(stream, data.ship);
         },
         deserializePartial(stream) {
             return {
                 position: stream.readPosition(),
-                direction: stream.readUnit(16)
+                direction: stream.readUnit(16),
+                hp: stream.readUint16()
             };
         },
         deserializeFull(stream) {
             return {
-                dead: stream.readBoolean()
+                dead: stream.readBoolean(),
+                team: stream.readUint8(),
+                ship: ShipDefs.read(stream)
             };
         }
     }

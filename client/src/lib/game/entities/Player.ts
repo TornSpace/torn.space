@@ -16,10 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Container, Sprite, Text } from "pixi.js";
+import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
 
 import { ClientEntity } from "./ClientEntity";
 
+import { Camera } from "../modules/Camera";
 import { EntityPool } from "../modules/EntityManager";
 
 import type { App } from "../App.svelte";
@@ -27,6 +28,7 @@ import type { GameSound } from "../modules/AudioManager";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType, Team } from "@/common/constants";
+import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { v2 } from "@/common/utils/v2";
 
@@ -35,12 +37,16 @@ export class Player extends ClientEntity {
 
     readonly hitbox = new CircleHitbox(0);
 
+    hp = 0;
     dead = false;
+    team = Team.Human;
+    ship: ShipDefKey = "r0";
+    activeWeapon = 0;
 
     images = {
-        ship: new Sprite(),
-        boost: new Sprite(),
-        trail: new Sprite()
+        ship: new Sprite({ position: v2.new(0, 0), anchor: 0.5 }),
+        boost: new Sprite({ position: v2.new(0, 0), anchor: 0.5 }),
+        trail: new Sprite({ position: v2.new(0, 0), anchor: 0.5 })
     };
 
     staticContainer = new Container({
@@ -59,8 +65,6 @@ export class Player extends ClientEntity {
 
     direction = v2.new(0, 0);
     prevDirection = v2.new(0, 0);
-
-    activeWeapon = 0;
 
     shotSound?: GameSound;
 
@@ -89,12 +93,31 @@ export class Player extends ClientEntity {
 
         this.prevPosition = isNew ? data.position : v2.clone(this.position);
         this.position = data.position;
-
         this.hitbox.position = this.position;
 
+        this.prevDirection = v2.clone(this.direction);
+        this.direction = data.direction;
+
         if (data.full) {
+            this.team = data.full.team;
             this.container.visible = this.nameText.visible = !this.dead;
+
+            const def = ShipDefs.typeToDef(this.ship);
+            this.images.ship.texture = Assets.get<Texture>(
+                this.team === Team.Human ? def.humanImg : this.team === Team.Alien ? def.alienImg : def.cyborgImg
+            );
         }
+    }
+
+    override update(dt: number): void {
+        super.update(dt);
+
+        const pos = Camera.vecToScreen(v2.lerp(this.prevPosition, this.position, this.interpFactor));
+        this.container.position = pos;
+        this.staticContainer.position = pos;
+
+        const direction = v2.lerp(this.prevDirection, this.direction, this.interpFactor);
+        this.container.rotation = Math.atan2(direction.y, direction.x);
     }
 
     override free(): void {

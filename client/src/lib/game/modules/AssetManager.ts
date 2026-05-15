@@ -21,7 +21,6 @@ import iron from "$lib/img/asteroids/iron.png";
 import platinum from "$lib/img/asteroids/platinum.png";
 import silver from "$lib/img/asteroids/silver.png";
 import space from "$lib/img/ui/backgrounds/space.png";
-import stars from "$lib/img/ui/backgrounds/stars.png";
 import explosion from "$lib/img/weapons/misc/explosions.png";
 import thrust from "$lib/img/weapons/misc/thrust.png";
 import { Assets, Spritesheet, Texture, type Renderer, type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
@@ -36,9 +35,9 @@ const ATLAS_LIST: Atlas[] = ["main"];
  * Manages IMAGE-related assets only.
  */
 export class AssetManager {
-    assets: Record<string, Spritesheet | Texture> = {};
+    animations: Record<string, Texture[]> = {};
 
-    atlases = {} as Record<string, { loaded: boolean; spritesheets: Spritesheet[] }>;
+    atlases = {} as Record<string, boolean>;
 
     loadTicker = 0;
     loaded = false;
@@ -48,27 +47,6 @@ export class AssetManager {
         readonly renderer: Renderer
     ) {
         this.init();
-    }
-
-    /**
-     * Get an asset in the registry.
-     * @param name The name of the asset.
-     * @returns
-     */
-    getAsset<T extends Spritesheet | Texture>(name: string): T {
-        return this.assets[name] as T;
-    }
-
-    /**
-     * Save an asset to the registry.
-     * @param path The path to the asset.
-     * @param file The asset.
-     * @param useExt Whether to use the `.img` extension or drop it entirely.
-     */
-    saveAsset<T extends Spritesheet | Texture>(path: string, file: T, useExt = true): void {
-        const name = path.split("/").pop()!;
-        const ext = name.split(".").pop()!;
-        this.assets[useExt ? name.replace(ext, "img") : name.replace(`.${ext}`, "")] = file;
     }
 
     /**
@@ -83,30 +61,19 @@ export class AssetManager {
         const thrustTex = await this.loadTexture(thrust);
         const explTex = await this.loadTexture(explosion);
 
-        await this.loadSpritesheet(ironTex, this.createAtlasJSON("iron", iron, 1024, 1024, 128, 128, true), true);
-        await this.loadSpritesheet(silverTex, this.createAtlasJSON("silver", silver, 1024, 1024, 128, 128, true), true);
-        await this.loadSpritesheet(copperTex, this.createAtlasJSON("copper", copper, 1024, 1024, 128, 128, true), true);
-        await this.loadSpritesheet(
-            platinumTex,
-            this.createAtlasJSON("platinum", platinum, 1024, 1024, 128, 128, true),
-            true
-        );
+        this.loadSpritesheet(ironTex, this.createAtlasJSON("iron", iron, 1024, 1024, 128, 128, true), true);
+        this.loadSpritesheet(silverTex, this.createAtlasJSON("silver", silver, 1024, 1024, 128, 128, true), true);
+        this.loadSpritesheet(copperTex, this.createAtlasJSON("copper", copper, 1024, 1024, 128, 128, true), true);
+        this.loadSpritesheet(platinumTex, this.createAtlasJSON("platinum", platinum, 1024, 1024, 128, 128, true), true);
 
-        await this.loadSpritesheet(thrustTex, this.createAtlasJSON("thrust", thrust, 64, 512, 64, 64, true), true);
-        await this.loadSpritesheet(
-            explTex,
-            this.createAtlasJSON("explosion", explosion, 1280, 1280, 128, 128, true),
-            true
-        );
+        this.loadSpritesheet(thrustTex, this.createAtlasJSON("thrust", thrust, 64, 512, 64, 64, true), true);
+        this.loadSpritesheet(explTex, this.createAtlasJSON("explosion", explosion, 1280, 1280, 128, 128, true), true);
 
-        await this.loadTexture(space, true);
-        await this.loadTexture(stars, true);
+        this.loadTexture(space, "space.img");
 
         for (let i = 0; i < ATLAS_LIST.length; i++) {
             const atlas = ATLAS_LIST[i];
-            if (!this.isAtlasLoaded(atlas)) {
-                this.loadAtlas(atlas);
-            }
+            if (!this.isAtlasLoaded(atlas)) this.loadAtlas(atlas);
         }
     }
 
@@ -115,7 +82,7 @@ export class AssetManager {
      * @param name The name of the atlas.
      */
     isAtlasLoaded(name: Atlas): boolean {
-        return this.atlases[name]?.loaded;
+        return this.atlases[name];
     }
 
     /**
@@ -124,50 +91,45 @@ export class AssetManager {
      */
     async loadAtlas(name: Atlas): Promise<void> {
         if (this.isAtlasLoaded(name)) return;
-        this.atlases[name] = this.atlases[name] || {
-            loaded: false,
-            spritesheets: []
-        };
+        this.atlases[name] = this.atlases[name] || false;
 
         const sheets = atlasDefs[name];
         for (let i = 0; i < sheets.length; i++) {
             const sheet = sheets[i];
 
             const tex = await this.loadTexture(sheet.meta.image!);
-            const atlas = await this.loadSpritesheet(tex, sheet);
-
-            this.atlases[name].spritesheets.push(atlas);
+            await this.loadSpritesheet(tex, sheet);
         }
 
-        this.atlases[name].loaded = true;
+        this.atlases[name] = true;
     }
 
     /**
      * Load a texture.
      * @param file The file to load.
-     * @param register Whether to register the asset.
+     * @param alias An optional alias to set.
      */
-    async loadTexture(file: string, register = false): Promise<Texture> {
-        const res = await Assets.load<Texture>(file);
-        if (register) this.saveAsset(file, res);
+    async loadTexture(file: string, alias?: string): Promise<Texture> {
+        const res = alias ? await Assets.load<Texture>({ alias, src: file }) : await Assets.load<Texture>(file);
 
-        this.renderer.texture.initSource(res.source);
         return res;
     }
 
     /**
      * Load a spritesheet.
      * @param image The texture associated with the spritesheet.
-     * @param data The spritesheeet data.
-     * @param register Whether to register the asset.
+     * @param data The spritesheet data.
+     * @param animated Whether to disable registration of individual texture frames. This may not be useful, for example, if the entire spritesheet is a singular animation.
      */
-    async loadSpritesheet(texture: Texture, data: SpritesheetData, register = false): Promise<Spritesheet> {
+    async loadSpritesheet(texture: Texture, data: SpritesheetData, animated = false): Promise<Spritesheet> {
         const sheet = new Spritesheet(texture, data);
 
         sheet.resolution = texture.source.resolution;
         sheet.parse();
 
-        if (register) this.saveAsset(sheet.data.meta.image!, sheet, false);
+        for (const [key, value] of Object.entries(sheet.animations)) this.animations[key] = value;
+        if (!animated) for (const [key, value] of Object.entries(sheet.textures)) Assets.cache.set(key, value);
+
         return sheet;
     }
 

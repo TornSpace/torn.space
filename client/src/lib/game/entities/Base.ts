@@ -16,19 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Sprite, Texture } from "pixi.js";
+import { Assets, Container, Sprite, Text } from "pixi.js";
 
 import { ClientEntity } from "./ClientEntity";
 
+import { Camera } from "../modules/Camera";
 import { EntityPool } from "../modules/EntityManager";
 
 import type { App } from "../App.svelte";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
 import { EntityType, GameConstants, Team } from "@/common/constants";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { v2 } from "@/common/utils/v2";
 import { BaseDefs } from "@/common/defs/baseDefs";
+import { CircleHitbox } from "@/common/utils/hitbox";
+import { math } from "@/common/utils/math";
+import { v2 } from "@/common/utils/v2";
 
 export class Base extends ClientEntity {
     readonly __type = EntityType.Base;
@@ -36,26 +38,51 @@ export class Base extends ClientEntity {
     team!: Team;
 
     direction = v2.new(0, 0);
-    oldDirection = v2.new(0, 0);
+    prevDirection = v2.new(0, 0);
 
-    sprite = new Sprite({ anchor: 0.5 });
+    staticContainer = new Container({
+        visible: false,
+        zIndex: 3
+    });
+
+    baseSprite = new Sprite({ position: v2.new(0, 0), anchor: 0.5 });
+    auraSprite = new Sprite({ position: v2.new(0, 0), anchor: 0.5 });
+    dockText = new Text({
+        style: {
+            align: "center",
+            fill: "lime",
+            fontFamily: "ShareTech",
+            fontSize: 15
+        }
+    });
 
     readonly hitbox = new CircleHitbox(GameConstants.base.radius);
 
     constructor(readonly app: App) {
         super(app);
 
-        this.container.addChild(this.sprite);
+        this.container.addChild(this.auraSprite);
+        this.container.addChild(this.baseSprite);
+
+        this.dockText.anchor.set(0.5);
     }
 
     override init(): void {
         this.container.visible = true;
+        this.staticContainer.visible = this.app.guestMode;
+
+        this.app.camera.addObject(this.staticContainer);
+
+        this.dockText.text = this.app.localization.translation.messages.dockWorldMessage;
+        this.dockText.resolution = 4;
+
+        this.staticContainer.addChild(this.dockText);
     }
 
     override updateFromData(data: EntitiesNetData[EntityType.Base], isNew: boolean): void {
         super.updateFromData(data, isNew);
 
-        this.oldDirection = v2.clone(this.direction);
+        this.prevDirection = v2.clone(this.direction);
         this.direction = data.direction;
 
         if (data.full) {
@@ -65,22 +92,25 @@ export class Base extends ClientEntity {
             this.team = data.full.team;
 
             const def = BaseDefs.typeToDef(`${this.team}`);
-            this.sprite.texture = this.app.assetManager.getAsset<Texture>(def.worldImg);
-            this.sprite.position = this.position;
+
+            this.auraSprite.texture = Assets.get(def.auraImg);
+            this.auraSprite.scale.set(def.auraImgScale);
+
+            this.baseSprite.texture = Assets.get(def.worldImg);
+            this.baseSprite.scale.set(def.worldImgScale);
+
+            this.container.position = Camera.vecToScreen(this.position);
+            this.staticContainer.position = Camera.vecToScreen(v2.sub(this.position, v2.new(0, def.textOffset)));
         }
     }
 
     override update(dt: number): void {
-        const direction = v2.lerp(
-            this.oldDirection,
-            this.direction,
-            this.interpFactor
-        );
-        
-        this.container.position = this.position;
-        this.sprite.rotation = Math.atan2(direction.y, direction.x);
-
         super.update(dt);
+
+        this.dockText.scale.set(1 + 0.15 * math.sinLow(this.app.ticker * 3));
+
+        const direction = v2.lerp(this.prevDirection, this.direction, this.interpFactor);
+        this.container.rotation = Math.atan2(direction.y, direction.x);
     }
 
     override free(): void {

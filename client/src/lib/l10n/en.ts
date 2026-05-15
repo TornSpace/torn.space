@@ -34,6 +34,9 @@ export default {
         [Team.Cyborg]:
             "The computers at the research base where we were created were the first to be assimilated into our empire, and the staff was next. As an Alien military experiment, we found ourselves in the crossfire of this war of Human and Alien races. During our rise as a galactic military force, both races proved inept in combat, and thus, in their miserable fight over this decrepit corner of the universe, we will incorporate all of their technology and resources until we leave this dying galaxy. Using the technology the Aliens gifted us, we assimilate every species we can, and deny the privilege of life to all who stand in our way. We are united by vision, not the intraspecies loyalty which brought this galaxy to the brink of destruction. Together, we will become the rightful inheritors of every speck of light in the night sky."
     },
+    messages: {
+        dockWorldMessage: "X TO DOCK WITH BASE"
+    },
     ships: {
         r0: {
             [Team.Human]: "Minnow",

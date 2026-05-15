@@ -28,6 +28,7 @@ export class DefinitionList<T extends string, K extends object> {
     private _nextId = 0;
     private readonly _maxId: number;
     readonly bits: number;
+    readonly bytes: number;
 
     constructor(public defs: Record<T, K>) {
         // Type 0 is reserved for sending optional types to the stream.
@@ -37,6 +38,7 @@ export class DefinitionList<T extends string, K extends object> {
 
         this._maxId = keys.length + 1;
         this.bits = Math.ceil(Math.log2(this._maxId));
+        this.bytes = Math.ceil(this.bits / 8);
 
         for (let i = 0; i < keys.length; i++) this._addType(keys[i]);
     }

@@ -30,7 +30,7 @@ import {
 } from "../AtlasDef";
 
 export const MainAtlas: AtlasDef = {
-    compress: true,
+    compress: false,
     images: [
         ...AuraSprites,
         ...BaseSprites,

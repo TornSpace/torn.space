@@ -18,6 +18,10 @@
 
 import type { Vec2 } from "./v2";
 
+// Calculate sins.
+const sins: number[] = [];
+for (let i = 0; i < 1571; i++) sins[i] = Math.sin(i / 1e3);
+
 export const math = {
     /**
      * {@link Math.min()} for two arguments.
@@ -101,5 +105,35 @@ export const math = {
 
     signedAreaTri(a: Vec2, b: Vec2, c: Vec2): number {
         return (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x);
-    }
+    },
+
+    /**
+     * Faster squaring of number.
+     * @param a The number to square.
+     */
+    square(a: number): number {
+        return a * a;
+    },
+
+    /**
+     * Calculate the lowest sin based on a given number.
+     * @param x A given number.
+     * @returns A numerical representation of the sin.
+     */
+    sinLow(x: number): number {
+        x += Math.PI * 200;
+        x %= Math.PI * 2;
+
+        const modPI = x % Math.PI;
+        return (x > Math.PI ? -1 : 1) * sins[Math.floor((modPI < Math.PI / 2 ? modPI : Math.PI - modPI) * 1000)];
+    },
+
+    /**
+     * Calculated the lowest cosin based on a given number.
+     * @param x A given number.
+     * @returns A numerican representation of the cosin.
+     */
+    cosLow(x: number): number {
+        return math.sinLow(Math.PI / 2 + x);
+    },
 };

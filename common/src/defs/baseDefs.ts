@@ -26,6 +26,11 @@ export interface BaseDef {
      */
     team: Team;
     /**
+     * The aura image to underlay the world image.
+     * @default ""
+     */
+    auraImg: string;
+    /**
      * The world sprite of the base.
      * @default ""
      */
@@ -35,26 +40,52 @@ export interface BaseDef {
      * @default ""
      */
     mapImg: string;
+    /**
+     * Scale of the world image.
+     * @default 1
+     */
+    worldImgScale: number;
+    /**
+     * Scale of the aura image.
+     * @default 1
+     */
+    auraImgScale: number;
+    /**
+     * The text offset.
+     */
+    textOffset: number;
 }
 
 const rawDefs = {
     [`${Team.Human}`]: {
         type: "base",
         team: Team.Human,
+        auraImg: "underlayBlue.img",
         worldImg: "humanBase.img",
-        mapImg: "humanMapBase.img"
+        mapImg: "humanMapBase.img",
+        auraImgScale: 4,
+        worldImgScale: 1.5,
+        textOffset: 1.25
     },
     [`${Team.Alien}`]: {
         type: "base",
         team: Team.Alien,
+        auraImg: "underlayRed.img",
         worldImg: "alienBase.img",
-        mapImg: "alienMapBase.img"
+        mapImg: "alienMapBase.img",
+        auraImgScale: 4,
+        worldImgScale: 1.25,
+        textOffset: 1.5
     },
     [`${Team.Cyborg}`]: {
         type: "base",
         team: Team.Cyborg,
+        auraImg: "underlayGreen.img",
         worldImg: "cyborgBase.img",
-        mapImg: "cyborgMapBase.img"
+        mapImg: "cyborgMapBase.img",
+        auraImgScale: 4,
+        worldImgScale: 0.775,
+        textOffset: 1.5
     }
 } satisfies Record<string, BaseDef>;
 

@@ -30,7 +30,7 @@ export class Base extends AbstractServerEntity {
     readonly hitbox = new CircleHitbox(GameConstants.base.radius);
 
     team!: Team;
-    direction = v2.new(0, 0);
+    direction = v2.new(1, 0);
 
     // turret!: Turret;
 
@@ -43,7 +43,7 @@ export class Base extends AbstractServerEntity {
     }
 
     update(dt: number): void {
-        this.direction = v2.rotate(this.direction, dt);
+        this.direction = v2.rotate(this.direction, GameConstants.base.rotateSpeed * dt);
     }
 
     get data(): Required<EntitiesNetData[EntityType.Base]> {

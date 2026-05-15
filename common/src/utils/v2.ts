@@ -293,5 +293,26 @@ export const v2 = {
      */
     eq(a: Vec2, b: Vec2, epsilon = 0.0001): boolean {
         return Math.abs(a.x - b.x) <= epsilon && Math.abs(a.y - b.y) <= epsilon;
+    },
+
+    /**
+     * Convert a vector to an angle in degrees.
+     * @param v The vector to convert.
+     * @returns An angle between `[0, 360]`.
+     */
+    toDegree (v: Vec2): number {
+        return v2.toRad(v) * 180 / Math.PI;
+    },
+
+    /**
+     * Convert a vector to an angle in radians.
+     * @param v The vector to convert.
+     * @returns An angle between `[0, 2 * Math.PI]`.
+     */
+    toRad (v: Vec2): number {
+        let angle = Math.atan2(v.y, v.x);
+
+        if (angle < 0) angle += 2 * Math.PI;
+        return angle;
     }
 };

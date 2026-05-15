@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Application, Graphics, Texture, Ticker, TilingSprite } from "pixi.js";
+import { Application, Assets, Graphics, Texture, Ticker, TilingSprite } from "pixi.js";
 
 import { BaseManager } from "./entities/Base";
 import { LootManager } from "./entities/Loot";
@@ -85,6 +85,7 @@ export class App {
     state = $state.raw(AppState.Splash);
 
     fps = $state.raw(0);
+    ticker = 0;
 
     fpsTicker = 0;
     serverDt = 0;
@@ -101,10 +102,11 @@ export class App {
     registerPass = $state("");
 
     guestTeamSelect = $state(Team.Human);
+    guestMode = true;
 
     // PIXI stuff.
     bgSprite?: TilingSprite;
-    mapGraphics = new Graphics({ zIndex: 1 });
+    mapGraphics = new Graphics();
     mapStars: Vec2[] = [];
 
     get player(): Player | undefined {
@@ -186,10 +188,12 @@ export class App {
         packet.protocol = GameConstants.protocol;
 
         if (this.loginUser && this.loginPass) {
+            this.guestMode = false;
             packet.guest = false;
             packet.username = this.loginUser;
             packet.token = this.loginPass;
         } else {
+            this.guestMode = true;
             packet.guest = true;
             packet.team = this.guestTeamSelect;
         }
@@ -233,7 +237,7 @@ export class App {
      * Sets up the game for drawing the background. Called only once.
      */
     drawMap(): void {
-        const bgTex = this.assetManager.getAsset<Texture>("space.img");
+        const bgTex = Assets.get<Texture>("space.img");
         this.bgSprite = new TilingSprite({
             texture: bgTex,
             width: 2048 * 3,
@@ -261,14 +265,20 @@ export class App {
         // Space image background.
         const bgDelta = v2.new(
             math.remap(
-                math.mod(this.camera.position.x * GameConstants.client.backgroundSpeed, this.camera.width / Camera.scale),
+                math.mod(
+                    this.camera.position.x * GameConstants.client.backgroundSpeed,
+                    this.camera.width / Camera.scale
+                ),
                 0,
                 this.camera.width,
                 0,
                 this.bgSprite.texture.width
             ),
             math.remap(
-                math.mod(this.camera.position.y * GameConstants.client.backgroundSpeed, this.camera.height / Camera.scale),
+                math.mod(
+                    this.camera.position.y * GameConstants.client.backgroundSpeed,
+                    this.camera.height / Camera.scale
+                ),
                 0,
                 this.camera.height,
                 0,
@@ -319,12 +329,10 @@ export class App {
 
             for (let j = 0; j < GameConstants.client.starMirrors; j++) {
                 for (let k = 0; k < GameConstants.client.starMirrors; k++) {
-                    const min =
-                        v2.new(
-                            j * wm + x - this.camera.width / (2 * this.camera.container.scale.x),
-                            k * hm + y - this.camera.height / (2 * this.camera.container.scale.y)
-                        )
-                    ;
+                    const min = v2.new(
+                        j * wm + x - this.camera.width / (2 * this.camera.container.scale.x),
+                        k * hm + y - this.camera.height / (2 * this.camera.container.scale.y)
+                    );
                     const max = v2.add(min, v2.new(starSize));
 
                     this.mapGraphics.rect(min.x, min.y, max.x - min.x, max.y - min.y).fill({ color });
@@ -350,6 +358,7 @@ export class App {
 
     update(ticker: Ticker): void {
         const dt = math.clamp(ticker.deltaMS / 1000, 0.001, 0.125) * GameConstants.gameSpeed;
+        this.ticker = (this.ticker + dt) % Number.MAX_SAFE_INTEGER;
 
         this.deltaTimes.push(dt);
         this.fpsTicker += dt;
