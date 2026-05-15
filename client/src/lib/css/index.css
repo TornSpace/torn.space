@@ -19,14 +19,24 @@
     --color-link: hsl(216, 98%, 52%);
     --color-link-hover: hsl(216, 91%, 42%);
     --color-info: hsl(60, 100%, 50%);
+    --color-warning: orange;
+    --color-card: hsla(0, 0%, 20%, 0.5);
 
-    --color-human: hsl(193, 92%, 52%);
-    --color-alien: hsl(0, 83%, 58%);
-    --color-cyborg: hsl(133, 85%, 52%);
+    --color-muted: hsl(0, 0%, 50%);
+    --color-muted-accent: hsl(0, 0%, 63%);
+    --color-muted-secondary: hsl(0, 0%, 38%);
 
-    --color-human-lore: cyan;
-    --color-alien-lore: pink;
-    --color-cyborg-lore: lime;
+    --color-human: cyan;
+    --color-alien: pink;
+    --color-cyborg: lime;
+
+    --color-human-bright: hsl(193, 92%, 52%);
+    --color-alien-bright: hsl(0, 83%, 58%);
+    --color-cyborg-bright: hsl(133, 85%, 52%);
+
+    --color-human-dark: blue;
+    --color-alien-dark: darkred;
+    --color-cyborg-dark: darkgreen;
 
     --color-btn-human: hsl(226, 82%, 57%);
     --color-btn-alien: hsl(358, 92%, 36%);

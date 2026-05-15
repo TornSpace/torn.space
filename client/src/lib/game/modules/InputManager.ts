@@ -65,6 +65,7 @@ export class InputManager {
      * Called when a key is pressed.
      */
     onKeyDown(e: KeyboardEvent): void {
+        if (document.activeElement?.tagName === "INPUT") return;
         this._inputs[e.code] = {
             type: "key",
             down: true
@@ -75,6 +76,7 @@ export class InputManager {
      * Called when a key is released.
      */
     onKeyUp(e: KeyboardEvent): void {
+        if (document.activeElement?.tagName === "INPUT") return;
         this._inputs[e.code] = {
             type: "key",
             down: false
@@ -171,16 +173,21 @@ export class InputManager {
         if (this.app.player) {
             for (let i = 0; i < GameConstants.player.weaponSlots; i++) {
                 const key = i === 9 ? 0 : i + 1;
-                if (this.isInputDown(`Digit${key}`) && key !== this.app.player.activeWeapon) {
-                    packet.queuedWeapon = key;
-                    break;
+                if (this.isInputDown(`Digit${key}`)) {
+                    this.app.wepSwitchTicker = 0.25;
+                    if (key !== this.app.player.activeWeapon) {
+                        packet.queuedWeapon = key;
+                        break;
+                    }
                 }
             }
 
             if (this.isInputDown("MWheelDown")) {
                 packet.queuedWeapon = math.min(this.app.player.activeWeapon + 1, GameConstants.player.weaponSlots - 1);
+                this.app.wepSwitchTicker = 0.25;
             } else if (this.isInputDown("MWheelUp")) {
                 packet.queuedWeapon = math.max(this.app.player.activeWeapon - 1, 0);
+                this.app.wepSwitchTicker = 0.25;
             }
         }
 
@@ -198,6 +205,5 @@ export class InputManager {
         }
 
         this.prevPacket = packet;
-        this.queuedWeapon = -1;
     }
 }

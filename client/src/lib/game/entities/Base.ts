@@ -21,7 +21,7 @@ import { Assets, Container, Sprite, Text } from "pixi.js";
 import { ClientEntity } from "./ClientEntity";
 
 import { Camera } from "../modules/Camera";
-import { EntityPool } from "../modules/EntityManager";
+import { EntityPool } from "../modules/EntityManager.svelte";
 
 import type { App } from "../App.svelte";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";

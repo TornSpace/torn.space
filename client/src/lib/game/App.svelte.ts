@@ -20,20 +20,21 @@ import { Application, Assets, Graphics, Texture, Ticker, TilingSprite } from "pi
 
 import { BaseManager } from "./entities/Base";
 import { LootManager } from "./entities/Loot";
-import { PlayerManager, type Player } from "./entities/Player";
+import { PlayerManager, type Player } from "./entities/Player.svelte";
 import { AssetManager } from "./modules/AssetManager";
 import { AudioManager } from "./modules/AudioManager";
 import { Camera } from "./modules/Camera";
 import { ConfigManager } from "./modules/ConfigManager.svelte";
-import { EntityManager } from "./modules/EntityManager";
+import { EntityManager } from "./modules/EntityManager.svelte";
 import { InputManager } from "./modules/InputManager";
 import { Localization } from "./modules/Localization.svelte";
 
 import type { ClientEntity } from "./entities/ClientEntity";
 import type { Packet } from "@/common/net";
+import type { DebugPacket } from "@/common/net/DebugPacket";
 import type { JoinedPacket } from "@/common/net/JoinedPacket";
 
-import { EntityType, GameConstants, PacketType, Team } from "@/common/constants";
+import { EntityType, GameConstants, type LeaderboardEntry, PacketType, Team } from "@/common/constants";
 import { DisconnectPacket } from "@/common/net/DisconnectPacket";
 import { JoinPacket } from "@/common/net/JoinPacket";
 import { UpdatePacket } from "@/common/net/UpdatePacket";
@@ -91,8 +92,9 @@ export class App {
     serverDt = 0;
     lastUpdateTime = 0;
     deltaTimes: number[] = [];
+    wepSwitchTicker = $state(0);
 
-    playerId = 0;
+    playerId = $state(0);
 
     // UI stuff.
     loginUser = $state("");
@@ -104,10 +106,22 @@ export class App {
     guestTeamSelect = $state(Team.Human);
     guestMode = true;
 
+    leaderboard = $state.raw<LeaderboardEntry[]>([]);
+
     // PIXI stuff.
     bgSprite?: TilingSprite;
     mapGraphics = new Graphics();
     mapStars: Vec2[] = [];
+
+    // Debug info.
+    ping = 0;
+    debug = $state({
+        tpsAvg: 0,
+        tpsMin: 0,
+        tpsMax: 0,
+        msptAvg: 0,
+        entityCounts: [] as DebugPacket["entityCounts"]
+    });
 
     get player(): Player | undefined {
         return this.entityManager.getById<Player>(this.playerId);
@@ -143,6 +157,7 @@ export class App {
 
         this.assetManager = new AssetManager(this, this.pixi.renderer);
         this.audioManager.init();
+        this.inputManager.init();
 
         this.pixi.ticker.add(this.update.bind(this));
         this.pixi.renderer.on("resize", this.resize.bind(this));
@@ -223,6 +238,9 @@ export class App {
             if (packet === undefined) break;
 
             switch (packet.type) {
+                case PacketType.Debug:
+                    this.updateDebugInfo(packet);
+                    break;
                 case PacketType.Joined:
                     this.startGame(packet);
                     break;
@@ -381,6 +399,8 @@ export class App {
             this.fps = Math.round(1 / avgDt);
             this.deltaTimes.length = 0;
         }
+
+        if (this.wepSwitchTicker > 0) this.wepSwitchTicker -= dt;
     }
 
     updateFromPacket(packet: UpdatePacket): void {
@@ -421,7 +441,29 @@ export class App {
             this.entityManager.updatePartialEntity(entityData.id, entityData.data);
         }
 
+        if (packet.leaderboardDirty) this.leaderboard = packet.leaderboard;
+
         if (packet.cameraPositionDirty) this.camera.position = packet.cameraPosition;
-        else if (this.player) this.camera.position = this.player.position;
+        else if (this.player) {
+            this.camera.position = this.player.position;
+
+            if (packet.playerDataDirty.weapons) this.player.weapons = packet.playerData.weapons;
+            if (packet.playerDataDirty.ammo) this.player.ammo = packet.playerData.ammo;
+        }
+
+        if (packet.updateSequence === this.inputManager.inputSequence && this.inputManager.sequenceInFlight) {
+            this.inputManager.sequenceInFlight = false;
+            const now = performance.now();
+            this.ping = now - this.inputManager.lastSequenceTime;
+        }
+    }
+
+    updateDebugInfo(packet: DebugPacket): void {
+        this.debug.tpsAvg = packet.tpsAvg;
+        this.debug.tpsMin = packet.tpsMin;
+        this.debug.tpsMax = packet.tpsMax;
+        this.debug.msptAvg = packet.msptAvg;
+
+        if (packet.entityCounts.length) this.debug.entityCounts = packet.entityCounts;
     }
 }

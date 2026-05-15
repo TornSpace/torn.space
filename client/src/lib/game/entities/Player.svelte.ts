@@ -21,13 +21,14 @@ import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
 import { ClientEntity } from "./ClientEntity";
 
 import { Camera } from "../modules/Camera";
-import { EntityPool } from "../modules/EntityManager";
+import { EntityPool } from "../modules/EntityManager.svelte";
 
 import type { App } from "../App.svelte";
 import type { GameSound } from "../modules/AudioManager";
+import type { WeaponDefKey } from "@/common/defs/weaponDefs";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";
 
-import { EntityType, Team } from "@/common/constants";
+import { EntityType, GameConstants, Team } from "@/common/constants";
 import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
 import { CircleHitbox } from "@/common/utils/hitbox";
 import { v2 } from "@/common/utils/v2";
@@ -40,8 +41,10 @@ export class Player extends ClientEntity {
     hp = 0;
     dead = false;
     team = Team.Human;
-    ship: ShipDefKey = "r0";
-    activeWeapon = 0;
+    ship: ShipDefKey = $state.raw("r0");
+    activeWeapon = $state.raw(0);
+    weapons = $state.raw(new Array<WeaponDefKey>(GameConstants.player.weaponSlots).fill(""));
+    ammo: number[] = $state.raw(new Array<number>(GameConstants.player.weaponSlots).fill(0));
 
     images = {
         ship: new Sprite({ position: v2.new(0, 0), anchor: 0.5 }),

@@ -4,4 +4,4 @@
     const { app }: { app: App } = $props();
 </script>
 
-<div class="absolute bg-card"></div>
+<div></div>

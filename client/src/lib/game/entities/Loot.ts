@@ -20,7 +20,7 @@ import { Sprite } from "pixi.js";
 
 import { ClientEntity } from "./ClientEntity";
 
-import { EntityPool } from "../modules/EntityManager";
+import { EntityPool } from "../modules/EntityManager.svelte";
 
 import type { App } from "../App.svelte";
 import type { EntitiesNetData } from "@/common/net/UpdatePacket";

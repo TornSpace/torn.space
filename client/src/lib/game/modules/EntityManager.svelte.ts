@@ -29,8 +29,10 @@ export class EntityManager {
      *
      * Used to optimize iterations over all entities, as doing so over {@link entityMap}
      * would be inefficient (as it would iterate over null entries).
+     *
+     * TODO: Check if this is laggy. Maybe can extract entities.length elsewhere?
      */
-    entities: ClientEntity[] = [];
+    entities: ClientEntity[] = $state([]);
     /**
      * Array of entities (or null values).
      * The index of the entity matches the entity's ID.

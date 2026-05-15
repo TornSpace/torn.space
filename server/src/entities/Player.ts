@@ -92,7 +92,7 @@ export class Player extends AbstractServerEntity {
     trail = Trail.None;
     activeWeapon = 0;
 
-    weapons = new Array<WeaponDefKey | "">(GameConstants.player.weaponSlots).fill("");
+    weapons = ["stock_gun"].concat(new Array(GameConstants.player.weaponSlots - 1).fill("")) as WeaponDefKey[];
     ammo = new Array<number>(GameConstants.player.weaponSlots).fill(0);
 
     readonly tech = {
@@ -503,7 +503,6 @@ export class PlayerManager extends EntityPool<Player> {
         this.game.grid.updateEntity(player);
 
         player.hp = player.maxHP;
-        player.jettisonCargo();
         player.refillAmmo();
 
         player.dead = false;

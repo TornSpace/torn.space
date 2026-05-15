@@ -77,7 +77,7 @@ export type Translation = {
      * Weapons.
      */
     weapons: Record<
-        WeaponDefKey | "",
+        WeaponDefKey,
         {
             /**
              * The name of the weapon.

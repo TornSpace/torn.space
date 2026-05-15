@@ -194,7 +194,7 @@ export const GameConstants = {
     /**
      * The maximum number of entries the leaderboard can support.
      */
-    leaderboardMaxEntries: 25,
+    leaderboardMaxEntries: 20,
     /**
      * The pickup radius of loot.
      */

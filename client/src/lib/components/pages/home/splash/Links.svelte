@@ -10,15 +10,15 @@
 
 <style>
     a {
-        color: #808080;
+        color: var(--color-muted);
     }
 
     a:hover {
         text-decoration: none;
-        color: #a0a0a0;
+        color: var(--color-muted-accent);
     }
 
     span {
-        color: #606060;
+        color: var(--color-muted-secondary);
     }
 </style>

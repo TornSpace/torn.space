@@ -159,13 +159,14 @@ export class Game {
         if (this.perfTicker > 5) {
             this.perfTicker = 0;
 
-            this.tpsAvg = Math.round(1 / this.deltaTimes.reduce((a, b) => a + b) / this.deltaTimes.length);
+            this.tpsAvg = Math.round(1 / (this.deltaTimes.reduce((a, b) => a + b) / this.deltaTimes.length));
             this.tpsMin = Math.round(1 / Math.max(...this.deltaTimes));
             this.tpsMax = Math.round(1 / Math.min(...this.deltaTimes));
 
             this.deltaTimes.length = 0;
 
             this.msptAvg = this.tickTimes.reduce((a, b) => a + b) / this.tickTimes.length;
+            this.logger.debug(`Game`, `Average MSPT: ${this.msptAvg.toFixed(2)} ms.`);
 
             this.debugTpsDirty = true;
         }

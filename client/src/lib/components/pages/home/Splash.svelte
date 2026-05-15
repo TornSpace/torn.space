@@ -24,6 +24,8 @@
         <Lore {app} text={app.localization.translation.lore[app.guestTeamSelect]} team={app.guestTeamSelect} />
     {:else}
         <Links />
-        <Settings {app} />
+        <div class="absolute bottom-2 right-2 duration-1500 animate-in fade-in">
+            <Settings {app} />
+        </div>
     {/if}
 </div>

@@ -16,9 +16,9 @@
     let langSelect = $derived(app.config.config.language);
 </script>
 
-<div class="flex absolute bottom-2 right-2 gap-1.5 duration-1500 animate-in fade-in">
+<div class="flex gap-1.5 select-none">
     <!-- TODO: Improve typings for e.target.value -->
-    <select class="bg-black/50 hover:bg-white/20 rounded-lg cursor-pointer text-[#ff0000] transition-colors" value={langSelect} onchange={e => app.config.set("language", (e.target as any).value)}>
+    <select class="bg-black/50 hover:bg-white/20 rounded-lg cursor-pointer text-[#ff0000] transition-colors select-none" value={langSelect} onchange={e => app.config.set("language", (e.target as any).value)}>
         {#each [...Object.entries(Locales)] as [code, locale], i (i)}
             <option value={code}>{locale}</option>
         {/each}
