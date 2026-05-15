@@ -135,5 +135,5 @@ export const math = {
      */
     cosLow(x: number): number {
         return math.sinLow(Math.PI / 2 + x);
-    },
+    }
 };

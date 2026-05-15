@@ -304,7 +304,7 @@ export class Player extends AbstractServerEntity {
 
         const ssa = Math.sin(angle);
         const ssd = Math.sin(driftAngle);
-        const csa = Math.cos(angle); 
+        const csa = Math.cos(angle);
         const csd = Math.cos(driftAngle);
 
         this.velocity.x = csd * speed;
@@ -316,8 +316,8 @@ export class Player extends AbstractServerEntity {
         }
 
         if (this.moveBwd && drifting) {
-            this.velocity.x -= csa * newSpeed / 2;
-            this.velocity.y -= ssa * newSpeed / 2;
+            this.velocity.x -= (csa * newSpeed) / 2;
+            this.velocity.y -= (ssa * newSpeed) / 2;
         }
 
         // this.driftDirection = Math.atan2(this.velocity.y, this.velocity.x);

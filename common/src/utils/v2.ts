@@ -300,8 +300,8 @@ export const v2 = {
      * @param v The vector to convert.
      * @returns An angle between `[0, 360]`.
      */
-    toDegree (v: Vec2): number {
-        return v2.toRad(v) * 180 / Math.PI;
+    toDegree(v: Vec2): number {
+        return (v2.toRad(v) * 180) / Math.PI;
     },
 
     /**
@@ -309,7 +309,7 @@ export const v2 = {
      * @param v The vector to convert.
      * @returns An angle between `[0, 2 * Math.PI]`.
      */
-    toRad (v: Vec2): number {
+    toRad(v: Vec2): number {
         let angle = Math.atan2(v.y, v.x);
 
         if (angle < 0) angle += 2 * Math.PI;
