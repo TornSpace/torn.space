@@ -413,11 +413,13 @@ export class Player extends AbstractServerEntity {
         // If the player is drifting or EMP'd, they cannot use their shield.
         this.shield = (!drifting && this.empTimer <= 0) || this.baseTimer > 0;
 
-        // The player cannot conduct any further actions while EMP'd.
-        if (this.empTimer > 0) return;
+        // The player cannot conduct these actions while EMP'd.
+        if (this.empTimer <= 0) {
+            this.move(dt, drifting);
+            if (this.attack && this.charge > 0) this.fireWeapon();
+        }
 
-        this.move(dt, drifting);
-        if (this.attack && this.charge > 0) this.fireWeapon();
+        this.game.grid.updateEntity(this);
     }
 
     /**
