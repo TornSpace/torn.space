@@ -185,7 +185,7 @@ export class UpdatePacket implements AbstractPacket {
 
     playerData = {
         hp: 0,
-        weapons: [] as Array<WeaponDefKey>,
+        weapons: [] as WeaponDefKey[],
         ammo: [] as number[]
     };
 
