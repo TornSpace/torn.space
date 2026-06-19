@@ -10,7 +10,7 @@
         <br>
         <span>Ping: {app.ping.toFixed(0)} ms</span>
     <br>
-    <span>AVG MSPT: {app.debug.msptAvg.toFixed(4)} ms</span>
+    <span>Avg MSPT: {app.debug.msptAvg.toFixed(4)} ms</span>
     <br>
     <span>TPS: {app.debug.tpsAvg}/{app.debug.tpsMin}/{app.debug.tpsMax} (avg/min/max)</span>
     <br>
