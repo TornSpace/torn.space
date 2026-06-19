@@ -27,8 +27,8 @@
     "@types/bun": "^1.3.14",
     "@types/hjson": "^2.4.6",
     "oxfmt": "^0.47.0",
-    "oxlint": "^1.66.0",
-    "typescript": "^6.0.3"
+    "oxlint": "^1.70.0",
+    "typescript": "^7.0.1-rc"
   },
   "engines": {
     "bun": ">=1.3.14"
