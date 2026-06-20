@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun build src/index.ts --outdir=build --target bun --minify --minify-syntax --minify-whitespace --minify-identifiers",
-    "build:db": "NODE_ENV=\"drizzle\" bun build src/drizzle.config.ts src/models/*.ts --outdir=drizzle --target bun --minify --minify-syntax --minify-whitespace --minify-identifiers",
+    "build": "bun build src/index.ts --outdir=build --target bun --minify",
+    "build:db": "NODE_ENV=\"drizzle\" bun build src/drizzle.config.ts src/models/*.ts --outdir=drizzle --target bun --minify",
     "db:generate": "NODE_ENV=\"drizzle\" bun --bun drizzle-kit generate --config drizzle/src/drizzle.config.js",
     "db:push": "NODE_ENV=\"drizzle\" bun --bun drizzle-kit push --config drizzle/src/drizzle.config.js",
     "dev": "bun --watch src/index.ts",

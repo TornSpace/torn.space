@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun build src/index.ts --outdir=build --target bun --minify --minify-syntax --minify-whitespace --minify-identifiers",
+    "build": "bun build src/index.ts --outdir=build --target bun --minify",
     "dev": "bun --watch src/index.ts",
     "start": "NODE_ENV=\"production\" bun build/index.js",
     "typecheck": "tsc --noEmit"
