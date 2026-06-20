@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { App } from "$lib/game/App.svelte";
-    import { Team } from "@/common/constants";
+    import { Team } from "@/common/constants.ts";
 
     const { app, text, team }: { app: App, text: string, team: Team } = $props();
 

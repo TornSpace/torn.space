@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DefinitionList } from "../utils/DefinitionList";
+import { DefinitionList } from "../utils/DefinitionList.ts";
 
-import type { Trail } from "../constants";
+import type { Trail } from "../constants.ts";
 
 export interface AchievementDef {
     readonly type: "achievement";

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants, PacketType, Team } from "../constants";
-import { AbstractPacket, GameBitStream } from "../net";
+import { GameConstants, PacketType, Team } from "../constants.ts";
+import { AbstractPacket, GameBitStream } from "../net.ts";
 
 export class JoinPacket implements AbstractPacket {
     readonly type = PacketType.Join;

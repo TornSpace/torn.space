@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AbstractServerEntity, EntityPool } from "../Entity";
+import { AbstractServerEntity, EntityPool } from "../Entity.ts";
 
-import type { Game } from "../../modules/Game";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { Game } from "../../modules/Game.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { EntityType, GameConstants, Team } from "@/common/constants";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { EntityType, GameConstants, Team } from "@/common/constants.ts";
+import { CircleHitbox } from "@/common/utils/hitbox.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 export class Base extends AbstractServerEntity {
     readonly __type = EntityType.Base;

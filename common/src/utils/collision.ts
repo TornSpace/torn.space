@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { math } from "./math";
-import { v2, type Vec2 } from "./v2";
+import { math } from "./math.ts";
+import { v2, type Vec2 } from "./v2.ts";
 
 export type IntersectionResponse = { normal: Vec2; pen: number } | null;
 export type LineIntersection = { point: Vec2; normal: Vec2 } | null;

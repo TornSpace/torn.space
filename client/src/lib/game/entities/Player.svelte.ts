@@ -18,20 +18,20 @@
 
 import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
 
-import { ClientEntity } from "./ClientEntity";
+import { ClientEntity } from "./ClientEntity.ts";
 
 import { Camera } from "../modules/Camera.svelte";
 import { EntityPool } from "../modules/EntityManager.svelte";
 
 import type { App } from "../App.svelte";
-import type { GameSound } from "../modules/AudioManager";
-import type { WeaponDefKey } from "@/common/defs/weaponDefs";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { GameSound } from "../modules/AudioManager.ts";
+import type { WeaponDefKey } from "@/common/defs/weaponDefs.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { EntityType, GameConstants, Team } from "@/common/constants";
-import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { v2 } from "@/common/utils/v2";
+import { EntityType, GameConstants, Team } from "@/common/constants.ts";
+import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs.ts";
+import { CircleHitbox } from "@/common/utils/hitbox.ts";
+import { v2 } from "@/common/utils/v2.ts";
 
 export class Player extends ClientEntity {
     readonly __type = EntityType.Player;

@@ -24,7 +24,7 @@
  * SOFTWARE.
  */
 
-import { BitView } from "./BitView";
+import { BitView } from "./BitView.ts";
 
 export class BitStream<T extends ArrayBufferLike = ArrayBuffer> {
     protected _view: BitView<T>;

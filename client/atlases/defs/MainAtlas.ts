@@ -27,7 +27,7 @@ import {
     VortexSprites,
     WeaponSprites,
     type AtlasDef
-} from "../AtlasDef";
+} from "../AtlasDef.ts";
 
 export const MainAtlas: AtlasDef = {
     compress: false,

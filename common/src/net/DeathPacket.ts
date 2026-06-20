@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { PacketType } from "../constants";
-import { AbstractPacket, GameBitStream } from "../net";
+import { PacketType } from "../constants.ts";
+import { AbstractPacket, GameBitStream } from "../net.ts";
 
 export class DeathPacket implements AbstractPacket {
     readonly type = PacketType.Death;

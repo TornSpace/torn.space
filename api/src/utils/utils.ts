@@ -20,7 +20,7 @@ import { getConnInfo } from "hono/bun";
 
 import { createHash } from "crypto";
 
-import { config } from "../config";
+import { config } from "../config.ts";
 
 import type { Context } from "hono";
 

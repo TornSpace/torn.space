@@ -19,7 +19,7 @@
 
 import { expect, test } from "bun:test";
 
-import { GameBitStream } from "../src/net";
+import { GameBitStream } from "../src/net.ts";
 
 function equalAbs(a: number, b: number): boolean {
     return Math.abs(a - b) < 0.001;

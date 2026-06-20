@@ -1,4 +1,4 @@
-import type { Team } from "@/common/constants";
+import type { Team } from "@/common/constants.ts";
 
 export enum SortOrder {
     Experience,

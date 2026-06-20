@@ -18,7 +18,7 @@
 
 import { join, relative } from "node:path";
 
-import { AtlasManager, type Atlas } from "./utils/AtlasManager";
+import { AtlasManager, type Atlas } from "./utils/AtlasManager.ts";
 
 import type { Plugin, ViteDevServer } from "vite";
 

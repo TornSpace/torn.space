@@ -20,13 +20,13 @@ import { createCanvas, Image } from "@napi-rs/canvas";
 import { type Bin, MaxRectsPacker, type Rectangle } from "maxrects-packer";
 import sharp from "sharp";
 
-import { AtlasManager, type Atlas } from "./AtlasManager";
+import { AtlasManager, type Atlas } from "./AtlasManager.ts";
 
-import type { Logger } from "../../../common/src/utils/Logger";
-import type { AtlasDef } from "../AtlasDef";
-import type { WorkerToMainMsg } from "./atlasWorker";
-import type { Edges } from "./detectEdges";
-import type { CachedImage, ImageManager } from "./ImageManager";
+import type { Logger } from "../../../common/src/utils/Logger.ts";
+import type { AtlasDef } from "../AtlasDef.ts";
+import type { WorkerToMainMsg } from "./atlasWorker.ts";
+import type { Edges } from "./detectEdges.ts";
+import type { CachedImage, ImageManager } from "./ImageManager.ts";
 import type { SpritesheetData } from "pixi.js";
 
 export class AtlasBuilder {

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AtlasBuilder } from "./AtlasBuilder";
-import { ImageManager } from "./ImageManager";
+import { AtlasBuilder } from "./AtlasBuilder.ts";
+import { ImageManager } from "./ImageManager.ts";
 
-import { Logger } from "../../../common/src/utils/Logger";
+import { Logger } from "../../../common/src/utils/Logger.ts";
 
-import type { Atlas } from "./AtlasManager";
+import type { Atlas } from "./AtlasManager.ts";
 import type { SpritesheetData } from "pixi.js";
 
 const logger = new Logger({

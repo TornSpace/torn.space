@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Vec2 } from "./v2";
+import type { Vec2 } from "./v2.ts";
 
 // Calculate sins.
 const sins: number[] = [];

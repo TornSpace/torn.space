@@ -16,24 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AbstractServerEntity, EntityPool, type ServerEntity } from "./Entity";
+import { AbstractServerEntity, EntityPool, type ServerEntity } from "./Entity.ts";
 
-import { WeaponManager } from "../modules/WeaponManager";
+import { WeaponManager } from "../modules/WeaponManager.ts";
 
-import type { Client } from "../modules/ClientManager";
-import type { Game } from "../modules/Game";
-import type { Base } from "./universe/Base";
-import type { InputPacket } from "@/common/net/InputPacket";
-import type { JoinPacket } from "@/common/net/JoinPacket";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { Client } from "../modules/ClientManager.ts";
+import type { Game } from "../modules/Game.ts";
+import type { Base } from "./universe/Base.ts";
+import type { InputPacket } from "@/common/net/InputPacket.ts";
+import type { JoinPacket } from "@/common/net/JoinPacket.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { EntityType, GameConstants, Team, Trail, type LeaderboardEntry, type PlayerSaveData } from "@/common/constants";
-import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs";
-import { WeaponDefs, type WeaponDefKey } from "@/common/defs/weaponDefs";
-import { JoinedPacket } from "@/common/net/JoinedPacket";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { math } from "@/common/utils/math";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import {
+    EntityType,
+    GameConstants,
+    Team,
+    Trail,
+    type LeaderboardEntry,
+    type PlayerSaveData
+} from "@/common/constants.ts";
+import { ShipDefs, type ShipDefKey } from "@/common/defs/shipDefs.ts";
+import { WeaponDefs, type WeaponDefKey } from "@/common/defs/weaponDefs.ts";
+import { JoinedPacket } from "@/common/net/JoinedPacket.ts";
+import { CircleHitbox } from "@/common/utils/hitbox.ts";
+import { math } from "@/common/utils/math.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 interface PlayerDamageParams {
     position: Vec2;
@@ -279,9 +286,9 @@ export class Player extends AbstractServerEntity {
 
     /**
      * Player movement.
-     * @param drifting Whether the player is currently drifting.
+     * @param _drifting Whether the player is currently drifting.
      */
-    move(dt: number, drifting: boolean): void {
+    move(_dt: number, _drifting: boolean): void {
         // let speed = v2.length(this.velocity);
         // if (this.hyperdriveTimer > 0) {
         //     speed =

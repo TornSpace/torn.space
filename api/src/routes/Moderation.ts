@@ -18,8 +18,8 @@
 
 import { Hono } from "hono";
 
-import ProxyCheckRouter from "./moderation/ProxyCheck.js";
-import PunishmentsRouter from "./moderation/Punishments.js";
+import ProxyCheckRouter from "./moderation/ProxyCheck.ts";
+import PunishmentsRouter from "./moderation/Punishments.ts";
 
 const Router = new Hono();
 

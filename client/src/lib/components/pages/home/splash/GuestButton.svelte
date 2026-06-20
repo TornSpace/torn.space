@@ -1,6 +1,6 @@
 <script lang="ts">
     import { App, AppState } from "$lib/game/App.svelte";
-    import type { Team } from "@/common/constants";
+    import type { Team } from "@/common/constants.ts";
 
     const { app, teamIdx, teamName, idx }: {
         app: App

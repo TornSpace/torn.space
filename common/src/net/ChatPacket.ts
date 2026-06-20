@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants, PacketType } from "../constants";
-import { AbstractPacket, GameBitStream } from "../net";
+import { GameConstants, PacketType } from "../constants.ts";
+import { AbstractPacket, GameBitStream } from "../net.ts";
 
 export class ChatPacket implements AbstractPacket {
     readonly type = PacketType.Chat;

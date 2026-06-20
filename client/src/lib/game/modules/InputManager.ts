@@ -19,9 +19,9 @@
 import type { App } from "../App.svelte";
 import type { FederatedPointerEvent, FederatedWheelEvent } from "pixi.js";
 
-import { GameConstants } from "@/common/constants";
-import { InputPacket } from "@/common/net/InputPacket";
-import { math } from "@/common/utils/math";
+import { GameConstants } from "@/common/constants.ts";
+import { InputPacket } from "@/common/net/InputPacket.ts";
+import { math } from "@/common/utils/math.ts";
 
 interface Input {
     type: "key" | "mouse" | "wheel";

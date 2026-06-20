@@ -1,16 +1,16 @@
-import type { ServerEntity } from "../entities/Entity";
-import type { Player } from "../entities/Player";
-import type { Game } from "./Game";
-import type { Packet } from "@/common/net";
+import type { ServerEntity } from "../entities/Entity.ts";
+import type { Player } from "../entities/Player.ts";
+import type { Game } from "./Game.ts";
+import type { Packet } from "@/common/net.ts";
 import type { ServerWebSocket } from "bun";
 
-import { GameConstants, PacketType, type PlayerSaveData } from "@/common/constants";
-import { DebugFlags, DebugPacket } from "@/common/net/DebugPacket";
-import { UpdatePacket } from "@/common/net/UpdatePacket";
-import { RectHitbox } from "@/common/utils/hitbox";
-import { math } from "@/common/utils/math";
-import { PacketStream } from "@/common/utils/PacketStream";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { GameConstants, PacketType, type PlayerSaveData } from "@/common/constants.ts";
+import { DebugFlags, DebugPacket } from "@/common/net/DebugPacket.ts";
+import { UpdatePacket } from "@/common/net/UpdatePacket.ts";
+import { RectHitbox } from "@/common/utils/hitbox.ts";
+import { math } from "@/common/utils/math.ts";
+import { PacketStream } from "@/common/utils/PacketStream.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 export class ClientManager {
     clients: Client[] = [];

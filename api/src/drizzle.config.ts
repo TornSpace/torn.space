@@ -18,7 +18,7 @@
 
 import { defineConfig } from "drizzle-kit";
 
-import { config } from "./config";
+import { config } from "./config.ts";
 
 export default defineConfig({
     out: "./drizzle/dist",

@@ -18,11 +18,11 @@
 
 import { pgTable } from "drizzle-orm/pg-core";
 
-import { Guild } from "./Guild";
+import { Guild } from "./Guild.ts";
 
-import { PlayerTeam, PlayerTrail, RawPlayerTrail } from "../constants";
+import { PlayerTeam, PlayerTrail, RawPlayerTrail } from "../constants.ts";
 
-import { GameConstants } from "@/common/constants";
+import { GameConstants } from "@/common/constants.ts";
 
 export const User = pgTable("user", t => ({
     id: t.serial().primaryKey(),

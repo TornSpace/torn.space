@@ -17,11 +17,11 @@
  */
 
 import type { App } from "../App.svelte";
-import type { ClientEntity } from "../entities/ClientEntity";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { ClientEntity } from "../entities/ClientEntity.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { GameConstants, type ValidEntityType } from "@/common/constants";
-import { assert } from "@/common/utils/util";
+import { GameConstants, type ValidEntityType } from "@/common/constants.ts";
+import { assert } from "@/common/utils/util.ts";
 
 export class EntityManager {
     /**

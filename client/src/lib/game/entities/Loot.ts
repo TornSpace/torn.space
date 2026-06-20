@@ -18,17 +18,17 @@
 
 import { Sprite } from "pixi.js";
 
-import { ClientEntity } from "./ClientEntity";
+import { ClientEntity } from "./ClientEntity.ts";
 
-import { EntityPool } from "../modules/EntityManager.svelte";
+import { EntityPool } from "../modules/EntityManager.svelte.ts";
 
-import type { App } from "../App.svelte";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { App } from "../App.svelte.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { EntityType, GameConstants } from "@/common/constants";
-import { type LootDefKey } from "@/common/defs/lootDefs";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { v2 } from "@/common/utils/v2";
+import { EntityType, GameConstants } from "@/common/constants.ts";
+import { type LootDefKey } from "@/common/defs/lootDefs.ts";
+import { CircleHitbox } from "@/common/utils/hitbox.ts";
+import { v2 } from "@/common/utils/v2.ts";
 
 export class Loot extends ClientEntity {
     readonly __type = EntityType.Loot;

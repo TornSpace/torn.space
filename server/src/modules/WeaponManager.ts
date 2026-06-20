@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Player } from "../entities/Player";
+import type { Player } from "../entities/Player.ts";
 
-import { WeaponDefs, type WeaponDef } from "@/common/defs/weaponDefs";
+import { WeaponDefs, type WeaponDef } from "@/common/defs/weaponDefs.ts";
 
 enum WeaponState {
     Idle,

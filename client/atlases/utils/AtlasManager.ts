@@ -20,14 +20,14 @@ import { existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } f
 import { availableParallelism } from "node:os";
 import { join, resolve } from "node:path";
 
-import { ImageManager } from "./ImageManager";
+import { ImageManager } from "./ImageManager.ts";
 
-import { Logger } from "../../../common/src/utils/Logger";
-import { util } from "../../../common/src/utils/util";
-import { MainAtlas } from "../defs/MainAtlas";
+import { Logger } from "../../../common/src/utils/Logger.ts";
+import { util } from "../../../common/src/utils/util.ts";
+import { MainAtlas } from "../defs/MainAtlas.ts";
 
-import type { AtlasDef } from "../AtlasDef";
-import type { Atlases, MainToWorkerMsg, WorkerToMainMsg } from "./atlasWorker";
+import type { AtlasDef } from "../AtlasDef.ts";
+import type { Atlases, MainToWorkerMsg, WorkerToMainMsg } from "./atlasWorker.ts";
 import type { SpritesheetData } from "pixi.js";
 
 export class AtlasManager {

@@ -16,19 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameBitStream, PacketRegister, type Packet } from "../net";
-import { ChatPacket } from "../net/ChatPacket";
-import { ChatServerPacket } from "../net/ChatServerPacket";
-import { DeathPacket } from "../net/DeathPacket";
-import { DebugPacket } from "../net/DebugPacket";
-import { DebugTogglePacket } from "../net/DebugTogglePacket";
-import { DisconnectPacket } from "../net/DisconnectPacket";
-import { InputPacket } from "../net/InputPacket";
-import { JoinedPacket } from "../net/JoinedPacket";
-import { JoinPacket } from "../net/JoinPacket";
-import { KillPacket } from "../net/KillPacket";
-import { RespawnPacket } from "../net/RespawnPacket";
-import { UpdatePacket } from "../net/UpdatePacket";
+import { GameBitStream, PacketRegister, type Packet } from "../net.ts";
+import { ChatPacket } from "../net/ChatPacket.ts";
+import { ChatServerPacket } from "../net/ChatServerPacket.ts";
+import { DeathPacket } from "../net/DeathPacket.ts";
+import { DebugPacket } from "../net/DebugPacket.ts";
+import { DebugTogglePacket } from "../net/DebugTogglePacket.ts";
+import { DisconnectPacket } from "../net/DisconnectPacket.ts";
+import { InputPacket } from "../net/InputPacket.ts";
+import { JoinedPacket } from "../net/JoinedPacket.ts";
+import { JoinPacket } from "../net/JoinPacket.ts";
+import { KillPacket } from "../net/KillPacket.ts";
+import { RespawnPacket } from "../net/RespawnPacket.ts";
+import { UpdatePacket } from "../net/UpdatePacket.ts";
 
 const ClientToServerPackets = new PacketRegister();
 const ServerToClientPackets = new PacketRegister();

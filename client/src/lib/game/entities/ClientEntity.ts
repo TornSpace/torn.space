@@ -19,12 +19,12 @@
 import { Container } from "pixi.js";
 
 import type { App } from "../App.svelte";
-import type { ValidEntityType } from "@/common/constants";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
-import type { Hitbox } from "@/common/utils/hitbox";
+import type { ValidEntityType } from "@/common/constants.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
+import type { Hitbox } from "@/common/utils/hitbox.ts";
 
-import { math } from "@/common/utils/math";
-import { v2 } from "@/common/utils/v2";
+import { math } from "@/common/utils/math.ts";
+import { v2 } from "@/common/utils/v2.ts";
 
 export abstract class ClientEntity<T extends ValidEntityType = ValidEntityType> {
     abstract __type: T;

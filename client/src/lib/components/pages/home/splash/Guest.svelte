@@ -1,7 +1,7 @@
 <script lang="ts">
     import GuestButton from "./GuestButton.svelte";
 
-    import { Team } from "@/common/constants";
+    import { Team } from "@/common/constants.ts";
     import type { App } from "$lib/game/App.svelte";
 
     const permutations = [

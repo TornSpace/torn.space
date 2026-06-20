@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AbstractServerEntity, EntityPool } from "../Entity";
+import { AbstractServerEntity, EntityPool } from "../Entity.ts";
 
-import type { Game } from "../../modules/Game";
-import type { LootDefKey } from "@/common/defs/lootDefs";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { Game } from "../../modules/Game.ts";
+import type { LootDefKey } from "@/common/defs/lootDefs.ts";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { EntityType, GameConstants } from "@/common/constants";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { EntityType, GameConstants } from "@/common/constants.ts";
+import { CircleHitbox } from "@/common/utils/hitbox.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 export class Loot extends AbstractServerEntity {
     readonly __type = EntityType.Loot;

@@ -23,7 +23,7 @@ import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 import { resolve } from "path";
 
-import { atlasPlugin } from "./atlases/atlasPlugin";
+import { atlasPlugin } from "./atlases/atlasPlugin.ts";
 
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";

@@ -20,10 +20,10 @@ import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { z } from "zod";
 
-import { app } from "../../app";
-import { config } from "../../config";
-import { CachingGuard, ProxyCheckGuard, Validator } from "../../utils/middleware";
-import { hashIp } from "../../utils/utils";
+import { app } from "../../app.ts";
+import { config } from "../../config.ts";
+import { CachingGuard, ProxyCheckGuard, Validator } from "../../utils/middleware.ts";
+import { hashIp } from "../../utils/utils.ts";
 
 const checkSchema = z.object({
     ip: z.union([z.ipv4(), z.ipv6()])

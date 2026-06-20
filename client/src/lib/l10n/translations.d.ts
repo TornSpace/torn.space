@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Team } from "@/common/constants";
-import type { AchievementDefKey } from "@/common/defs/achievementDefs";
-import type { ShipDefKey } from "@/common/defs/shipDefs";
-import type { WeaponDefKey } from "@/common/defs/weaponDefs";
+import type { Team } from "@/common/constants.ts";
+import type { AchievementDefKey } from "@/common/defs/achievementDefs.ts";
+import type { ShipDefKey } from "@/common/defs/shipDefs.ts";
+import type { WeaponDefKey } from "@/common/defs/weaponDefs.ts";
 
 type TranslationMessage = "dockWorldMessage";
 

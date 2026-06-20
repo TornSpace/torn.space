@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { App } from "$lib/game/App.svelte";
-  import { EntityType } from "@/common/constants";
+    import { EntityType } from "@/common/constants.ts";
     
     const { app }: { app: App } = $props();
 </script>

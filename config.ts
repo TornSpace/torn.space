@@ -22,7 +22,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { util } from "./common/src/utils/util";
+import { util } from "./common/src/utils/util.ts";
 
 import type { Config, PartialConfig } from "./config.d";
 

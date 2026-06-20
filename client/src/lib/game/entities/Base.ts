@@ -18,19 +18,19 @@
 
 import { Assets, Container, Sprite, Text } from "pixi.js";
 
-import { ClientEntity } from "./ClientEntity";
+import { ClientEntity } from "./ClientEntity.ts";
 
 import { Camera } from "../modules/Camera.svelte";
 import { EntityPool } from "../modules/EntityManager.svelte";
 
 import type { App } from "../App.svelte";
-import type { EntitiesNetData } from "@/common/net/UpdatePacket";
+import type { EntitiesNetData } from "@/common/net/UpdatePacket.ts";
 
-import { EntityType, GameConstants, Team } from "@/common/constants";
-import { BaseDefs } from "@/common/defs/baseDefs";
-import { CircleHitbox } from "@/common/utils/hitbox";
-import { math } from "@/common/utils/math";
-import { v2 } from "@/common/utils/v2";
+import { EntityType, GameConstants, Team } from "@/common/constants.ts";
+import { BaseDefs } from "@/common/defs/baseDefs.ts";
+import { CircleHitbox } from "@/common/utils/hitbox.ts";
+import { math } from "@/common/utils/math.ts";
+import { v2 } from "@/common/utils/v2.ts";
 
 export class Base extends ClientEntity {
     readonly __type = EntityType.Base;

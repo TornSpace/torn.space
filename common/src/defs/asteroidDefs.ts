@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DefinitionList } from "../utils/DefinitionList";
+import { DefinitionList } from "../utils/DefinitionList.ts";
 
-import type { Vec2 } from "../utils/v2";
+import type { Vec2 } from "../utils/v2.ts";
 
 export interface AsteroidDef {
     readonly type: "asteroid";

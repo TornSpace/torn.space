@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getConfig } from "../../config";
+import { getConfig } from "../../config.ts";
 
 const isProd = process.env.NODE_ENV === "production";
 const isDrizzle = process.env.NODE_ENV === "drizzle";

@@ -20,8 +20,8 @@ import { filters, sound, type IMediaInstance } from "@pixi/sound";
 
 import type { App } from "../App.svelte";
 
-import { math } from "@/common/utils/math";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { math } from "@/common/utils/math.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 interface SoundOpts {
     position?: Vec2;

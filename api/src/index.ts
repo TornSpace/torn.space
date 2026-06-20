@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { app } from "./app";
-import ModerationRouter from "./routes/Moderation";
-import UserRouter from "./routes/User";
+import { app } from "./app.ts";
+import ModerationRouter from "./routes/Moderation.ts";
+import UserRouter from "./routes/User.ts";
 
 app.route("/user", UserRouter);
 app.route("/moderation", ModerationRouter);

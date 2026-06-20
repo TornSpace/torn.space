@@ -18,30 +18,30 @@
 
 import { Application, Assets, Graphics, Texture, Ticker, TilingSprite } from "pixi.js";
 
-import { BaseManager } from "./entities/Base";
-import { LootManager } from "./entities/Loot";
+import { BaseManager } from "./entities/Base.ts";
+import { LootManager } from "./entities/Loot.ts";
 import { PlayerManager, type Player } from "./entities/Player.svelte";
-import { AssetManager } from "./modules/AssetManager";
-import { AudioManager } from "./modules/AudioManager";
+import { AssetManager } from "./modules/AssetManager.ts";
+import { AudioManager } from "./modules/AudioManager.ts";
 import { Camera } from "./modules/Camera.svelte";
 import { ConfigManager } from "./modules/ConfigManager.svelte";
 import { EntityManager } from "./modules/EntityManager.svelte";
-import { InputManager } from "./modules/InputManager";
+import { InputManager } from "./modules/InputManager.ts";
 import { Localization } from "./modules/Localization.svelte";
 
-import type { ClientEntity } from "./entities/ClientEntity";
-import type { Packet } from "@/common/net";
-import type { DebugPacket } from "@/common/net/DebugPacket";
-import type { JoinedPacket } from "@/common/net/JoinedPacket";
+import type { ClientEntity } from "./entities/ClientEntity.ts";
+import type { Packet } from "@/common/net.ts";
+import type { DebugPacket } from "@/common/net/DebugPacket.ts";
+import type { JoinedPacket } from "@/common/net/JoinedPacket.ts";
 
-import { EntityType, GameConstants, type LeaderboardEntry, PacketType, Team } from "@/common/constants";
-import { DisconnectPacket } from "@/common/net/DisconnectPacket";
-import { JoinPacket } from "@/common/net/JoinPacket";
-import { UpdatePacket } from "@/common/net/UpdatePacket";
-import { math } from "@/common/utils/math";
-import { PacketStream } from "@/common/utils/PacketStream";
-import { assert } from "@/common/utils/util";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { EntityType, GameConstants, type LeaderboardEntry, PacketType, Team } from "@/common/constants.ts";
+import { DisconnectPacket } from "@/common/net/DisconnectPacket.ts";
+import { JoinPacket } from "@/common/net/JoinPacket.ts";
+import { UpdatePacket } from "@/common/net/UpdatePacket.ts";
+import { math } from "@/common/utils/math.ts";
+import { PacketStream } from "@/common/utils/PacketStream.ts";
+import { assert } from "@/common/utils/util.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 export enum AppState {
     Loading,

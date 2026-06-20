@@ -18,7 +18,7 @@
 
 import type { Locale } from "./Localization.svelte";
 
-import { util } from "@/common/utils/util";
+import { util } from "@/common/utils/util.ts";
 
 const defaultConfig = {
     language: "en" as Locale,

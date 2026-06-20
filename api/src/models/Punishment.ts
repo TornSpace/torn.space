@@ -18,9 +18,9 @@
 
 import { pgTable } from "drizzle-orm/pg-core";
 
-import { User } from "./User";
+import { User } from "./User.ts";
 
-import { PunishmentAction, PunishmentReason } from "../constants";
+import { PunishmentAction, PunishmentReason } from "../constants.ts";
 
 export const Punishment = pgTable("punishment", t => ({
     id: t.serial().primaryKey(),

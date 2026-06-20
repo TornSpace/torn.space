@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { math } from "./math";
+import { math } from "./math.ts";
 
 export type Vec2 = Record<"x" | "y", number>;
 

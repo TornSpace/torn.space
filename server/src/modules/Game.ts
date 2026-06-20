@@ -16,23 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ClientManager } from "./ClientManager";
-import { EntityManager } from "./EntityManager";
-import { Grid } from "./Grid";
+import { ClientManager } from "./ClientManager.ts";
+import { EntityManager } from "./EntityManager.ts";
+import { Grid } from "./Grid.ts";
 
-import { PlayerManager } from "../entities/Player";
-import { BaseManager } from "../entities/universe/Base";
-import { LootManager } from "../entities/universe/Loot";
+import { PlayerManager } from "../entities/Player.ts";
+import { BaseManager } from "../entities/universe/Base.ts";
+import { LootManager } from "../entities/universe/Loot.ts";
 
 import type { Config } from "../../../config.d";
-import type { Packet } from "@/common/net";
+import type { Packet } from "@/common/net.ts";
 
-import { EntityType, GameConstants } from "@/common/constants";
-import { Logger } from "@/common/utils/Logger";
-import { math } from "@/common/utils/math";
-import { PacketStream } from "@/common/utils/PacketStream";
-import { util } from "@/common/utils/util";
-import { v2 } from "@/common/utils/v2";
+import { EntityType, GameConstants } from "@/common/constants.ts";
+import { Logger } from "@/common/utils/Logger.ts";
+import { math } from "@/common/utils/math.ts";
+import { PacketStream } from "@/common/utils/PacketStream.ts";
+import { util } from "@/common/utils/util.ts";
+import { v2 } from "@/common/utils/v2.ts";
 
 export class Game {
     grid = new Grid(

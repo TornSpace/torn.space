@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { collision, type IntersectionResponse, type LineIntersection } from "./collision";
-import { math } from "./math";
-import { assert } from "./util";
-import { v2, type Vec2 } from "./v2";
+import { collision, type IntersectionResponse, type LineIntersection } from "./collision.ts";
+import { math } from "./math.ts";
+import { assert } from "./util.ts";
+import { v2, type Vec2 } from "./v2.ts";
 
 // oxfmt-ignore
 const checkFns: Array<Array<{ fn: (a: Hitbox, b: Hitbox) => boolean; reverse: boolean; }>> = [];

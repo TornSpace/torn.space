@@ -20,15 +20,15 @@ import { eq, or } from "drizzle-orm";
 import { Hono } from "hono";
 import z from "zod";
 
-import { app } from "../app";
-import { RawPlayerTeam, RawPlayerTrail } from "../constants";
-import { User } from "../models/User";
-import { AuthGuard, DatabaseGuard, RateLimiter, Validator } from "../utils/middleware";
+import { app } from "../app.ts";
+import { RawPlayerTeam, RawPlayerTrail } from "../constants.ts";
+import { User } from "../models/User.ts";
+import { AuthGuard, DatabaseGuard, RateLimiter, Validator } from "../utils/middleware.ts";
 
-import type { WeaponDefKey } from "@/common/defs/weaponDefs";
+import type { WeaponDefKey } from "@/common/defs/weaponDefs.ts";
 
-import { GameConstants, Team, Trail, type PlayerSaveData } from "@/common/constants";
-import { util } from "@/common/utils/util";
+import { GameConstants, Team, Trail, type PlayerSaveData } from "@/common/constants.ts";
+import { util } from "@/common/utils/util.ts";
 
 const registerSchema = z.object({
     username: z.string().nonempty().min(3).max(GameConstants.player.maxNameLength),

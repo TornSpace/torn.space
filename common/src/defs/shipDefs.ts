@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DefinitionList } from "../utils/DefinitionList";
+import { DefinitionList } from "../utils/DefinitionList.ts";
 
-import type { WeaponDefKey } from "./weaponDefs";
+import type { WeaponDefKey } from "./weaponDefs.ts";
 
 export interface ShipDef {
     readonly type: "ship";

@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { App } from "$lib/game/App.svelte";
-    import { ShipDefs } from "@/common/defs/shipDefs";
+    import { ShipDefs } from "@/common/defs/shipDefs.ts";
 
     const { app }: { app: App } = $props();
     

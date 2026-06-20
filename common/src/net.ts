@@ -16,24 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { GameConstants, type PacketType } from "./constants";
-import { BitStream } from "./lib/BitStream";
-import { math } from "./utils/math";
-import { assert } from "./utils/util";
+import { GameConstants, type PacketType } from "./constants.ts";
+import { BitStream } from "./lib/BitStream.ts";
+import { math } from "./utils/math.ts";
+import { assert } from "./utils/util.ts";
 
-import type { ChatPacket } from "./net/ChatPacket";
-import type { ChatServerPacket } from "./net/ChatServerPacket";
-import type { DeathPacket } from "./net/DeathPacket";
-import type { DebugPacket } from "./net/DebugPacket";
-import type { DebugTogglePacket } from "./net/DebugTogglePacket";
-import type { DisconnectPacket } from "./net/DisconnectPacket";
-import type { InputPacket } from "./net/InputPacket";
-import type { JoinedPacket } from "./net/JoinedPacket";
-import type { JoinPacket } from "./net/JoinPacket";
-import type { KillPacket } from "./net/KillPacket";
-import type { RespawnPacket } from "./net/RespawnPacket";
-import type { UpdatePacket } from "./net/UpdatePacket";
-import type { Vec2 } from "./utils/v2";
+import type { ChatPacket } from "./net/ChatPacket.ts";
+import type { ChatServerPacket } from "./net/ChatServerPacket.ts";
+import type { DeathPacket } from "./net/DeathPacket.ts";
+import type { DebugPacket } from "./net/DebugPacket.ts";
+import type { DebugTogglePacket } from "./net/DebugTogglePacket.ts";
+import type { DisconnectPacket } from "./net/DisconnectPacket.ts";
+import type { InputPacket } from "./net/InputPacket.ts";
+import type { JoinedPacket } from "./net/JoinedPacket.ts";
+import type { JoinPacket } from "./net/JoinPacket.ts";
+import type { KillPacket } from "./net/KillPacket.ts";
+import type { RespawnPacket } from "./net/RespawnPacket.ts";
+import type { UpdatePacket } from "./net/UpdatePacket.ts";
+import type { Vec2 } from "./utils/v2.ts";
 
 export class GameBitStream extends BitStream {
     static epsilon = 1.0001;

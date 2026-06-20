@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Translation } from "./translations";
+import type { Translation } from "./translations.ts";
 
-import { Team } from "@/common/constants";
+import { Team } from "@/common/constants.ts";
 
 /**
  * English translation file.

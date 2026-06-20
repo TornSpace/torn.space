@@ -24,7 +24,7 @@
  * SOFTWARE.
  */
 
-import { math } from "../utils/math";
+import { math } from "../utils/math.ts";
 
 /**
  * Similar to `DataView`, excepts allows bit-level reads/writes rather than byte-level. Internally uses `DataView` for

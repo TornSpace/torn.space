@@ -19,10 +19,10 @@
 import { zValidator } from "@hono/zod-validator";
 import { ZodType } from "zod";
 
-import { getIP, TokenBucketLimiter } from "./utils";
+import { getIP, TokenBucketLimiter } from "./utils.ts";
 
-import { App } from "../app";
-import { config } from "../config";
+import { App } from "../app.ts";
+import { config } from "../config.ts";
 
 import type { Context } from "hono";
 import type { Next, ValidationTargets } from "hono/types";

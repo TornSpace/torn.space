@@ -22,13 +22,13 @@ import { readdirSync } from "node:fs";
 import { availableParallelism } from "node:os";
 import { join, resolve } from "node:path";
 
-import { AtlasManager } from "./AtlasManager";
+import { AtlasManager } from "./AtlasManager.ts";
 
-import { util } from "../../../common/src/utils/util";
+import { util } from "../../../common/src/utils/util.ts";
 
-import type { Logger } from "../../../common/src/utils/Logger";
-import type { Edges } from "./detectEdges";
-import type { ParentMsg } from "./imageWorker";
+import type { Logger } from "../../../common/src/utils/Logger.ts";
+import type { Edges } from "./detectEdges.ts";
+import type { ParentMsg } from "./imageWorker.ts";
 
 export class ImageManager {
     private cache: ImageCache = {};

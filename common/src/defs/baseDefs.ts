@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Team } from "../constants";
-import { DefinitionList } from "../utils/DefinitionList";
+import { Team } from "../constants.ts";
+import { DefinitionList } from "../utils/DefinitionList.ts";
 
 export interface BaseDef {
     readonly type: "base";

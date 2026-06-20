@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { config } from "./config";
-import { Game } from "./modules/Game";
+import { config } from "./config.ts";
+import { Game } from "./modules/Game.ts";
 
-import type { SocketData } from "./modules/ClientManager";
+import type { SocketData } from "./modules/ClientManager.ts";
 
-import { Logger } from "@/common/utils/Logger";
+import { Logger } from "@/common/utils/Logger.ts";
 
 const game = new Game(config);
 const logger = new Logger(config.logging);

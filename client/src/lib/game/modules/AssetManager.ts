@@ -26,7 +26,7 @@ import thrust from "$lib/img/weapons/misc/thrust.png";
 import { Assets, Spritesheet, Texture, type Renderer, type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 import atlasDefs from "virtual:atlases";
 
-import type { Atlas } from "../../../../atlases/utils/AtlasManager";
+import type { Atlas } from "../../../../atlases/utils/AtlasManager.ts";
 import type { App } from "../App.svelte";
 
 const ATLAS_LIST: Atlas[] = ["main"];

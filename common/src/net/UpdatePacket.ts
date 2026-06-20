@@ -16,12 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { EntityType, GameConstants, PacketType, Team, type LeaderboardEntry, type ValidEntityType } from "../constants";
-import { LootDefs, type LootDefKey } from "../defs/lootDefs";
-import { ShipDefs, type ShipDefKey } from "../defs/shipDefs";
-import { WeaponDefs, type WeaponDefKey } from "../defs/weaponDefs";
-import { AbstractPacket, GameBitStream } from "../net";
-import { v2, type Vec2 } from "../utils/v2";
+import {
+    EntityType,
+    GameConstants,
+    PacketType,
+    Team,
+    type LeaderboardEntry,
+    type ValidEntityType
+} from "../constants.ts";
+import { LootDefs, type LootDefKey } from "../defs/lootDefs.ts";
+import { ShipDefs, type ShipDefKey } from "../defs/shipDefs.ts";
+import { WeaponDefs, type WeaponDefKey } from "../defs/weaponDefs.ts";
+import { AbstractPacket, GameBitStream } from "../net.ts";
+import { v2, type Vec2 } from "../utils/v2.ts";
 
 /**
  * Entity net data.

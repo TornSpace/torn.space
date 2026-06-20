@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { SortOrder, type LeaderboardEntry } from "./helpers";
+    import { SortOrder, type LeaderboardEntry } from "./helpers.ts";
 
-    import { Team } from "@/common/constants";
+    import { Team } from "@/common/constants.ts";
 
     let sortOrder = $state(SortOrder.Experience);
     let data = $state<LeaderboardEntry[]>([]);

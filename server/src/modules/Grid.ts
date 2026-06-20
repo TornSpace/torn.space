@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { ServerEntity } from "../entities/Entity";
+import type { ServerEntity } from "../entities/Entity.ts";
 
-import { EntityType, GameConstants } from "@/common/constants";
-import { RectHitbox } from "@/common/utils/hitbox";
-import { math } from "@/common/utils/math";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { EntityType, GameConstants } from "@/common/constants.ts";
+import { RectHitbox } from "@/common/utils/hitbox.ts";
+import { math } from "@/common/utils/math.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 export class Grid {
     /**

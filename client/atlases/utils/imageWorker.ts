@@ -20,12 +20,12 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 import { join, relative } from "node:path";
 
-import { AtlasManager } from "./AtlasManager";
-import { detectEdges, type Edges } from "./detectEdges";
+import { AtlasManager } from "./AtlasManager.ts";
+import { detectEdges, type Edges } from "./detectEdges.ts";
 
-import { Logger } from "../../../common/src/utils/Logger";
+import { Logger } from "../../../common/src/utils/Logger.ts";
 
-import type { ImageCache } from "./ImageManager";
+import type { ImageCache } from "./ImageManager.ts";
 
 const canvas = createCanvas(0, 0);
 const ctx = canvas.getContext("2d");

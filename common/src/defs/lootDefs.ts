@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DefinitionList } from "../utils/DefinitionList";
+import { DefinitionList } from "../utils/DefinitionList.ts";
 
 export interface LootDef {
     readonly type: "loot";

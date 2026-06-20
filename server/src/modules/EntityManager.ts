@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { EntityPool, ServerEntity } from "../entities/Entity";
-import type { Player } from "../entities/Player";
-import type { Base } from "../entities/universe/Base";
-import type { Loot } from "../entities/universe/Loot";
-import type { Game } from "./Game";
-import type { DebugPacket } from "@/common/net/DebugPacket";
+import type { EntityPool, ServerEntity } from "../entities/Entity.ts";
+import type { Player } from "../entities/Player.ts";
+import type { Base } from "../entities/universe/Base.ts";
+import type { Loot } from "../entities/universe/Loot.ts";
+import type { Game } from "./Game.ts";
+import type { DebugPacket } from "@/common/net/DebugPacket.ts";
 
-import { EntityType, GameConstants } from "@/common/constants";
-import { assert } from "@/common/utils/util";
+import { EntityType, GameConstants } from "@/common/constants.ts";
+import { assert } from "@/common/utils/util.ts";
 
 export class EntityManager {
     entities: ServerEntity[] = [];

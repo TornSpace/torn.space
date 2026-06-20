@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { EntityType, PacketType } from "../constants";
-import { AbstractPacket, GameBitStream } from "../net";
+import { EntityType, PacketType } from "../constants.ts";
+import { AbstractPacket, GameBitStream } from "../net.ts";
 
 export enum DebugFlags {
     TPS = 1 << 0,

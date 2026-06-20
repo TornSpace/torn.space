@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { assert } from "./util";
+import { assert } from "./util.ts";
 
-import type { GameBitStream } from "../net";
+import type { GameBitStream } from "../net.ts";
 
 export class DefinitionList<T extends string, K extends object> {
     private readonly _typeToId = {} as unknown as Record<T, number>;

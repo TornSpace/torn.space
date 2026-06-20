@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Game } from "../modules/Game";
-import type { Player } from "./Player";
-import type { Base } from "./universe/Base";
-import type { Loot } from "./universe/Loot";
-import type { ValidEntityType } from "@/common/constants";
-import type { Hitbox } from "@/common/utils/hitbox";
+import type { Game } from "../modules/Game.ts";
+import type { Player } from "./Player.ts";
+import type { Base } from "./universe/Base.ts";
+import type { Loot } from "./universe/Loot.ts";
+import type { ValidEntityType } from "@/common/constants.ts";
+import type { Hitbox } from "@/common/utils/hitbox.ts";
 
-import { GameBitStream } from "@/common/net";
-import { EntitySerializations, type EntitiesNetData } from "@/common/net/UpdatePacket";
-import { assert } from "@/common/utils/util";
-import { v2, type Vec2 } from "@/common/utils/v2";
+import { GameBitStream } from "@/common/net.ts";
+import { EntitySerializations, type EntitiesNetData } from "@/common/net/UpdatePacket.ts";
+import { assert } from "@/common/utils/util.ts";
+import { v2, type Vec2 } from "@/common/utils/v2.ts";
 
 export abstract class AbstractServerEntity<T extends ValidEntityType = ValidEntityType> {
     abstract readonly __type: T;

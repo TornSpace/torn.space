@@ -21,14 +21,14 @@ import { drizzle } from "drizzle-orm/bun-sql";
 import { Hono } from "hono";
 import ProxyCheck from "proxycheck-ts";
 
-import { config } from "./config";
-import { Punishment } from "./models/Punishment";
-import { User } from "./models/User";
+import { config } from "./config.ts";
+import { Punishment } from "./models/Punishment.ts";
+import { User } from "./models/User.ts";
 
-import type { Guild } from "./models/Guild";
+import type { Guild } from "./models/Guild.ts";
 import type { PgTable } from "drizzle-orm/pg-core";
 
-import { Logger } from "@/common/utils/Logger";
+import { Logger } from "@/common/utils/Logger.ts";
 
 interface DrizzleSchema extends Record<string, PgTable> {
     guild: typeof Guild;
