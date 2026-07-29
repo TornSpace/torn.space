@@ -68,6 +68,7 @@ export const util = {
 };
 
 /**
+ * Used in custom assert function.
  * @author leia-uwu
  * @link https://github.com/survev/survev/blob/master/shared/utils/util.ts
  */
@@ -85,13 +86,13 @@ export class AssertionError extends Error {
 }
 
 /**
- * Custom function to not bundle nodejs assert polyfill with the client
+ * Custom assert function to avoid bundling Node.js polyfill with the client.
  * @author leia-uwu
  * @link https://github.com/survev/survev/blob/master/shared/utils/util.ts
  */
 export function assert(value: unknown, message?: string | Error): asserts value {
     if (!value) {
-        const error = message instanceof Error ? message : new AssertionError(message ?? "Assertation failed");
+        const error = message instanceof Error ? message : new AssertionError(message ?? "Assertion failed");
         throw error;
     }
 }

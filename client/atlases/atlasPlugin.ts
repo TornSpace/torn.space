@@ -29,6 +29,7 @@ export function atlasPlugin(): Plugin[] {
             name: "atlas:build",
             apply: "build",
             async buildStart() {
+                if (this.environment.name === "ssr") return;
                 await manager.buildChangedAtlases();
 
                 // Reset cached.

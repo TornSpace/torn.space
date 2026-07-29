@@ -44,6 +44,14 @@ export default defineConfig(({ mode }) => {
     if (!isDev) plugins.push(ViteImageOptimizer({ logStats: true }));
 
     return {
+        build: {
+            rolldownOptions: {
+                checks: {
+                    pluginTimings: false
+                }
+            }
+        },
+
         server: serverOptions,
         preview: serverOptions,
 
