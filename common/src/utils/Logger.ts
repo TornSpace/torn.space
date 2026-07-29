@@ -18,7 +18,7 @@
 
 import { styleText } from "node:util";
 
-import type { Config } from "../../../config.d";
+import type { Config } from "../config.d";
 
 /**
  * Custom logger. Cannot be used on the client.

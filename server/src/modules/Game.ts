@@ -24,7 +24,7 @@ import { PlayerManager } from "../entities/Player.ts";
 import { BaseManager } from "../entities/universe/Base.ts";
 import { LootManager } from "../entities/universe/Loot.ts";
 
-import type { Config } from "../../../config.d";
+import type { Config } from "@/common/config.d";
 import type { Packet } from "@/common/net.ts";
 
 import { EntityType, GameConstants } from "@/common/constants.ts";

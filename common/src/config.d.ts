@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { DeepPartial } from "./utils/util.ts";
+
 interface ServerConfig {
     /**
      * The network interface(s) to bind to. `0.0.0.0` binds to all interfaces.
@@ -200,4 +202,4 @@ export interface Config {
     allowDebugging: boolean;
 }
 
-export type PartialConfig = DeepPartial<ConfigType>;
+export type PartialConfig = DeepPartial<Config>;

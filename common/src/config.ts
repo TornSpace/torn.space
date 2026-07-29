@@ -22,7 +22,7 @@ import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { util } from "./common/src/utils/util.ts";
+import { util } from "./utils/util.ts";
 
 import type { Config, PartialConfig } from "./config.d";
 
@@ -89,7 +89,6 @@ export function getConfig(isProd: boolean, dir: string): Config {
             secrets: {
                 TORN_API_KEY: randomBytes(64).toString("base64"),
                 TORN_GS_KEY: randomBytes(64).toString("base64"),
-                TORN_EMAIL_SECRET: randomBytes(32).toString("base64"),
                 TORN_IP_SECRET: randomBytes(32).toString("base64")
             }
         };
