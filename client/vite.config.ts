@@ -18,17 +18,15 @@
 
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, type ServerOptions, type UserConfig } from "vite";
+import { defineConfig, type PluginOption, type ServerOptions } from "vite";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
-
-import { resolve } from "path";
 
 import { atlasPlugin } from "./atlases/atlasPlugin.ts";
 
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
 
-    const plugins: UserConfig["plugins"] = [...atlasPlugin(), tailwindcss(), sveltekit()];
+    const plugins: PluginOption[] = [...atlasPlugin(), tailwindcss(), sveltekit()];
 
     const serverOptions: ServerOptions = {
         port: 3000,
@@ -55,12 +53,6 @@ export default defineConfig(({ mode }) => {
 
         json: {
             stringify: true
-        },
-
-        resolve: {
-            alias: {
-                $lib: resolve(__dirname, "./src/lib")
-            }
         },
 
         plugins,
