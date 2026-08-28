@@ -20,4 +20,4 @@ import { getConfig } from "@/common/config.ts";
 
 const isProd = process.env.NODE_ENV === "production";
 
-export const config = getConfig(isProd, isProd ? "../../" : "");
+export const config = getConfig(isProd, isProd ? "../../../" : "../");
