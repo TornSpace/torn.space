@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { BitStream } from "@damienvesper/bit-buffer";
+
 import { GameConstants, type PacketType } from "./constants.ts";
-import { BitStream } from "./lib/BitStream.ts";
 import { math } from "./utils/math.ts";
 import { assert } from "./utils/util.ts";
 
