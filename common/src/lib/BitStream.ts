@@ -190,7 +190,7 @@ function readString<T extends ArrayBufferLike = ArrayBuffer>(
     while (i < bytes) {
         const c = stream.readUint8();
 
-        // Stop appending chars once we hit 0x00
+        // Stop appending chars once we hit 0x00.
         if (c === 0x00) {
             append = false;
 

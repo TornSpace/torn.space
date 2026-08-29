@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun build src/index.ts --outdir=build --target bun --minify",
+    "build": "bun build src/index.ts --outdir=build --target bun --production",
     "dev": "bun --watch src/index.ts",
-    "start": "NODE_ENV=\"production\" bun build/index.js",
+    "start": "bun build/index.js",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
